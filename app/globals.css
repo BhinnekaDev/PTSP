@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #499900;
+
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #499900;
+}
+
+.button-effect {
+  background-color: #3498db;
+  font-size: 1rem;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 30px;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: transform 0.3s ease, color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.button-effect span {
+  margin-left: 8px;
+}
+
+.button-effect::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  transition: all 0.5s;
+  z-index: 1;
+}
+
+.button-effect:hover::before {
+  background-color: white;
+  left: 100%;
+}
+
+.button-effect:hover {
+  color: #72c02c;
+  background-color: white;
+  border-radius: 30px;
+  border: 1px solid #72c02c;
+  transform: scale(1.1);
+}
+
+.input-custom {
+  border-width: 2px !important;
+  border-color: #72c02c !important;
+  background-color: white;
+  color: #72c02c !important;
+  box-shadow: 0 10px 15px -3px rgba(31, 41, 55, 0.05),
+    0 4px 6px -2px rgba(31, 41, 55, 0.1);
+  outline: 4px solid transparent;
+  placeholder {
+    color: #6b7280;
+    opacity: 1;
+  }
+  &:focus {
+    color: #0a0a0a !important;
+    border-color: #72c02c !important;
+    border-top-color: #72c02c !important;
+    outline-color: rgba(31, 41, 55, 0.1);
+  }
+}
+input[type="file"] {
+  appearance: none;
+  border: 2px solid #4caf50;
+  border-radius: 10px;
+  width: 100%;
+}
+
+input[type="file"]::file-selector-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: #45a049; /* Warna hijau lebih gelap saat hover */
+}

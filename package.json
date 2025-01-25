@@ -1,0 +1,36 @@
+{
+  "name": "ptsp-bmkg",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@material-tailwind/react": "^2.1.10",
+    "dompurify": "^3.2.2",
+    "firebase": "^11.0.1",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
+    "next": "^15.1.6",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.4.1",
+    "react-icons": "^5.3.0",
+    "react-loading-skeleton": "^3.5.0",
+    "react-toastify": "^10.0.6"
+  },
+  "devDependencies": {
+    "eslint": "^9.16.0",
+    "eslint-config-next": "15.0.0",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
+  },
+  "overrides": {
+    "rimraf": "^4.4.0",
+    "glob": "^9.0.0",
+    "inflight": "2.0.0"
+  }
+}
