@@ -2,13 +2,14 @@ import React from "react";
 import useTampilanInformasiGeofisika from "@/hooks/Backend/useTampilanInformasiGeofisika";
 import usePagination from "@/hooks/Frontend/usePagination";
 import useVerifikasiLogin from "@/hooks/Backend/useVerifikasiLogin";
+import Image from "next/image";
 import {
-  FaWind,
   FaArrowLeftLong,
   FaArrowRightLong,
   FaCartShopping,
   FaCircleInfo,
 } from "react-icons/fa6";
+import iconInformasiGeofisika from "@/assets/img/Icon/Informasi-Geofisika.png";
 import {
   Card,
   CardBody,
@@ -78,9 +79,14 @@ export default function InformasiGeofisika() {
             <Popover>
               <PopoverHandler>
                 <div className="flex flex-col items-center my-6">
-                  <FaWind
-                    size={100}
-                    className="text-secondary cursor-pointer hover:text-secondary"
+                  <Image
+                    src={iconInformasiGeofisika}
+                    alt="Informasi Geofisika"
+                    className="w-45 h-45"
+                    width={130}
+                    height={130}
+                    quality={100}
+                    priority
                   />
                 </div>
               </PopoverHandler>

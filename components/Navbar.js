@@ -11,8 +11,9 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
+  Input,
 } from "@/app/MTailwind";
-import { FaGear, FaCartShopping } from "react-icons/fa6";
+import { FaGear, FaCartShopping, FaMagnifyingGlass } from "react-icons/fa6";
 import LogoBMKG from "@/assets/img/Logo/logo.png";
 import useKeluar from "@/hooks/Backend/useKeluarAkun";
 import useHitungKeranjangSesuaiID from "@/hooks/Backend/useHitungKeranjangSesuaiID";
@@ -114,12 +115,42 @@ function Navigation() {
           Panduan Pelayanan
         </a>
       </Typography>
+      <Typography
+        as="li"
+        className="flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer"
+      >
+        <a className="flex items-center" onClick={handleDialogOpenPanduan}>
+          Sarana dan Pengaduan
+        </a>
+      </Typography>
+      <Typography
+        as="li"
+        className="flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer"
+      >
+        <a className="flex items-center" onClick={handleDialogOpenPanduan}>
+          FAQ
+        </a>
+      </Typography>
+      <Typography
+        as="li"
+        className="flex items-center bg-white rounded-full gap-x-2 font-bold lg:text-xl cursor-pointer"
+      >
+        <Input
+          type="text"
+          placeholder="Cari Produk"
+          className="rounded-full border-none focus:ring-0"
+          labelProps={{ className: "hidden" }}
+        />
+        <Button className="bg-secondary p-2 rounded-full translate-x-3 ml-2">
+          <FaMagnifyingGlass className="h-6 w-6 text-white" />
+        </Button>
+      </Typography>
     </ul>
   );
 
   return (
     <Navbar
-      className={`max-w-[90rem] w-full fixed top-0 left-1/2 transform -translate-x-1/2 z-20 px-4 py-2 ${navbarBg} border-none shadow-none backdrop-filter-none`}
+      className={`max-w-[98rem] w-full fixed top-0 left-1/2 transform -translate-x-1/2 z-20 px-4 py-2 ${navbarBg} border-none shadow-none backdrop-filter-none`}
     >
       {DialogAlurLayanan}
       {DialogStandarLayanan}

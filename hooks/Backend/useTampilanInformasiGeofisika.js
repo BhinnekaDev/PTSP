@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { firestore } from "@/lib/firebaseConfig";
 
 const useTampilanInformasiGeofisika = () => {
   const [produkInformasiGeofisika, setProdukInformasiGeofisika] = useState([]);
@@ -10,12 +8,13 @@ const useTampilanInformasiGeofisika = () => {
   useEffect(() => {
     const fetchInformasiData = async () => {
       try {
-        const informasiCollection = collection(firestore, "informasi");
-        const informasiSnapshot = await getDocs(informasiCollection);
-        const informasiList = informasiSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const response = await fetch("/api/getInformasiJasa");
+        if (!response.ok) {
+          throw new Error("Gagal mengambil data dari API");
+        }
+
+        const data = await response.json();
+        const informasiList = data.informasi || [];
 
         const filteredInformasiList = informasiList.filter(
           (informasi) => informasi.Pemilik === "Geofisika"
