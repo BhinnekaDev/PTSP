@@ -1,14 +1,16 @@
+"use client";
 import React from "react";
 import useTampilanInformasiMeteorologi from "@/hooks/Backend/useTampilanInformasiMeteorologi";
 import usePagination from "@/hooks/Frontend/usePagination";
 import useVerifikasiLogin from "@/hooks/Backend/useVerifikasiLogin";
+import Image from "next/image";
 import {
-  FaMountain,
   FaArrowLeftLong,
   FaArrowRightLong,
   FaCartShopping,
   FaCircleInfo,
 } from "react-icons/fa6";
+import iconInformasiMeteorologi from "@/assets/img/Icon/Informasi-Meteorologi.png";
 import {
   Card,
   CardBody,
@@ -77,9 +79,14 @@ export default function InformasiMeteorologi() {
             <Popover>
               <PopoverHandler>
                 <div className="flex flex-col items-center my-6">
-                  <FaMountain
-                    size={100}
-                    className="text-secondary cursor-pointer hover:text-secondary"
+                  <Image
+                    src={iconInformasiMeteorologi}
+                    alt="Informasi Meteorologi"
+                    className="w-45 h-45"
+                    width={130}
+                    height={130}
+                    quality={100}
+                    priority
                   />
                 </div>
               </PopoverHandler>

@@ -35,6 +35,10 @@ function HeaderTemplate() {
       desc: "Daftar Pengajuan",
       title: "Pengajuan Anda",
     },
+    "/Pencarian": {
+      desc: "Hasil Pencarian",
+      title: "Hasil Pencarian Anda",
+    },
   };
 
   const currentContent = content[navbarAktif] || {
