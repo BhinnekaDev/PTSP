@@ -44,32 +44,19 @@ function useVerifikasiLogin() {
               ...docPerorangan.data(),
               type: "perorangan",
             }));
-            console.log(
-              "Data pengguna perorangan ditemukan:",
-              docPerorangan.data()
-            );
           } else if (docPerusahaan.exists()) {
             setDetailPengguna((prevState) => ({
               ...prevState,
               ...docPerusahaan.data(),
               type: "perusahaan",
             }));
-            console.log(
-              "Data pengguna perusahaan ditemukan:",
-              docPerusahaan.data()
-            );
           } else {
-            console.warn("Data pengguna tidak ditemukan di Firestore.");
             setApakahSudahLogin(false);
           }
         } catch (error) {
-          console.error("Gagal mengambil data pengguna:", error);
           setApakahSudahLogin(false);
         }
       } else {
-        console.log(
-          "Tidak ada ID di localStorage, set apakahSudahLogin ke false."
-        );
         setApakahSudahLogin(false);
       }
     };
