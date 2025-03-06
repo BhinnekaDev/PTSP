@@ -13,6 +13,7 @@ import {
   MenuItem,
   Input,
 } from "@/app/MTailwind";
+import { useRouter } from "next/navigation";
 import { FaGear, FaCartShopping, FaMagnifyingGlass } from "react-icons/fa6";
 import LogoBMKG from "@/assets/img/Logo/logo.png";
 import useKeluar from "@/hooks/Backend/useKeluarAkun";
@@ -22,9 +23,11 @@ import useNavbarEfek from "@/hooks/Frontend/useNavbarEfek";
 import useVerifikasiLogin from "@/hooks/Backend/useVerifikasiLogin";
 import useDialogPanduan from "@/hooks/Frontend/useDialogPanduan";
 import { useDialogRegulasi } from "@/hooks/Frontend/useDialogRegulasi";
+import useMasukkanPencarian from "@/hooks/Backend/useMasukkanPencarian";
 
 function Navigation() {
   const { navbarAktif, handlenavbarAktif } = useNavbarAktif();
+  const router = useRouter();
   const { navbarBg, openPengaturan, setOpenPengaturan } = useNavbarEfek();
   const { apakahSudahLogin } = useVerifikasiLogin();
   const { keluarAkun } = useKeluar();
@@ -40,8 +43,9 @@ function Navigation() {
     handleDialogOpenRegulasiPelayanan,
     handleDialogOpenTarifLayanan,
   } = useDialogRegulasi();
-
   const { DialogPanduan, handleDialogOpenPanduan } = useDialogPanduan();
+  const { query, setQuery, handleSearch, suggestions, setSuggestions } =
+    useMasukkanPencarian();
 
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 uppercase">
@@ -131,20 +135,48 @@ function Navigation() {
           FAQ
         </a>
       </Typography>
-      <Typography
-        as="li"
-        className="flex items-center bg-white rounded-full gap-x-2 font-bold lg:text-xl cursor-pointer"
-      >
-        <Input
-          type="text"
-          placeholder="Cari Produk"
-          className="rounded-full border-none focus:ring-0"
-          labelProps={{ className: "hidden" }}
-        />
-        <Button className="bg-secondary p-2 rounded-full translate-x-3 ml-2">
-          <FaMagnifyingGlass className="h-6 w-6 text-white" />
-        </Button>
-      </Typography>
+      <form onSubmit={handleSearch} className="relative">
+        <div className="relative">
+          <Typography
+            as="li"
+            className="flex items-center bg-white rounded-full gap-x-2 font-bold lg:text-xl cursor-pointer"
+          >
+            <Input
+              type="text"
+              placeholder="Cari Produk"
+              className="rounded-full border-none focus:ring-0 w-full"
+              labelProps={{ className: "hidden" }}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onBlur={() => setTimeout(() => setSuggestions([]), 200)}
+            />
+            <Button
+              type="submit"
+              className="bg-secondary p-2 rounded-full translate-x-3 ml-2"
+            >
+              <FaMagnifyingGlass className="h-6 w-6 text-white" />
+            </Button>
+          </Typography>
+
+          {suggestions.length > 0 && (
+            <ul className="absolute z-50 w-[350px] mt-2 bg-white border border-gray-300 rounded-lg shadow-lg">
+              {suggestions.map((item) => (
+                <li
+                  key={item.id}
+                  className="p-2 hover:bg-gray-100 text-sm cursor-pointer text-black hover:text-primary hover:delay-75 hover:-translate-y-1 hover:shadow-sm"
+                  onClick={() =>
+                    router.push(
+                      `/Pencarian?query=${encodeURIComponent(item.Nama)}`
+                    )
+                  }
+                >
+                  {item.Nama}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </form>
     </ul>
   );
 
