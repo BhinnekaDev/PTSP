@@ -6,42 +6,21 @@ import {
   updateDoc,
   getDoc,
   deleteField,
-  onSnapshot,
 } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-const generateRandomIDAjukan = (length = 16) => {
+const generateRandomID = (length = 16) => {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
-};
-const generateRandomIDPemesanan = (length = 16) => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=<>?";
-  let result = "";
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
-};
-const generateRandomIDTransaksi = (length = 16) => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=<>?";
-  let result = "";
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
+  return Array.from({ length }, () =>
+    characters.charAt(Math.floor(Math.random() * characters.length))
+  ).join("");
 };
 
 const useAjukanFormSubmit = (keranjang) => {
-  const pengarah = useRouter();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const handleFormSubmit = async (files, formName) => {
@@ -55,12 +34,14 @@ const useAjukanFormSubmit = (keranjang) => {
     try {
       const maxSizeInBytes = 2 * 1024 * 1024;
       const allowedExtensions = ["jpg", "jpeg", "png", "pdf"];
-      const randomIDAjukan = generateRandomIDAjukan();
+      const allowedMimeTypes = ["image/jpeg", "image/png", "application/pdf"];
+      const randomIDAjukan = generateRandomID();
       const storage = getStorage();
       const fileUrls = [];
 
       for (let file of files) {
         const fileExtension = file.name.split(".").pop().toLowerCase();
+        const fileMimeType = file.type;
 
         if (!allowedExtensions.includes(fileExtension)) {
           setLoading(false);
@@ -68,15 +49,23 @@ const useAjukanFormSubmit = (keranjang) => {
           return;
         }
 
+        // Cek MIME type
+        if (!allowedMimeTypes.includes(fileMimeType)) {
+          setLoading(false);
+          toast.error(`Tipe file tidak diizinkan.`);
+          return;
+        }
+
+        // Cek ukuran file
         if (file.size > maxSizeInBytes) {
           setLoading(false);
           toast.error(`File melebihi ukuran maksimum 2MB.`);
           return;
         }
 
-        const uniqueFileName = `${
-          file.name.split(".")[0]
-        }_${Date.now()}_${randomIDAjukan}.${fileExtension}`;
+        // Sanitasi nama file
+        const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_");
+        const uniqueFileName = `${sanitizedFileName}_${Date.now()}_${randomIDAjukan}.${fileExtension}`;
         const storageRef = ref(
           storage,
           `File_Ajukan/${penggunaSaatIni}/${formName}/${uniqueFileName}`
@@ -88,6 +77,7 @@ const useAjukanFormSubmit = (keranjang) => {
         fileUrls.push(fileUrl);
       }
 
+      // Periksa apakah keranjang memiliki data
       const keranjangRef = doc(firestore, "keranjang", penggunaSaatIni);
       const keranjangSnapshot = await getDoc(keranjangRef);
 
@@ -101,6 +91,7 @@ const useAjukanFormSubmit = (keranjang) => {
         return;
       }
 
+      // Simpan data pengajuan ke Firestore
       const ajukanRef = doc(firestore, "ajukan", randomIDAjukan);
       const ajukanData = {
         Nama_Ajukan: formName,
@@ -112,6 +103,7 @@ const useAjukanFormSubmit = (keranjang) => {
       };
       await setDoc(ajukanRef, ajukanData);
 
+      // Simpan data pesanan
       const dataKeranjang = keranjangSnapshot.data();
       const dataPesanan = [
         ...dataKeranjang.Informasi.map(({ ID_Informasi, ...rest }) => ({
@@ -133,11 +125,7 @@ const useAjukanFormSubmit = (keranjang) => {
         0
       );
 
-      const pemesananRef = doc(
-        firestore,
-        "pemesanan",
-        generateRandomIDPemesanan()
-      );
+      const pemesananRef = doc(firestore, "pemesanan", generateRandomID());
 
       const pemesananData = {
         ID_Pengguna: penggunaSaatIni,
@@ -150,15 +138,16 @@ const useAjukanFormSubmit = (keranjang) => {
         Tanggal_Pemesanan: new Date(),
         ...(formName === "Kegiatan Tarif PNBP" &&
           ajukanData.Jenis_Ajukan === "Berbayar" && {
-            ID_Transaksi: generateRandomIDTransaksi(),
+            ID_Transaksi: generateRandomID(),
           }),
       };
 
       await setDoc(pemesananRef, pemesananData);
 
-      pengarah.push("/Transaksi");
+      router.push("/Transaksi");
       toast.success("Pengajuan berhasil dibuat dan ditambahkan ke pemesanan!");
 
+      // Kosongkan keranjang setelah pemesanan
       await updateDoc(keranjangRef, {
         Informasi: [],
         Jasa: [],

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "@/app/globals.css";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { Button } from "@material-tailwind/react";
 import usePerbaikiDokumen from "@/hooks/Backend/usePerbaikanDokumen";
 

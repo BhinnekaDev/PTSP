@@ -3,10 +3,10 @@ import { serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { Input, Checkbox, Button, Spinner } from "@/app/MTailwind";
 import { addToPeroranganCollection } from "@/hooks/Backend/useFormPerorangan";
-import { formatNPWP } from "@/utils/utilsNPWP";
 import { formatNoIdentitas } from "@/utils/utilsNoIdentitas";
 import { formatHuruf } from "@/utils/utilsHuruf";
 import { formatNoTelepon } from "@/utils/utilsNoTelepon";
+import { formatPendidikanTerakhir } from "@/utils/utilsPendidikanTerakhir";
 import { toast } from "react-hot-toast";
 
 const StepFormPerorangan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
@@ -37,6 +37,14 @@ const StepFormPerorangan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
       setFormDataPerorangan((prev) => ({
         ...prev,
         [name]: formattedInput,
+      }));
+      return;
+    }
+    if (name === "Pendidikan_Terakhir") {
+      const formattedInputPendidikanTerakhir = formatPendidikanTerakhir(value);
+      setFormDataPerorangan((prev) => ({
+        ...prev,
+        [name]: formattedInputPendidikanTerakhir,
       }));
       return;
     }

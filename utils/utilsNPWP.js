@@ -1,7 +1,11 @@
+import DOMPurify from "dompurify";
+
 export const formatNPWP = (value) => {
-  const cleanedValue = value.replace(/\D/g, "");
+  const sanitizedValue = DOMPurify.sanitize(value);
+  const cleanedValue = sanitizedValue.replace(/\D/g, "");
 
   let formattedValue = cleanedValue;
+
   if (cleanedValue.length > 2) {
     formattedValue = `${cleanedValue.slice(0, 2)}.${cleanedValue.slice(2)}`;
   }
@@ -24,6 +28,5 @@ export const formatNPWP = (value) => {
     )}`;
   }
 
-  // Batasi panjang maksimal input (20 karakter dengan format yang sesuai)
   return formattedValue.substring(0, 20);
 };

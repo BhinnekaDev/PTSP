@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "@/app/globals.css";
-import { toast } from "react-toastify";
 import { Button } from "@material-tailwind/react";
+import { toast } from "react-hot-toast";
 
 const PenanggulanganBencanaForm = ({ onSubmit }) => {
   const [files, setFiles] = useState({});
@@ -27,7 +27,6 @@ const PenanggulanganBencanaForm = ({ onSubmit }) => {
 
     try {
       await onSubmit(allFiles, "Kegiatan Penanggulangan Bencana");
-      toast.success("File berhasil diunggah.");
     } catch (error) {
       toast.error("Terjadi kesalahan saat mengunggah file.");
     } finally {

@@ -25,6 +25,23 @@ const usePerbaikiDokumen = () => {
     setLoading(true);
 
     try {
+      // Validasi semua file sebelum memulai proses
+      const invalidFiles = newFiles.filter(
+        (file) =>
+          !SUPPORTED_FORMATS.includes(file.type) || file.size > MAX_FILE_SIZE
+      );
+
+      if (invalidFiles.length > 0) {
+        toast.error(
+          `Gagal memperbarui dokumen. Periksa format & ukuran file (${invalidFiles
+            .map((file) => file.name)
+            .join(", ")})`
+        );
+        setLoading(false);
+        return;
+      }
+
+      // Jika semua file valid, lanjutkan proses
       const ajukanRef = doc(firestore, "ajukan", ID_Ajukan);
       const ajukanSnapshot = await getDoc(ajukanRef);
 
@@ -35,23 +52,21 @@ const usePerbaikiDokumen = () => {
       const ajukanData = ajukanSnapshot.data();
       const storage = getStorage();
 
-      if (ajukanData.File_Ajukan && ajukanData.File_Ajukan.length > 0) {
+      // Hapus file lama jika ada
+      if (ajukanData.File_Ajukan && Array.isArray(ajukanData.File_Ajukan)) {
         for (let url of ajukanData.File_Ajukan) {
-          const fileRef = ref(storage, url);
-          await deleteObject(fileRef);
+          try {
+            const fileRef = ref(storage, url);
+            await deleteObject(fileRef);
+          } catch (err) {
+            console.warn("Gagal menghapus file lama:", err);
+          }
         }
       }
 
+      // Unggah file baru
       const newFileUrls = [];
       for (let file of newFiles) {
-        if (!SUPPORTED_FORMATS.includes(file.type)) {
-          throw new Error("Format file tidak didukung.");
-        }
-
-        if (file.size > MAX_FILE_SIZE) {
-          throw new Error("Ukuran file melebihi batas 2MB.");
-        }
-
         const fileExtension = file.name.split(".").pop();
         const uniqueFileName = `${
           file.name.split(".")[0]
@@ -66,6 +81,7 @@ const usePerbaikiDokumen = () => {
         newFileUrls.push(newFileUrl);
       }
 
+      // Update Firestore
       await updateDoc(ajukanRef, {
         File_Ajukan: newFileUrls,
         Status_Ajuan: "Sedang Ditinjau",
@@ -79,7 +95,7 @@ const usePerbaikiDokumen = () => {
       window.location.reload();
     } catch (error) {
       console.error("Gagal memperbarui dokumen:", error);
-      toast.error(error.message || "Gagal memperbarui dokumen.");
+      toast.error("Terjadi kesalahan saat memperbarui dokumen.");
     } finally {
       setLoading(false);
     }

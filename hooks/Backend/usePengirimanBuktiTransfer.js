@@ -19,6 +19,14 @@ const useBuatTransaksi = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+  const SUPPORTED_FORMATS = [
+    "image/png",
+    "image/jpeg",
+    "image/jpg",
+    "application/pdf",
+  ];
+
   const handlePengirimanBuktiTransfer = async (
     files,
     ID_Transaksi,
@@ -33,9 +41,27 @@ const useBuatTransaksi = () => {
     setError(null);
 
     try {
+      // ✅ 1. Cek validasi semua file sebelum upload
+      const invalidFiles = files.filter(
+        (file) =>
+          !SUPPORTED_FORMATS.includes(file.type) || file.size > MAX_FILE_SIZE
+      );
+
+      if (invalidFiles.length > 0) {
+        toast.error(
+          `Gagal mengunggah bukti transfer. Periksa format & ukuran file (${invalidFiles
+            .map((file) => file.name)
+            .join(", ")})`
+        );
+        setLoading(false);
+        return;
+      }
+
+      // ✅ 2. Ambil data transaksi di Firestore
       const transaksiRef = doc(firestore, "transaksi", ID_Transaksi);
       const transaksiDoc = await getDoc(transaksiRef);
 
+      // Hapus file lama jika ada
       if (transaksiDoc.exists() && transaksiDoc.data().Bukti_Pembayaran) {
         const fileUrls = transaksiDoc.data().Bukti_Pembayaran;
 
@@ -52,6 +78,7 @@ const useBuatTransaksi = () => {
         await Promise.all(deletePromises);
       }
 
+      // ✅ 3. Upload file baru
       const uploadPromises = files.map((file) => {
         const fileRef = ref(storage, `bukti-transfer/${file.name}`);
         const uploadTask = uploadBytesResumable(fileRef, file);
@@ -76,6 +103,7 @@ const useBuatTransaksi = () => {
       };
       await setDoc(transaksiRef, newTransaksiDoc, { merge: true });
 
+      // ✅ 4. Update status di Firestore
       const pemesananRef = doc(firestore, "pemesanan", ID_Pemesanan);
       const pemesananDoc = await getDoc(pemesananRef);
 
@@ -88,13 +116,15 @@ const useBuatTransaksi = () => {
         Status_Pembayaran: "Sedang Ditinjau",
       });
 
-      if (pemesananDoc.exists() && pemesananDoc.data().Keterangan) {
+      if (pemesananDoc.data().Keterangan) {
         await updateDoc(pemesananRef, {
           Keterangan: deleteField(),
         });
         console.log("Field Keterangan pada pemesanan berhasil dihapus");
       }
+
       toast.success("Bukti Transaksi berhasil dikirim!");
+      window.location.reload();
     } catch (err) {
       setError(err.message);
       toast.error("Gagal memperbarui transaksi.");

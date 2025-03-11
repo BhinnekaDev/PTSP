@@ -56,7 +56,6 @@ const DetailTransaksi = ({
       <DialogHeader>Tracking Pesanan Anda</DialogHeader>
       <DialogBody className="overflow-y-scroll h-full w-full py-5 absolute">
         <div className="grid grid-cols-1 lg:grid-cols-[3.5fr_6.5fr] w-full ">
-          <Toaster position="top-right" reverseOrder={false} />
           <div>
             <Timeline>
               <TimelineItem>
@@ -148,7 +147,19 @@ const DetailTransaksi = ({
                     Status Pembayaran
                   </Typography>
                 </TimelineHeader>
-                <TimelineBody>
+                <TimelineBody className="pb-4">
+                  <Typography
+                    color="gray"
+                    className="font-normal text-blue-gray-600"
+                  >
+                    Tanggal Billing : 11/3/2025, 13.23.51
+                  </Typography>
+                  <Typography
+                    color="gray"
+                    className="font-normal text-blue-gray-600"
+                  >
+                    Tanggal Kadaluwarsa : 18/3/2025, 13.23.51
+                  </Typography>
                   <Typography
                     color="gray"
                     className="font-normal text-gray-600"
@@ -186,7 +197,7 @@ const DetailTransaksi = ({
                     >
                       {pemesanan.ajukanDetail.Status_Ajuan === "Diterima"
                         ? `Tanggal Pembayaran : ${
-                            pemesanan?.Status_Pembayaran === "Lunas"
+                            pemesanan?.Status_Pembayaran === "Sedang Ditinjau"
                               ? pemesanan.transaksiDetail
                                   ?.Tanggal_Pengiriman_Bukti
                                 ? new Date(
@@ -237,7 +248,7 @@ const DetailTransaksi = ({
                     Status Pembuatan{" "}
                   </Typography>
                 </TimelineHeader>
-                <TimelineBody>
+                <TimelineBody className="pb-4">
                   <Typography
                     color="gray"
                     className="font-normal text-gray-600"
@@ -263,7 +274,7 @@ const DetailTransaksi = ({
                     Pesanan Selesai
                   </Typography>
                 </TimelineHeader>
-                <TimelineBody>
+                <TimelineBody className="pb-4">
                   <Typography
                     color="gray"
                     className="font-normal text-gray-600"

@@ -102,6 +102,7 @@ const DialogPengirimanBuktiTransfer = ({
       handler={handleClose}
       className="fixed inset-0 items-center justify-center w-96 h-auto mx-auto overflow-y-auto"
     >
+      <Toaster position="top-right" reverseOrder={false} />
       <DialogHeader>Pengiriman Dokumen Transaksi {ID_Pemesanan}</DialogHeader>
       <DialogBody>
         <div className="w-full p-6 bg-white rounded-lg shadow-md">

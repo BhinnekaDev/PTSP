@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "@/app/globals.css";
-import { Input, Button } from "@material-tailwind/react";
-import { toast } from "react-toastify";
+import { Button } from "@material-tailwind/react";
+import { toast } from "react-hot-toast";
 import usePerbaikiDokumen from "@/hooks/Backend/usePerbaikanDokumen";
 
 const KegiatanKeagamaanForm = ({ onSubmit, ID_Ajukan }) => {

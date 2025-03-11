@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "@/app/globals.css";
-import { Input, Button } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import { toast } from "react-hot-toast";
 
 const KegiatanPendidikanPenelitianForm = ({ onSubmit }) => {
@@ -31,7 +31,6 @@ const KegiatanPendidikanPenelitianForm = ({ onSubmit }) => {
         allFiles,
         "Kegiatan Pendidikan dan Penelitian Non Komersil"
       );
-      toast.success("File berhasil diunggah.");
     } catch (error) {
       toast.error("Terjadi kesalahan saat mengunggah file.");
     } finally {

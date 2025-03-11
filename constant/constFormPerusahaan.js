@@ -7,6 +7,9 @@ import { formatNPWP } from "@/utils/utilsNPWP";
 import { formatNoIdentitas } from "@/utils/utilsNoIdentitas";
 import { formatHuruf } from "@/utils/utilsHuruf";
 import { formatNoTelepon } from "@/utils/utilsNoTelepon";
+import { formatPendidikanTerakhir } from "@/utils/utilsPendidikanTerakhir";
+import { formatEmail } from "@/utils/utilsEmail";
+import { formatAlamat } from "@/utils/utilsAlamat";
 import { toast } from "react-hot-toast";
 
 const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
@@ -60,6 +63,30 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
       setFormDataPerusahaan((prev) => ({
         ...prev,
         [name]: formattedInput,
+      }));
+      return;
+    }
+    if (name === "Alamat_Perusahaan") {
+      const formattedInputAlamat = formatAlamat(value);
+      setFormDataPerusahaan((prev) => ({
+        ...prev,
+        [name]: formattedInputAlamat,
+      }));
+      return;
+    }
+    if (name === "Pendidikan_Terakhir") {
+      const formattedInputPendidikanTerakhir = formatPendidikanTerakhir(value);
+      setFormDataPerusahaan((prev) => ({
+        ...prev,
+        [name]: formattedInputPendidikanTerakhir,
+      }));
+      return;
+    }
+    if (name === "Email_Perusahaan") {
+      const formattedInputEmail = formatEmail(value);
+      setFormDataPerusahaan((prev) => ({
+        ...prev,
+        [name]: formattedInputEmail,
       }));
       return;
     }

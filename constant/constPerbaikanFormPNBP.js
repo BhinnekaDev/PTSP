@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "@/app/globals.css";
-import { Input, Button } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import { toast } from "react-toastify";
 import usePerbaikiDokumen from "@/hooks/Backend/usePerbaikanDokumen";
 
@@ -47,7 +47,6 @@ const KegiatanTarifPNBPForm = ({ onSubmit, ID_Ajukan }) => {
               className="file:appearance-none file:bg-green-500 file:text-white file:px-4 file:py-2 file:border-none file:rounded file:cursor-pointer file:hover:bg-green-600"
               type="file"
               onChange={handleFileChange}
-              labelProps={{ className: "hidden" }}
             />
           </div>
           <div>
@@ -57,7 +56,6 @@ const KegiatanTarifPNBPForm = ({ onSubmit, ID_Ajukan }) => {
               className="file:appearance-none file:bg-green-500 file:text-white file:px-4 file:py-2 file:border-none file:rounded file:cursor-pointer file:hover:bg-green-600"
               type="file"
               onChange={handleFileChange}
-              labelProps={{ className: "hidden" }}
             />
           </div>
         </div>

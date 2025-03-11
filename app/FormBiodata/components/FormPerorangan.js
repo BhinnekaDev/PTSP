@@ -9,7 +9,7 @@ import "@/app/globals.css";
 
 function FormPerorangan() {
   const [checkboxAktif, setCheckboxAktif] = useState(false);
-  const { stepAktif, handleSelanjutnya, handleSebelumnya } = useStepperForm();
+  const { stepAktif } = useStepperForm();
 
   return (
     <div className="min-h-full grid grid-cols-1 lg:grid-cols-2 mx-auto bg-white shadow-2xl rounded-lg max-w-full">

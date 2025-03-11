@@ -1,4 +1,7 @@
+import DOMPurify from "dompurify";
+
 export const formatNoIdentitas = (value) => {
-  const cleanedValue = value.replace(/\D/g, "");
+  const sanitizedValue = DOMPurify.sanitize(value);
+  const cleanedValue = sanitizedValue.replace(/\D/g, "");
   return cleanedValue.substring(0, 16);
 };
