@@ -56,58 +56,57 @@ export const useDialogRegulasi = () => {
   const handleDialogCloseStandarLayanan = () =>
     setIsDialogOpenStandarLayanan(false);
   const DialogStandarLayanan = (
-    <div>
-      <Dialog
-        size="lg"
-        open={isDialogOpenStandarLayanan}
-        handler={setIsDialogOpenStandarLayanan}
-      >
-        <DialogHeader className="uppercase">Standar Pelayanan</DialogHeader>
-        <DialogBody className="flex items-center justify-center w-full max-w-xs">
-          <div className="flex flex-col items-center">
-            <Image
-              src={images[currentIndex]}
-              alt={`Logo BMKG ${currentIndex + 1}`}
-              className="mb-2"
-              quality={100}
-              priority
-            />
-            <div className="flex justify-end w-full mt-2">
-              {currentIndex === 0 ? (
-                <button
-                  onClick={nextImage}
-                  className="text-primary bg-white rounded-md border-2 p-1.5"
-                >
-                  Selanjutnya
-                </button>
-              ) : currentIndex === 1 ? (
+    <Dialog
+      className="fixed inset-4 items-center justify-center mx-auto overflow-auto"
+      size="lg"
+      open={isDialogOpenStandarLayanan}
+      handler={setIsDialogOpenStandarLayanan}
+    >
+      <DialogHeader className="uppercase">Standar Pelayanan</DialogHeader>
+      <DialogBody className="flex items-center justify-center w-full max-w-xs min-h-full">
+        <div className="flex flex-col items-center">
+          <Image
+            src={images[currentIndex]}
+            alt={`Logo BMKG ${currentIndex + 1}`}
+            className="mb-2"
+            quality={100}
+            priority
+          />
+          <div className="flex justify-end w-full mt-2">
+            {currentIndex === 0 ? (
+              <button
+                onClick={nextImage}
+                className="text-primary bg-white rounded-md border-2 p-1.5"
+              >
+                Selanjutnya
+              </button>
+            ) : currentIndex === 1 ? (
+              <button
+                onClick={prevImage}
+                className="text-primary bg-white rounded-md border-2 p-1.5"
+              >
+                Sebelumnya
+              </button>
+            ) : (
+              <>
                 <button
                   onClick={prevImage}
                   className="text-primary bg-white rounded-md border-2 p-1.5"
                 >
                   Sebelumnya
                 </button>
-              ) : (
-                <>
-                  <button
-                    onClick={prevImage}
-                    className="text-primary bg-white rounded-md border-2 p-1.5"
-                  >
-                    Sebelumnya
-                  </button>
-                  <button
-                    onClick={nextImage}
-                    className="text-primary bg-white rounded-md border-2 p-1.5"
-                  >
-                    Selanjutnya
-                  </button>
-                </>
-              )}
-            </div>
+                <button
+                  onClick={nextImage}
+                  className="text-primary bg-white rounded-md border-2 p-1.5"
+                >
+                  Selanjutnya
+                </button>
+              </>
+            )}
           </div>
-        </DialogBody>
-      </Dialog>
-    </div>
+        </div>
+      </DialogBody>
+    </Dialog>
   );
 
   const [isDialogOpenRegulasiPelayanan, setIsDialogOpenRegulasiPelayanan] =
@@ -207,63 +206,60 @@ export const useDialogRegulasi = () => {
     setIsDialogOpenTarifLayanan(false);
   const DialogTarifLayanan = (
     <Dialog
+      className="overflow-y-auto mt-5"
       size="xl"
       open={isDialogOpenTarifLayanan}
       handler={setIsDialogOpenTarifLayanan}
+      style={{ maxHeight: "95vh" }}
     >
       <DialogHeader className="uppercase">Tarif Pelayanan</DialogHeader>
-      <DialogBody
-        className="flex items-center justify-center w-full"
-        style={{ maxHeight: "120vh", overflowY: "auto", padding: "1rem" }}
-      >
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-1 gap-8">
+      <DialogBody className="flex items-center justify-center w-full  ">
+        <div className="container mx-auto  grid grid-cols-1 md:grid-cols-1 gap-8">
           <div className="container mx-auto px-4">
-            <h5 className="text-xl font-bold mt-5">
+            <Typography variant="h5" className="text-xl font-bold">
               I. INFORMASI METEOROLOGI, KLIMATOLOGI, DAN GEOFISIKA
-            </h5>
-            <div className="container1">
-              <Card className="p-4 bg-blue-800 text-white rounded-lg">
-                <div className="flex justify-between">
-                  <Button
-                    className={`flex-1 mx-1 ${
-                      kontenAktif === "content1" ? "bg-secondary" : "bg-primary"
-                    }`}
-                    onClick={() => showContent("content1")}
-                  >
-                    INFORMASI UMUM METEOROLOGI, KLIMATOLOGI, DAN GEOFISIKA
-                  </Button>
-                  <Button
-                    className={`flex-1 mx-1 ${
-                      kontenAktif === "content2" ? "bg-secondary" : "bg-primary"
-                    }`}
-                    onClick={() => showContent("content2")}
-                  >
-                    INFORMASI KHUSUS METEOROLOGI, KLIMATOLOGI, DAN GEOFISIKA
-                    SESUAI PERMINTAAN
-                  </Button>
-                </div>
-                <div
-                  className="content_one mt-4"
-                  style={{
-                    display: kontenAktif === "content1" ? "block" : "none",
-                  }}
+            </Typography>
+            <Card className="p-4 bg-blue-800 text-white rounded-lg ">
+              <div className="flex justify-center space-x-2">
+                <Button
+                  className={`flex-1 mx-1 ${
+                    kontenAktif === "content1" ? "bg-secondary" : "bg-primary"
+                  }`}
+                  onClick={() => showContent("content1")}
                 >
-                  <div>
-                    <TabelInformasiUmum />
-                  </div>
-                </div>
-                <div
-                  className="content_one mt-4"
-                  style={{
-                    display: kontenAktif === "content2" ? "block" : "none",
-                  }}
+                  INFORMASI UMUM METEOROLOGI, KLIMATOLOGI, DAN GEOFISIKA
+                </Button>
+                <Button
+                  className={`flex-1 mx-1 ${
+                    kontenAktif === "content2" ? "bg-secondary" : "bg-primary"
+                  }`}
+                  onClick={() => showContent("content2")}
                 >
-                  <div>
-                    <TabelInformasiKhusus />
-                  </div>
+                  INFORMASI KHUSUS METEOROLOGI, KLIMATOLOGI, DAN GEOFISIKA
+                  SESUAI PERMINTAAN
+                </Button>
+              </div>
+              <div
+                className="content_one mt-4"
+                style={{
+                  display: kontenAktif === "content1" ? "block" : "none",
+                }}
+              >
+                <div>
+                  <TabelInformasiUmum />
                 </div>
-              </Card>
-            </div>
+              </div>
+              <div
+                className="content_one mt-4"
+                style={{
+                  display: kontenAktif === "content2" ? "block" : "none",
+                }}
+              >
+                <div>
+                  <TabelInformasiKhusus />
+                </div>
+              </div>
+            </Card>
 
             <h5 className="text-xl font-bold mt-5">
               II. JASA KONSULTASI METEOROLOGI, KLIMATOLOGI, DAN GEOFISIKA

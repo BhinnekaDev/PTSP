@@ -68,7 +68,7 @@ function Navigation() {
             as="li"
             className="flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer"
           >
-            <a className="flex items-center">Regulasi</a>
+            <a className="flex items-center">Layanan</a>
           </Typography>
         </MenuHandler>
         <MenuList className="bg-primary text-white uppercase text-sm lg:text-base">
@@ -96,6 +96,12 @@ function Navigation() {
           >
             Tarif Pelayanan
           </MenuItem>
+          <MenuItem
+            className="hover:!bg-secondary hover:!text-white"
+            onClick={handleDialogOpenPanduan}
+          >
+            Panduan Pelayanan
+          </MenuItem>
         </MenuList>
       </Menu>
       <Typography
@@ -111,22 +117,42 @@ function Navigation() {
           Produk
         </a>
       </Typography>
-      <Typography
-        as="li"
-        className="flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer"
-      >
-        <a className="flex items-center" onClick={handleDialogOpenPanduan}>
-          Panduan Pelayanan
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        className="flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer"
-      >
-        <a className="flex items-center" onClick={handleDialogOpenPanduan}>
-          Sarana dan Pengaduan
-        </a>
-      </Typography>
+      <Menu>
+        <MenuHandler>
+          <Typography
+            as="li"
+            className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer ${
+              navbarAktif === "/Saran" || navbarAktif === "/Pengaduan"
+                ? "text-secondary"
+                : "text-white"
+            }`}
+          >
+            <a className="flex items-center">Saran & Pengaduan</a>
+          </Typography>
+        </MenuHandler>
+        <MenuList className="bg-primary text-white uppercase text-sm lg:text-base">
+          <MenuItem
+            className={`hover:!bg-secondary hover:!text-white p-2 font-semibold cursor-pointer ${
+              navbarAktif === "/Saran"
+                ? "text-white bg-secondary"
+                : "text-white"
+            }`}
+            onClick={() => handlenavbarAktif("/Saran")}
+          >
+            Saran
+          </MenuItem>
+          <MenuItem
+            className={`hover:!bg-secondary hover:!text-white p-2 font-semibold cursor-pointer ${
+              navbarAktif === "/Pengaduan"
+                ? "text-white bg-secondary"
+                : "text-white"
+            }`}
+            onClick={() => handlenavbarAktif("/Pengaduan")}
+          >
+            Pengaduan
+          </MenuItem>
+        </MenuList>
+      </Menu>
       <Typography
         as="li"
         className="flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer"
