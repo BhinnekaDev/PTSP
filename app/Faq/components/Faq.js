@@ -1,16 +1,24 @@
 "use client";
 import { useState } from "react";
-import { Accordion, AccordionHeader, AccordionBody, Typography } from "@material-tailwind/react";
+import {
+  Accordion,
+  AccordionHeader,
+  AccordionBody,
+  Typography,
+} from "@material-tailwind/react";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 
 const faqs = [
   {
-    question: "Mengapa beberapa stasiun tidak muncul pada peta tren, meskipun lot time seri tersedia?",
+    question:
+      "Mengapa beberapa stasiun tidak muncul pada peta tren, meskipun lot time seri tersedia?",
     answerType: "text",
-    answer: "Anda dapat menghubungi PTSP BMKG Bengkulu melalui email, telepon, atau datang langsung ke kantor kami.",
+    answer:
+      "Anda dapat menghubungi PTSP BMKG Bengkulu melalui email, telepon, atau datang langsung ke kantor kami.",
   },
   {
-    question: "Bagaimana cara mengajukan permohonan layanan informasi di kantor PTSP BMKG?",
+    question:
+      "Bagaimana cara mengajukan permohonan layanan informasi di kantor PTSP BMKG?",
     answerType: "list",
     answer: [
       "Datang langsung ke Pelayanan Terpadu Satu Pintu (PTSP) BMKG di Jalan Angkasa I no. 2 Kemayoran Jakarta Pusat. Gedung E, Kirim email ke : ptsp[at]bmkg.go.id , atau kirim fax ke 021-65867063 dengan membawa :Surat Permohonan yang ditanda tangani (jika dari perusahaan, dibubuhkan stempel perusahaan)Surat tugas (jika dari perusahaan menugaskan org lain untuk mengurus permohonan ke BMKG)Fotokopi KTP pemohon.",
@@ -35,12 +43,14 @@ const faqs = [
   {
     question: "Bagaimanakah jam pelayanan PTSP BMKG ?",
     answerType: "text",
-    answer: "Hari : Senin s/d Jumat, waktu : 09.00 s/d 15.00 WIB, dan istirahat : 12.00 s/d 13.00 WIB.",
+    answer:
+      "Hari : Senin s/d Jumat, waktu : 09.00 s/d 15.00 WIB, dan istirahat : 12.00 s/d 13.00 WIB.",
   },
   {
     question: "Melalui apa saja Pelanggan dapat mengontak PTSP BMKG ?",
     answerType: "text",
-    answer: "Pelanggan dapat mengontak PTSP BMKG melalui Online Chat di website resmi : http://ptsp.bmkg.go.id, WA : 081382321504,  telepon : (021) 65867063, fax : (021) 4246703, atau email : ptsp.bmkg@bmkg.go.id.",
+    answer:
+      "Pelanggan dapat mengontak PTSP BMKG melalui Online Chat di website resmi : http://ptsp.bmkg.go.id, WA : 081382321504,  telepon : (021) 65867063, fax : (021) 4246703, atau email : ptsp.bmkg@bmkg.go.id.",
   },
 ];
 
@@ -53,9 +63,13 @@ export default function FAQ() {
 
   return (
     <div className="max-w-7xl mt-36 mb-20 mx-auto p-12 bg-white ring-2 ring-gray rounded-lg shadow-lg shadow-blue-gray-800">
-      <Typography variant="h2" className="text-2xl font-bold mb-4">
+      <Typography
+        variant="h2"
+        className="text-2xl font-semibold text-primary mb-2"
+      >
         Frequently Asked Questions
       </Typography>
+      <div className="w-32 h-1 bg-secondary mb-6 rounded-md"></div>
       {faqs.map((faq, index) => (
         <Accordion key={index} open={open === index}>
           <AccordionHeader
@@ -65,7 +79,11 @@ export default function FAQ() {
             <Typography variant="h6" className="flex-1">
               {faq.question}
             </Typography>
-            <IoIosArrowDropdownCircle className={`ml-2 transform transition-transform ${open === index ? "rotate-180" : "rotate-0"}`} />
+            <IoIosArrowDropdownCircle
+              className={`ml-2 transform transition-transform ${
+                open === index ? "rotate-180" : "rotate-0"
+              }`}
+            />
           </AccordionHeader>
           <AccordionBody className="p-3 bg-gray-100 rounded-lg">
             {faq.answerType === "text" && (
@@ -76,7 +94,10 @@ export default function FAQ() {
             {faq.answerType === "list" && (
               <ol className="list-decimal list-inside space-y-2">
                 {faq.answer.map((item, idx) => (
-                  <li key={idx} className="text-gray-700 text-base text-justify">
+                  <li
+                    key={idx}
+                    className="text-gray-700 text-base text-justify"
+                  >
                     {item.split("\n").map((line, i) => (
                       <span key={i}>
                         {line}

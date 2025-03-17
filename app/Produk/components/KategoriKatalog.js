@@ -48,7 +48,7 @@ function Katalog() {
       </div>
       {!pilihStasiun && (
         <section className="katalog-section">
-          <div className="max-w-screen-xl mx-auto my-16 px-8 py-20 shadow-2xl rounded-lg border-2 border-gray">
+          <div className="max-w-screen-xl mx-auto my-16 px-8 py-20 shadow-2xl rounded-lg bg-white border-2 border-[#F7F7F7]">
             <div className="header-informasi">
               {loading ? (
                 <>
@@ -57,12 +57,19 @@ function Katalog() {
                 </>
               ) : (
                 <>
-                  <h1 className="text-4xl text-center mb-6 underline underline-offset-8 font-extrabold tracking-widest text-primary">
+                  <Typography
+                    variant="h1"
+                    className="text-4xl font-semibold text-primary mb-2 "
+                  >
                     Katalog Produk Informasi
-                  </h1>
-                  <p className="text-xl text-center mb-8">
-                    Produk Informasi Setiap Instansi
-                  </p>
+                  </Typography>
+                  <div className="w-32 h-1 bg-secondary mb-6 rounded-md"></div>
+                  <Typography
+                    variant="paragraph"
+                    className="text-xl text-center mb-8 text-blue-gray-500"
+                  >
+                    Produk Informasi Setiap Instansi Stasiun
+                  </Typography>
                 </>
               )}
             </div>
@@ -95,7 +102,7 @@ function Katalog() {
                   ))}
             </div>
           </div>
-          <div className="max-w-screen-xl mx-auto my-16 px-8 py-20 shadow-2xl rounded-lg border-2 border-gray">
+          <div className="max-w-screen-xl mx-auto my-16 px-8 py-20 shadow-2xl rounded-lg bg-white border-2 border-[#F7F7F7]">
             <div className="header-jasa">
               {loading ? (
                 <>
@@ -104,12 +111,19 @@ function Katalog() {
                 </>
               ) : (
                 <>
-                  <h1 className="text-4xl text-center mb-6 underline underline-offset-8 font-extrabold tracking-widest text-primary">
+                  <Typography
+                    variant="h1"
+                    className="text-4xl font-semibold text-primary mb-2 "
+                  >
                     Katalog Produk Jasa
-                  </h1>
-                  <p className="text-xl text-center mb-8">
-                    Produk Jasa Setiap Instansi
-                  </p>
+                  </Typography>
+                  <div className="w-32 h-1 bg-secondary mb-6 rounded-md"></div>
+                  <Typography
+                    variant="paragraph"
+                    className="text-xl text-center mb-8 text-blue-gray-500"
+                  >
+                    Produk Jasa Setiap Instansi Stasiun
+                  </Typography>
                 </>
               )}
             </div>
