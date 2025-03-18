@@ -6,8 +6,14 @@ import { BiSolidChat, BiSolidSend, BiWind } from "react-icons/bi";
 import { FaCloudBolt, FaMountain } from "react-icons/fa6";
 import { FiPaperclip } from "react-icons/fi";
 import { BsEmojiSmile, BsCheckAll, BsCheck } from "react-icons/bs";
-import { FaChevronUp } from "react-icons/fa";
+import {
+  FaChevronUp,
+  FaFileAlt,
+  FaFileImage,
+  FaFileVideo,
+} from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
+import { IoIosClose } from "react-icons/io";
 // MODULE
 import EmojiPicker from "emoji-picker-react";
 import { toast } from "react-hot-toast";
@@ -17,13 +23,15 @@ import { MdDelete } from "react-icons/md";
 import DialogHapusChat from "@/hooks/Frontend/useDialogHapusChat";
 
 function AdminChat() {
-  const fileInputRef = useRef(null);
   const batasTeksPesan = 200;
+  const fileInputRef = useRef(null);
+  const emojiPickerRef = useRef(null);
   const contextMenuRef = useRef(null);
   const [message, setMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [selengkapnya1, setSelengkapnya1] = useState([]);
   const [selengkapnya2, setSelengkapnya2] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [tampilkanEmoji, setTampilkanEmoji] = useState(false);
   const [stasiunTerpilih, setStasiunTerpilih] = useState(null);
@@ -60,13 +68,58 @@ function AdminChat() {
     });
   };
 
-  const handleBukaFile = () => {
-    fileInputRef.current.click();
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleSendMessage = () => {
+    if (message.trim() || selectedFile) {
+      console.log("Mengirim pesan:", message);
+
+      if (selectedFile) {
+        console.log("Mengirim file:", selectedFile);
+      }
+      setMessage("");
+      setSelectedFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
   };
 
   const handleBukaEmoji = (emoji) => {
     setMessage((prev) => prev + emoji.emoji);
   };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        emojiPickerRef.current &&
+        !emojiPickerRef.current.contains(event.target)
+      ) {
+        setTampilkanEmoji(false);
+      }
+    };
+
+    if (tampilkanEmoji) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [tampilkanEmoji]);
 
   const pesanList = [
     {
@@ -353,7 +406,10 @@ function AdminChat() {
             </div>
             <div className="p-2 w-full flex relative">
               {tampilkanEmoji && (
-                <div className="absolute bottom-full left-0 right-0 px-12 bg-transparent shadow-none z-10">
+                <div
+                  ref={emojiPickerRef}
+                  className="absolute bottom-full left-0 right-0 px-12 bg-transparent shadow-none z-10"
+                >
                   <EmojiPicker
                     className="!border-2 !border-[#808080]/30"
                     onEmojiClick={handleBukaEmoji}
@@ -361,30 +417,55 @@ function AdminChat() {
                 </div>
               )}
               <div className="flex p-2 rounded-lg border-2 border-[#808080]/30 gap-2 w-full bg-white">
-                <FiPaperclip
-                  className="bg-[#808080]/40 rounded-full p-2 w-9 h-9 text-black cursor-pointer"
-                  onClick={handleBukaFile}
-                />
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  className="hidden"
-                  onChange={(e) => console.log(e.target.files[0])}
-                />
-                <BsEmojiSmile
-                  className="bg-[#808080]/40 rounded-full p-2 w-9 h-9 text-black cursor-pointer"
-                  onClick={() => setTampilkanEmoji(!tampilkanEmoji)}
-                />
+                <div className="flex gap-2">
+                  <FiPaperclip
+                    className="bg-[#808080]/40 rounded-full p-2 w-9 h-9 text-black cursor-pointer"
+                    onClick={() => fileInputRef.current.click()}
+                  />
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                  <BsEmojiSmile
+                    className="bg-[#808080]/40 rounded-full p-2 w-9 h-9 text-black cursor-pointer"
+                    onClick={() => setTampilkanEmoji(!tampilkanEmoji)}
+                  />
+                </div>
+                {selectedFile && (
+                  <div className="flex items-center bg-[#808080]/30 px-2 py-1 rounded-md text-sm w-72">
+                    {selectedFile.type.startsWith("image/") ? (
+                      <FaFileImage className="w-5 h-5 text-blue-500 mr-2" />
+                    ) : selectedFile.type.startsWith("video/") ? (
+                      <FaFileVideo className="w-5 h-5 text-green-500 mr-2" />
+                    ) : (
+                      <FaFileAlt className="w-5 h-5 text-[#808080] mr-2" />
+                    )}
+                    <span className="text-black">
+                      {selectedFile.name.length > 15
+                        ? selectedFile.name.slice(0, 17) + "..."
+                        : selectedFile.name}
+                    </span>
+                    <IoIosClose
+                      className="ml-2 w-5 h-5 text-black cursor-pointer bg-black/15 rounded-full"
+                      onClick={handleRemoveFile}
+                    />
+                  </div>
+                )}
                 <input
                   type="text"
+                  className="w-full text-black focus:outline-none p-2 rounded-md"
+                  placeholder="Ketik pesan"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full text-black focus:outline-none"
-                  placeholder="Ketik pesan"
                 />
               </div>
               <div className="flex items-center px-8">
-                <BiSolidSend className="bg-[#808080]/40 rounded-full p-2 w-9 h-9 text-black cursor-pointer" />
+                <BiSolidSend
+                  onClick={handleSendMessage}
+                  className="bg-[#808080]/40 rounded-full p-2 w-9 h-9 text-black cursor-pointer"
+                />
               </div>
             </div>
           </div>
