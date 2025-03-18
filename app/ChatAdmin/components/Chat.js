@@ -1,25 +1,64 @@
 "use client";
-import React, { useState, useRef } from "react";
-import { Typography } from "@material-tailwind/react";
+import React, { useState, useRef, useEffect } from "react";
+import { Typography, Tooltip, Button } from "@material-tailwind/react";
 // ICONS
 import { BiSolidChat, BiSolidSend, BiWind } from "react-icons/bi";
 import { FaCloudBolt, FaMountain } from "react-icons/fa6";
 import { FiPaperclip } from "react-icons/fi";
 import { BsEmojiSmile, BsCheckAll, BsCheck } from "react-icons/bs";
 import { FaChevronUp } from "react-icons/fa";
+import { GoDotFill } from "react-icons/go";
 // MODULE
 import EmojiPicker from "emoji-picker-react";
+import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
+import { MdDelete } from "react-icons/md";
+// DIALOG
+import DialogHapusChat from "@/hooks/Frontend/useDialogHapusChat";
 
 function AdminChat() {
+  const fileInputRef = useRef(null);
   const batasTeksPesan = 200;
+  const contextMenuRef = useRef(null);
+  const [message, setMessage] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const [selengkapnya1, setSelengkapnya1] = useState([]);
   const [selengkapnya2, setSelengkapnya2] = useState([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [tampilkanEmoji, setTampilkanEmoji] = useState(false);
-  const [message, setMessage] = useState("");
-  const fileInputRef = useRef(null);
-  const [isOpen, setIsOpen] = useState(false);
   const [stasiunTerpilih, setStasiunTerpilih] = useState(null);
+  const [isContextMenuOpen, setIsContextMenuOpen] = useState(false);
+
+  const handleContextMenu = (e, stasiunNama) => {
+    e.preventDefault();
+
+    setStasiunTerpilih(stasiunNama);
+    setIsContextMenuOpen(true);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        contextMenuRef.current &&
+        !contextMenuRef.current.contains(e.target)
+      ) {
+        setIsContextMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  const handleDelete = () => {
+    setIsDialogOpen(false);
+    setIsContextMenuOpen(false);
+
+    toast.success("Chat berhasil dihapus!", {
+      position: "top-right",
+      duration: 3000,
+    });
+  };
 
   const handleBukaFile = () => {
     fileInputRef.current.click();
@@ -31,7 +70,7 @@ function AdminChat() {
 
   const pesanList = [
     {
-      teks: "COntoh Pesan Belum Terbaca.",
+      teks: "COntoh   Pesan Belum Terbaca.",
       waktu: "10:30 AM",
       terbaca: false,
       stasiun: "Stasiun A",
@@ -88,54 +127,99 @@ function AdminChat() {
               Pesan Saya (3)
             </Typography>
           </div>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-            >
-              {[
-                {
-                  nama: "Stasiun Meteorologi",
-                  icon: (
-                    <FaMountain className="text-[#3182B7] bg-[#D9D9D9] w-12 h-12 p-2.5 rounded-full" />
-                  ),
-                },
-                {
-                  nama: "Stasiun Klimatologi",
-                  icon: (
-                    <FaCloudBolt className="text-[#3182B7] bg-[#D9D9D9] w-12 h-12 p-2.5 rounded-full" />
-                  ),
-                },
-                {
-                  nama: "Stasiun Geofisika",
-                  icon: (
-                    <BiWind className="text-[#3182B7] bg-[#D9D9D9] w-12 h-12 p-2.5 rounded-full" />
-                  ),
-                },
-              ].map((stasiun, index) => (
-                <div
-                  key={index}
-                  onClick={() => setStasiunTerpilih(stasiun.nama)}
-                  className="w-full flex items-center gap-3 p-4 cursor-pointer hover:bg-[#808080]/30 hover:scale-105 hover:rounded-lg transition-all duration-300"
-                >
-                  <div>{stasiun.icon}</div>
-                  <div>
-                    <Typography className="text-black font-bold text-lg">
-                      {stasiun.nama}
-                    </Typography>
-                    <Typography className="text-[#808080]/70 line-clamp-1">
-                      {batasTeks(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.",
-                        25
-                      )}
-                    </Typography>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          )}
+          <div
+            className="flex flex-col transition-all duration-300"
+            onContextMenu={(e) => e.preventDefault()}
+          >
+            {isOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.5 }}
+              >
+                {[
+                  {
+                    nama: "Stasiun Meteorologi",
+                    icon: (
+                      <FaMountain className="text-[#3182B7] bg-[#D9D9D9] w-12 h-12 p-2.5 rounded-full" />
+                    ),
+                  },
+                  {
+                    nama: "Stasiun Klimatologi",
+                    icon: (
+                      <FaCloudBolt className="text-[#3182B7] bg-[#D9D9D9] w-12 h-12 p-2.5 rounded-full" />
+                    ),
+                  },
+                  {
+                    nama: "Stasiun Geofisika",
+                    icon: (
+                      <BiWind className="text-[#3182B7] bg-[#D9D9D9] w-12 h-12 p-2.5 rounded-full" />
+                    ),
+                  },
+                ].map((stasiun, index) => (
+                  <motion.div
+                    key={index}
+                    onClick={() => setStasiunTerpilih(stasiun.nama)}
+                    onContextMenu={(e) => handleContextMenu(e, stasiun.nama)}
+                    animate={{
+                      y:
+                        isContextMenuOpen && stasiunTerpilih === stasiun.nama
+                          ? 10
+                          : 0,
+                    }}
+                    transition={{ duration: 0 }}
+                    className="relative w-full flex flex-col gap-3 p-4 cursor-pointer hover:bg-[#808080]/30 hover:scale-105 hover:rounded-lg transition-all duration-300"
+                  >
+                    {isContextMenuOpen && stasiunTerpilih === stasiun.nama && (
+                      <motion.div
+                        ref={contextMenuRef}
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="w-full rounded-lg border-2 border-black/20 bg-white shadow-md z-10"
+                      >
+                        <Tooltip
+                          onClick={() => setIsContextMenuOpen(false)}
+                          content="Hapus Chat"
+                          placement="right"
+                        >
+                          <Button
+                            onClick={() => setIsDialogOpen(true)}
+                            className="shadow-none text-black bg-[#D9D9D9] text-sm py-2 px-4 gap-1 flex items-center justify-center capitalize tracking-wider w-full"
+                          >
+                            <MdDelete className="w-5 h-5" />
+                            Hapus
+                          </Button>
+                        </Tooltip>
+                      </motion.div>
+                    )}
+
+                    <div className="flex items-center gap-3">
+                      <div>{stasiun.icon}</div>
+                      <div>
+                        <Typography className="text-black font-bold text-lg">
+                          {stasiun.nama}
+                        </Typography>
+                        <Typography className="text-[#808080]/70 line-clamp-1">
+                          {batasTeks(
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.",
+                            25
+                          )}
+                        </Typography>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+
+            <DialogHapusChat
+              open={isDialogOpen}
+              onClose={() => setIsDialogOpen(false)}
+              handleDelete={handleDelete}
+            />
+          </div>
         </div>
         {!stasiunTerpilih ? (
           <div className="flex flex-col items-center justify-center w-full h-full">
@@ -150,9 +234,12 @@ function AdminChat() {
               <Typography className="text-black font-bold text-2xl">
                 {stasiunTerpilih}
               </Typography>
-              <Typography className="text-black font-bold text-sm">
-                Online
-              </Typography>
+              <div className="flex items-center">
+                <GoDotFill className="w-4 h-4 text-green-400" />
+                <Typography className="text-green-400 font-bold text-sm">
+                  Online
+                </Typography>
+              </div>
             </div>
             <div className="h-auto overflow-auto p-2">
               <div className="space-y-1">
@@ -165,24 +252,38 @@ function AdminChat() {
                       key={index}
                       className="w-full flex justify-end px-8 py-2"
                     >
-                      <div className="flex flex-col w-1/2 p-3 bg-[#72C02C] rounded-lg gap-1">
-                        <div className="flex items-center">
+                      <motion.div
+                        layout
+                        className="flex flex-col w-1/2 p-3 bg-[#72C02C] rounded-lg gap-1"
+                      >
+                        <motion.div
+                          initial={{ height: 50, opacity: 0.8 }}
+                          animate={{
+                            height: isExpanded ? "auto" : 50,
+                            opacity: 1,
+                          }}
+                          exit={{ height: 50, opacity: 0.8 }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                          className="overflow-hidden"
+                        >
                           <Typography className="text-white">
-                            {isExpanded || !shouldShowReadMore
-                              ? pesan.teks
-                              : pesan.teks.slice(0, batasTeksPesan) + "... "}
-                            {shouldShowReadMore && (
-                              <button
-                                className="text-[#3182B7] text-sm underline ml-1"
-                                onClick={() => toggleSelengkapnya1(index)}
-                              >
-                                {isExpanded
-                                  ? "Tampilkan Lebih Sedikit"
-                                  : "Baca Selengkapnya"}
-                              </button>
-                            )}
+                            {pesan.teks}
                           </Typography>
-                        </div>
+                        </motion.div>
+                        {shouldShowReadMore && (
+                          <motion.button
+                            initial={{ opacity: 0.5, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0.5, y: 5 }}
+                            transition={{ duration: 0.2 }}
+                            className="text-[#3182B7] text-sm text-start underline ml-1"
+                            onClick={() => toggleSelengkapnya1(index)}
+                          >
+                            {isExpanded
+                              ? "Tampilkan Lebih Sedikit"
+                              : "Baca Selengkapnya"}
+                          </motion.button>
+                        )}
                         <div className="flex justify-end items-center">
                           <div className="bg-white flex rounded-full px-1">
                             <span className="text-sm text-black">
@@ -195,7 +296,7 @@ function AdminChat() {
                             )}
                           </div>
                         </div>
-                      </div>
+                      </motion.div>
                     </div>
                   );
                 })}
@@ -210,26 +311,41 @@ function AdminChat() {
                       key={index}
                       className="w-full flex justify-start px-8 py-2"
                     >
-                      <div className="flex flex-col w-1/2 p-3 bg-[#3182B7] rounded-lg gap-1">
-                        <div className="flex items-center">
+                      <motion.div className="flex flex-col w-1/2 p-3 bg-[#3182B7] rounded-lg gap-1">
+                        <motion.div
+                          initial={{ height: 50, opacity: 0.8 }}
+                          animate={{
+                            height: isExpanded ? "auto" : 50,
+                            opacity: 1,
+                          }}
+                          exit={{ height: 50, opacity: 0.8 }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                          className="overflow-hidden"
+                        >
                           <Typography className="text-white">
-                            {isExpanded || !shouldShowReadMore
-                              ? pesan.teks
-                              : pesan.teks.slice(0, batasTeksPesan) + "... "}
-                            {shouldShowReadMore && (
-                              <button
-                                className="text-[#72C02C] text-sm underline ml-1"
-                                onClick={() => toggleSelengkapnya2(index)}
-                              >
-                                {isExpanded
-                                  ? "Tampilkan Lebih Sedikit"
-                                  : "Baca Selengkapnya"}
-                              </button>
-                            )}
+                            {pesan.teks}
                           </Typography>
+                        </motion.div>
+                        {shouldShowReadMore && (
+                          <motion.button
+                            initial={{ opacity: 0.5, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0.5, y: 5 }}
+                            transition={{ duration: 0.2 }}
+                            className="text-[#72C02C] text-sm text-start underline ml-1"
+                            onClick={() => toggleSelengkapnya2(index)}
+                          >
+                            {isExpanded
+                              ? "Tampilkan Lebih Sedikit"
+                              : "Baca Selengkapnya"}
+                          </motion.button>
+                        )}
+                        <div className="flex justify-end items-center">
+                          <span className="text-sm text-white">
+                            {pesan.waktu}
+                          </span>
                         </div>
-                        <span className="text-end text-sm">{pesan.waktu}</span>
-                      </div>
+                      </motion.div>
                     </div>
                   );
                 })}
