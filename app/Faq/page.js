@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import FAQ from "@/app/Faq/components/Faq";
 import Footer from "@/components/Footer";
 import toast, { Toaster } from "react-hot-toast";
+import FloatingChat from "@/components/FloatingChat";
 
 function Beranda() {
   return (
@@ -10,6 +11,7 @@ function Beranda() {
       <Navbar />
       <FAQ />
       <Footer />
+      <FloatingChat />
     </div>
   );
 }

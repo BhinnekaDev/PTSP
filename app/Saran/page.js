@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Saran from "@/app/Saran/components/Saran";
 import Footer from "@/components/Footer";
+import FloatingChat from "@/components/FloatingChat";
 import toast, { Toaster } from "react-hot-toast";
 
 function Beranda() {
@@ -10,6 +11,7 @@ function Beranda() {
       <Navbar />
       <Saran />
       <Footer />
+      <FloatingChat />
     </div>
   );
 }

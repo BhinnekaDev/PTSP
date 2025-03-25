@@ -3,6 +3,7 @@ import HeaderTemplate from "@/components/HeaderTemplate";
 import TampilanTransaksi from "@/app/Transaksi/components/Transaksi";
 import Footer from "@/components/Footer";
 import toast, { Toaster } from "react-hot-toast";
+import FloatingChat from "@/components/FloatingChat";
 
 export default function Transaksi() {
   return (
@@ -12,6 +13,7 @@ export default function Transaksi() {
       <HeaderTemplate />
       <TampilanTransaksi />
       <Footer />
+      <FloatingChat />
     </div>
   );
 }

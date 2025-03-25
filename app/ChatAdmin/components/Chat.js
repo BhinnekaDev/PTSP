@@ -123,22 +123,16 @@ function AdminChat() {
 
   const pesanList = [
     {
-      teks: "COntoh   Pesan Belum Terbaca.",
+      teks: "Chat 1",
       waktu: "10:30 AM",
       terbaca: false,
       stasiun: "Stasiun A",
     },
     {
-      teks: "Contoh Pesan Panjang........ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula,  ",
+      teks: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula,  ",
       waktu: "11:00 AM",
-      terbaca: false,
-      stasiun: "Stasiun A",
-    },
-    {
-      teks: "Contoh Pesan Terbaca.",
-      waktu: "12:00 PM",
       terbaca: true,
-      stasiun: "Stasiun B",
+      stasiun: "Stasiun A",
     },
   ];
 
@@ -177,7 +171,7 @@ function AdminChat() {
               }`}
             />
             <Typography className="text-black text-lg font-bold">
-              Pesan Saya (3)
+              Pesan Saya
             </Typography>
           </div>
           <div
@@ -257,8 +251,16 @@ function AdminChat() {
                         <Typography className="text-[#808080]/70 line-clamp-1">
                           {batasTeks(
                             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.",
-                            25
+                            20
                           )}
+                        </Typography>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <Typography className="text-[#808080]/70 text-sm font-bold">
+                          10.01
+                        </Typography>
+                        <Typography className="text-white bg-red-600 px-1.5 py-px rounded-full text-xs">
+                          2
                         </Typography>
                       </div>
                     </div>
@@ -294,8 +296,37 @@ function AdminChat() {
                 </Typography>
               </div>
             </div>
-            <div className="h-auto overflow-auto p-2">
+            <div
+              className="h-auto overflow-auto p-2"
+              style={{
+                backgroundImage: "url('/assets/img/bgChat.png')",
+              }}
+            >
               <div className="space-y-1">
+                <div className="w-full flex justify-center items-center gap-3 p-1 px-8">
+                  <div className="flex items-center gap-3 w-1/3">
+                    <div className="w-1/2 h-px bg-black rounded-full" />
+                    <div className="w-2.5 h-2 border border-black rounded-full" />
+                    <div className="w-3 h-2 border border-black rounded-full" />
+                    <div className="w-3 h-2 bg-black rounded-full" />
+                    <div className="w-3 h-2 bg-black rounded-full" />
+                    <div className="w-1/2 h-px bg-black rounded-full" />
+                  </div>
+
+                  <Typography className="text-black font-bold text-md bg-black/15 px-5 py-1 rounded-lg">
+                    Senin
+                  </Typography>
+
+                  <div className="flex items-center gap-3 w-1/3">
+                    <div className="w-1/2 h-px bg-black rounded-full" />
+                    <div className="w-3 h-2 bg-black rounded-full" />
+                    <div className="w-3 h-2 bg-black rounded-full" />
+                    <div className="w-2.5 h-2 border border-black rounded-full" />
+                    <div className="w-3 h-2 border border-black rounded-full" />
+                    <div className="w-1/2 h-px bg-black rounded-full" />
+                  </div>
+                </div>
+
                 {pesanList.map((pesan, index) => {
                   const isExpanded = selengkapnya1.includes(index);
                   const shouldShowReadMore = pesan.teks.length > batasTeksPesan;

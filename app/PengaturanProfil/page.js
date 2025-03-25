@@ -3,6 +3,7 @@ import HeaderTemplate from "@/components/HeaderTemplate";
 import TampilanProfile from "@/app/PengaturanProfil/components/TampilanProfile";
 import Footer from "@/components/Footer";
 import toast, { Toaster } from "react-hot-toast";
+import FloatingChat from "@/components/FloatingChat";
 function PengaturanProfil() {
   return (
     <div>
@@ -11,6 +12,7 @@ function PengaturanProfil() {
       <HeaderTemplate />
       <TampilanProfile />
       <Footer />
+      <FloatingChat />
     </div>
   );
 }

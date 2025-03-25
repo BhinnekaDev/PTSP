@@ -3,6 +3,7 @@ import HeaderTemplate from "@/components/HeaderTemplate";
 import TampilanKeranjang from "@/app/Keranjang/components/DaftarBelanja";
 import Footer from "@/components/Footer";
 import toast, { Toaster } from "react-hot-toast";
+import FloatingChat from "@/components/FloatingChat";
 
 function Keranjang() {
   return (
@@ -11,6 +12,7 @@ function Keranjang() {
       <Navbar />
       <HeaderTemplate />
       <TampilanKeranjang />
+      <FloatingChat />
       <Footer />
     </div>
   );
