@@ -7,12 +7,14 @@ import {
 } from "firebase/firestore";
 import { app } from "@/lib/firebaseConfig";
 
-const db = getFirestore(app);
+const database = getFirestore(app);
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
+
+  console.log("Data yang diterima di API:", req.body);
 
   const {
     userId,
@@ -24,7 +26,9 @@ export default async function handler(req, res) {
     TujuanBerkunjung,
     JumlahPengunjung,
     dataUser,
-    fileURL,
+    FileURL,
+    Instansi,
+    NamaInstansi,
   } = req.body;
 
   if (
@@ -36,14 +40,14 @@ export default async function handler(req, res) {
     !TujuanBerkunjung ||
     !JumlahPengunjung ||
     !dataUser ||
-    !fileURL
+    !FileURL
   ) {
     return res
       .status(400)
       .json({ message: "Data yang dikirim tidak lengkap." });
   }
 
-  // Mapping email
+  // Validasi email tujuan
   const emailTujuan = {
     Meteorologi: "bhinnekaDev24@gmail.com",
     Klimatologi: "bhinnekaDev24@gmail.com",
@@ -56,49 +60,107 @@ export default async function handler(req, res) {
     return res.status(400).json({ message: "Email tujuan tidak ditemukan." });
   }
 
-  const isPerusahaan =
-    dataUser.Nama_Perusahaan &&
-    dataUser.Email_Perusahaan &&
-    dataUser.No_Hp_Perusahaan &&
-    dataUser.Alamat_Perusahaan;
+  const jenisUser = dataUser.JenisUser;
 
+  const isPerusahaan = jenisUser === "Perusahaan";
+  const isUmum = Instansi === "Umum";
+
+  // TEMPLATE EMAIL
   const emailContent = `
-    <h2>Pengajuan Kunjungan Baru</h2>
-    <p><strong>User ID:</strong> ${userId}</p>
-    <p><strong>Stasiun:</strong> ${Stasiun}</p>
-    <p><strong>Tanggal Kunjungan:</strong> ${TanggalKunjungan}</p>
-    <p><strong>Jam Kunjungan:</strong> ${JamKunjungan}</p>
-    <p><strong>No Surat:</strong> ${NoSurat}</p>
-    <p><strong>Tujuan Berkunjung:</strong> ${TujuanBerkunjung}</p>
-    <p><strong>Jumlah Pengunjung:</strong> ${JumlahPengunjung}</p>
-    <p><strong>Keterangan:</strong> ${Keterangan}</p>
+    <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+      <table width="100%" style="border-bottom: 3px solid #000; margin-bottom: 20px;">
+        <tr>
+          <td><img src="https://github.com/BhinnekaDev/PTSP/blob/master/assets/img/Logo/logo.png" alt="Logo BMKG" width="100"></td>
+          <td style="text-align: center;">
+            <h2 style="margin: 0;">BADAN METEOROLOGI, KLIMATOLOGI, DAN GEOFISIKA</h2>
+            <p style="margin: 0;">alamat lorem ipsum </p>
+          </td>
+        </tr>
+      </table>
 
-    <h3>Data Pengguna</h3>
-    ${
-      isPerusahaan
-        ? `
-      <p><strong>Nama Perusahaan:</strong> ${dataUser.Nama_Perusahaan}</p>
-      <p><strong>Email Perusahaan:</strong> ${dataUser.Email_Perusahaan}</p>
-      <p><strong>No HP Perusahaan:</strong> ${dataUser.No_Hp_Perusahaan}</p>
-      <p><strong>Alamat Perusahaan:</strong> ${dataUser.Alamat_Perusahaan}</p>
-      <p><strong>Kabupaten/Kota:</strong> ${dataUser.Kabupaten_Kota_Perusahaan}</p>
-      <p><strong>Provinsi:</strong> ${dataUser.Provinsi_Perusahaan}</p>
-      <p><strong>Nama Kontak Person:</strong> ${dataUser.Nama_Lengkap}</p>
-      <p><strong>Email Kontak Person:</strong> ${dataUser.Email}</p>
-      <p><strong>No HP Kontak Person:</strong> ${dataUser.No_Hp}</p>
-    `
-        : `
-      <p><strong>Nama Lengkap:</strong> ${dataUser.Nama_Lengkap}</p>
-      <p><strong>Email:</strong> ${dataUser.Email}</p>
-      <p><strong>No HP:</strong> ${dataUser.No_Hp}</p>
-    `
-    }
+      <p>Kepada Yth.</p>
+      <p>Kepala Stasiun ${Stasiun}</p>
 
-    <h3>File Dokumen</h3>
-    <p><a href="${fileURL}" target="_blank">Lihat Dokumen</a></p>
+      <p>Dengan hormat,</p>
 
-    <hr />
-    <small>Waktu Pengajuan: ${new Date().toLocaleString()}</small>
+      <p>Bersama ini kami sampaikan pengajuan permohonan kunjungan dengan rincian sebagai berikut:</p>
+
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="padding: 8px; border: 1px solid #ccc;">User ID</td>
+          <td style="padding: 8px; border: 1px solid #ccc;">${userId}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #ccc;">Tanggal Kunjungan</td>
+          <td style="padding: 8px; border: 1px solid #ccc;">${TanggalKunjungan}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #ccc;">Jam Kunjungan</td>
+          <td style="padding: 8px; border: 1px solid #ccc;">${JamKunjungan}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #ccc;">No Surat</td>
+          <td style="padding: 8px; border: 1px solid #ccc;">${NoSurat}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #ccc;">Tujuan Berkunjung</td>
+          <td style="padding: 8px; border: 1px solid #ccc;">${TujuanBerkunjung}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #ccc;">Jumlah Pengunjung</td>
+          <td style="padding: 8px; border: 1px solid #ccc;">${JumlahPengunjung}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; border: 1px solid #ccc;">Keterangan</td>
+          <td style="padding: 8px; border: 1px solid #ccc;">${Keterangan}</td>
+        </tr>
+      </table>
+
+      <h3>Data Pengguna</h3>
+      ${
+        isPerusahaan
+          ? `
+          <ul>
+            <li><strong>Nama Perusahaan:</strong> ${dataUser.Nama_Perusahaan}</li>
+            <li><strong>Email Perusahaan:</strong> ${dataUser.Email_Perusahaan}</li>
+            <li><strong>No HP Perusahaan:</strong> ${dataUser.No_Hp_Perusahaan}</li>
+            <li><strong>Alamat Perusahaan:</strong> ${dataUser.Alamat_Perusahaan}</li>
+            <li><strong>Kabupaten/Kota:</strong> ${dataUser.Kabupaten_Kota_Perusahaan}</li>
+            <li><strong>Provinsi:</strong> ${dataUser.Provinsi_Perusahaan}</li>
+            <li><strong>Nama Kontak Person:</strong> ${dataUser.Nama_Lengkap}</li>
+            <li><strong>Email Kontak Person:</strong> ${dataUser.Email}</li>
+            <li><strong>No HP Kontak Person:</strong> ${dataUser.No_Hp}</li>
+          </ul>`
+          : `
+          <ul>
+            <li><strong>Nama Lengkap:</strong> ${dataUser.Nama_Lengkap}</li>
+            <li><strong>Email:</strong> ${dataUser.Email}</li>
+            <li><strong>No HP:</strong> ${dataUser.No_Hp}</li>
+            <li><strong>Instansi:</strong> ${Instansi || "-"}</li>
+            <li><strong>Nama Instansi:</strong> ${
+              isUmum ? "" : NamaInstansi || "-"
+            }</li>
+          </ul>`
+      }
+
+      <h3>File Dokumen Pendukung</h3>
+      <p>Silakan unduh dokumen melalui tautan berikut:</p>
+      <p><a href="${FileURL}" style="color: #007bff;">Lihat Dokumen</a></p>
+
+      <br/>
+
+      <p>Demikian permohonan ini kami sampaikan, atas perhatian dan kerjasamanya kami ucapkan terima kasih.</p>
+
+      <br/>
+
+      <p>Hormat kami,</p>
+      <p><strong>${
+        isPerusahaan ? dataUser.Nama_Perusahaan : dataUser.Nama_Lengkap
+      }</strong></p>
+
+      <hr/>
+      <small style="color: #777;">Tanggal Pengajuan: ${new Date().toLocaleString()}</small>
+    </div>
   `;
 
   try {
@@ -111,9 +173,9 @@ export default async function handler(req, res) {
     });
 
     await transporter.sendMail({
-      from: `"Pengajuan Kunjungan" <${process.env.EMAIL_USER}>`,
+      from: `"Pengajuan Kunjungan BMKG" <${process.env.EMAIL_USER}>`,
       to: tujuanEmail,
-      cc: "admin@gmail.com", // opsional
+      cc: "bhinnekaDev24@gmail.com", // opsional
       subject: `Pengajuan Kunjungan: ${
         isPerusahaan ? dataUser.Nama_Perusahaan : dataUser.Nama_Lengkap
       }`,
@@ -123,7 +185,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ message: "Email berhasil dikirim!" });
   } catch (error) {
     console.error("Error saat kirim email:", error);
-
     return res
       .status(500)
       .json({ message: "Gagal mengirim email, coba lagi nanti!" });

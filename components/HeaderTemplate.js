@@ -39,6 +39,10 @@ function HeaderTemplate() {
       desc: "Hasil Pencarian",
       title: "Hasil Pencarian Anda",
     },
+    "/PengajuanKunjungan": {
+      desc: "Kunjungan Online ke PTSP BMKG",
+      title: "Pengajuan Kunjungan Online",
+    },
   };
 
   const currentContent = content[navbarAktif] || {

@@ -12,7 +12,7 @@ import {
 import { app } from "@/lib/firebaseConfig";
 
 const storage = getStorage(app);
-const db = getFirestore(app);
+const database = getFirestore(app);
 
 const usePengirimanPengajuanKunjungan = () => {
   const [loading, setLoading] = useState(false);
@@ -26,6 +26,8 @@ const usePengirimanPengajuanKunjungan = () => {
     NoSurat,
     TujuanBerkunjung,
     JumlahPengunjung,
+    Instansi,
+    NamaInstansi,
     dataUser,
   }) => {
     setLoading(true);
@@ -39,6 +41,8 @@ const usePengirimanPengajuanKunjungan = () => {
       NoSurat,
       TujuanBerkunjung,
       JumlahPengunjung,
+      Instansi,
+      NamaInstansi,
       dataUser,
     });
 
@@ -58,12 +62,6 @@ const usePengirimanPengajuanKunjungan = () => {
 
     if (!File) {
       toast.error("File belum diupload!");
-      setLoading(false);
-      return false;
-    }
-
-    if (!Keterangan?.trim()) {
-      toast.error("Keterangan kosong!");
       setLoading(false);
       return false;
     }
@@ -94,16 +92,35 @@ const usePengirimanPengajuanKunjungan = () => {
 
     const jumlah = parseInt(JumlahPengunjung, 10);
 
-    if (isNaN(jumlah) || jumlah < 1) {
-      toast.error("Jumlah Pengunjung harus diisi minimal 1!");
+    if (isNaN(jumlah) || jumlah < 1 || jumlah > 50) {
+      toast.error("Jumlah Pengunjung harus minimal 1 dan maksimal 50 orang!");
       setLoading(false);
       return false;
+    }
+
+    if (dataUser?.type === "perorangan") {
+      if (Instansi === "Umum" && NamaInstansi?.trim() !== "") {
+        toast.error(
+          "Jika Instansi adalah Umum, Nama Instansi harus dikosongkan."
+        );
+        setLoading(false);
+        return false;
+      }
+
+      if (Instansi !== "Umum" && !NamaInstansi?.trim()) {
+        toast.error("Keterangan Instansi harus diisi.");
+        setLoading(false);
+        return false;
+      }
+    } else {
+      Instansi = null;
+      NamaInstansi = null;
     }
 
     try {
       toast.loading("Mengirim pengajuan...", { id: "kirimPengajuan" });
 
-      // Daftar field yang tidak ingin disimpan
+      // filter field
       const fieldsToExclude = [
         "alamatPerusahaan",
         "emailPerusahaan",
@@ -134,26 +151,29 @@ const usePengirimanPengajuanKunjungan = () => {
         storage,
         `pengajuan_kunjungan/${Date.now()}_${File.name}`
       );
-
       await uploadBytes(storageRef, File);
 
-      const fileURL = await getDownloadURL(storageRef);
+      const FileURL = await getDownloadURL(storageRef);
 
       const dataToSave = {
         userId: penggunaSaatIni,
-        Stasiun,
-        Keterangan,
+        Stasiun: Stasiun.trim(),
+        Keterangan: Keterangan?.trim() || null,
         TanggalKunjungan,
         JamKunjungan,
-        NoSurat,
-        TujuanBerkunjung,
+        NoSurat: NoSurat.trim(),
+        TujuanBerkunjung: TujuanBerkunjung.trim(),
         JumlahPengunjung: jumlah,
         dataUser: filteredDataUser,
-        fileURL,
+        FileURL,
         timestamp: Timestamp.now(),
+        Instansi,
+        NamaInstansi,
       };
 
-      const pengajuanRef = collection(db, "pengajuan_kunjungan");
+      console.log("Data yang akan dikirim ke API:", dataToSave);
+
+      const pengajuanRef = collection(database, "pengajuan_kunjungan");
       await addDoc(pengajuanRef, dataToSave);
 
       toast.success("Pengajuan berhasil dikirim!", { id: "kirimPengajuan" });
@@ -175,6 +195,7 @@ const usePengirimanPengajuanKunjungan = () => {
       return true;
     } catch (error) {
       console.error("Error:", error);
+      console.trace();
       toast.error("Terjadi kesalahan saat mengirim pengajuan.", {
         id: "kirimPengajuan",
       });
