@@ -7,6 +7,7 @@ import { formatNPWP } from "@/utils/utilsNPWP";
 import { formatNoIdentitas } from "@/utils/utilsNoIdentitas";
 import { formatHuruf } from "@/utils/utilsHuruf";
 import { formatNoTelepon } from "@/utils/utilsNoTelepon";
+import { formatNoTeleponPerusahaan } from "@/utils/utilsNoTeleponPerusahaan";
 import { formatPendidikanTerakhir } from "@/utils/utilsPendidikanTerakhir";
 import { formatEmail } from "@/utils/utilsEmail";
 import { formatAlamat } from "@/utils/utilsAlamat";
@@ -90,7 +91,15 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
       }));
       return;
     }
-    if (["No_Hp", "No_Hp_Perusahaan"].includes(name)) {
+    if (name === "No_Hp_Perusahaan") {
+      const formattedInputNoHPPerusahaan = formatNoTeleponPerusahaan(value);
+      setFormDataPerusahaan((prev) => ({
+        ...prev,
+        [name]: formattedInputNoHPPerusahaan,
+      }));
+      return;
+    }
+    if (name === "No_Hp") {
       const formattedInputNoHP = formatNoTelepon(value);
       setFormDataPerusahaan((prev) => ({
         ...prev,
