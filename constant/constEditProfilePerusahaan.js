@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import { formatNPWP } from "@/utils/utilsNPWP";
 import { formatNoIdentitas } from "@/utils/utilsNoIdentitas";
 import { formatHuruf } from "@/utils/utilsHuruf";
+import { formatNoTeleponPerusahaan } from "@/utils/utilsNoTeleponPerusahaan";
+import { formatPendidikanTerakhir } from "@/utils/utilsPendidikanTerakhir";
 import { formatNoTelepon } from "@/utils/utilsNoTelepon";
 
 function EditProfile() {
@@ -34,6 +36,24 @@ function EditProfile() {
       });
       return;
     }
+    if (name === "Pendidikan_Terakhir") {
+      tanganiGantiPengguna({
+        target: { name, value: formatPendidikanTerakhir(sanitizedValue) },
+      });
+      return;
+    }
+    if (name === "No_Hp_Perusahaan") {
+      tanganiGantiPengguna({
+        target: { name, value: formatNoTeleponPerusahaan(sanitizedValue) },
+      });
+      return;
+    }
+    if (name === "No_Hp") {
+      tanganiGantiPengguna({
+        target: { name, value: formatNoTelepon(sanitizedValue) },
+      });
+      return;
+    }
     if (
       [
         "Pekerjaan",
@@ -48,13 +68,6 @@ function EditProfile() {
       });
       return;
     }
-    if (["No_Hp", "No_Hp_Perusahaan"].includes(name)) {
-      tanganiGantiPengguna({
-        target: { name, value: formatNoTelepon(sanitizedValue) },
-      });
-      return;
-    }
-
     tanganiGantiPengguna({ target: { name, value: sanitizedValue } });
   };
 
