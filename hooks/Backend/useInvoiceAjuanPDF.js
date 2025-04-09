@@ -1,18 +1,55 @@
-import { toast } from "react-hot-toast";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
 const useInvoicePDF = () => {
-  const generateInvoicePDF = (pemesanan, userData, ajukanDetail) => {
-    const doc = new jsPDF();
+  const getImageBase64 = (url) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.src = url;
 
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+
+        const dataURL = canvas.toDataURL("image/jpeg");
+        resolve(dataURL);
+      };
+
+      img.onerror = (err) => {
+        reject(err);
+      };
+    });
+  };
+
+  const generateInvoiceBase64 = async ({
+    Nama_Lengkap,
+    Nama_Lengkap_Perusahaan,
+    Email,
+    Email_Perusahaan,
+    ID_Ajukan,
+    Jenis_Ajukan,
+    ID_Pemesanan,
+    Status_Pembayaran,
+    dataPesanan,
+    Total_Harga_Pesanan,
+    Tanggal_Pemesanan,
+    Tanggal_Pembuatan_Ajukan,
+  }) => {
+    const doc = new jsPDF();
     const imageUrl = "/assets/img/Faktur-Header.png";
+    const imageBase64 = await getImageBase64(imageUrl);
+
     const imgWidth = 210;
     const imgHeight = 40;
     const imgX = 0;
     const imgY = 0;
 
-    doc.addImage(imageUrl, "JPEG", imgX, imgY, imgWidth, imgHeight);
+    doc.addImage(imageBase64, "JPEG", imgX, imgY, imgWidth, imgHeight);
 
     const text = "Dokumen Pesanan Anda";
     const textWidth = doc.getTextWidth(text);
@@ -27,7 +64,7 @@ const useInvoicePDF = () => {
     let statusLabel = "";
     let statusColor = "";
 
-    switch (pemesanan.Status_Pembayaran) {
+    switch (Status_Pembayaran) {
       case "Menunggu Pembayaran":
         statusLabel = "Belum Bayar";
         statusColor = "red";
@@ -74,40 +111,36 @@ const useInvoicePDF = () => {
     doc.setTextColor(0, 0, 0);
 
     const billingDetails = [
-      { label: "Nomor Pesanan", value: `#${pemesanan.id}` },
+      { label: "Nomor Pesanan", value: `#${ID_Pemesanan}` },
       {
         label: "Tanggal Pemesanan",
-        value: new Date(
-          pemesanan.Tanggal_Pemesanan.seconds * 1000
-        ).toLocaleString(),
+        value: new Date(Tanggal_Pemesanan.seconds * 1000).toLocaleString(),
       },
-      { label: "Nomor Ajukan", value: pemesanan.ID_Ajukan },
+      { label: "Nomor Ajukan", value: ID_Ajukan },
       {
         label: "Tanggal Pengajuan",
         value: new Date(
-          ajukanDetail.Tanggal_Pembuatan_Ajukan.seconds * 1000
+          Tanggal_Pembuatan_Ajukan.seconds * 1000
         ).toLocaleString(),
       },
       {
         label: "Detail Penerima",
-        value: userData.Nama_Perusahaan
-          ? `${userData.Nama_Lengkap} / ${userData.Nama_Perusahaan}`
-          : userData.Nama_Lengkap,
+        value: Nama_Lengkap_Perusahaan
+          ? `${Nama_Lengkap} / ${Nama_Lengkap_Perusahaan}`
+          : Nama_Lengkap,
       },
       {
         label: "Email",
-        value: userData.Email_Perusahaan
-          ? `${userData.Email} / ${userData.Email_Perusahaan}`
-          : userData.Email,
+        value: Email_Perusahaan ? `${Email} / ${Email_Perusahaan}` : Email,
       },
       {
         label: "Jenis Pengajuan",
         value:
-          pemesanan.ajukanDetail.Jenis_Ajukan === "Gratis"
+          Jenis_Ajukan === "Gratis"
             ? "Gratis"
-            : pemesanan.Status_Pembayaran === "Sedang Ditinjau"
+            : Status_Pembayaran === "Sedang Ditinjau"
             ? "Pembayaran sedang ditinjau"
-            : pemesanan.Status_Pembayaran === "Ditolak"
+            : Status_Pembayaran === "Ditolak"
             ? "Pembayaran Anda Ditolak"
             : new Date(
                 pemesanan.transaksiDetail?.Tanggal_Pengiriman_Bukti?.seconds *
@@ -125,23 +158,22 @@ const useInvoicePDF = () => {
       doc.text(`: ${item.value}`, valueX, billingY);
       billingY += 8;
     });
-
     autoTable(doc, {
       head: [
         ["Nama Produk", "Instansi", "Jumlah", "Harga Produk", "Total Harga"],
       ],
-      body: pemesanan.Data_Keranjang.map((produk) => [
-        produk.Nama,
-        produk.Pemilik,
-        produk.Kuantitas,
+      body: dataPesanan.map((item) => [
+        item.Nama,
+        item.Pemilik,
+        item.Kuantitas,
         new Intl.NumberFormat("id-ID", {
           style: "currency",
           currency: "IDR",
-        }).format(produk.Harga),
+        }).format(item.Harga),
         new Intl.NumberFormat("id-ID", {
           style: "currency",
           currency: "IDR",
-        }).format(produk.Harga * produk.Kuantitas),
+        }).format(item.Harga * item.Kuantitas),
       ]),
       startY: billingY + 4,
       margin: { left: 14, right: 14 },
@@ -175,13 +207,12 @@ const useInvoicePDF = () => {
           new Intl.NumberFormat("id-ID", {
             style: "currency",
             currency: "IDR",
-          }).format(pemesanan.Total_Harga_Pesanan),
+          }).format(Total_Harga_Pesanan),
           160,
           totalY
         );
       },
     });
-
     const noteText =
       "Catatan: Jika ada permasalahan atau kesalahan dalam dokumen ini, silakan hubungi stasiun sesuai pesanan anda.";
     const marginLeft = 14;
@@ -192,18 +223,13 @@ const useInvoicePDF = () => {
     const noteYPosition = doc.lastAutoTable.finalY + 20;
     doc.text(splitNote, marginLeft, noteYPosition);
 
-    doc.save(`Invoice_Pesanan_${pemesanan.id}.pdf`);
+    return new Promise((resolve) => {
+      const base64 = doc.output("datauristring").split(",")[1];
+      resolve(base64);
+    });
   };
 
-  const handleDownload = (pemesanan, userData, ajukanDetail) => {
-    if (!pemesanan || !userData || !ajukanDetail) {
-      toast.error("Data pesanan tidak lengkap.");
-      return;
-    }
-    generateInvoicePDF(pemesanan, userData, ajukanDetail);
-  };
-
-  return { handleDownload };
+  return { generateInvoiceBase64 };
 };
 
 export default useInvoicePDF;
