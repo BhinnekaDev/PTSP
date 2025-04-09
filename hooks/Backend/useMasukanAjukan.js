@@ -10,6 +10,8 @@ import {
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import kirimEmailKonfirmasi from "@/components/kirimEmailAjuan";
+import useInvoiceAjuanPDF from "@/hooks/Backend/useInvoiceAjuanPDF";
 
 const generateRandomID = (length = 16) => {
   const characters =
@@ -19,9 +21,34 @@ const generateRandomID = (length = 16) => {
   ).join("");
 };
 
+const getPenggunaData = async (penggunaSaatIni) => {
+  const peroranganRef = doc(firestore, "perorangan", penggunaSaatIni);
+  const perusahaanRef = doc(firestore, "perusahaan", penggunaSaatIni);
+
+  const [peroranganSnap, perusahaanSnap] = await Promise.all([
+    getDoc(peroranganRef),
+    getDoc(perusahaanRef),
+  ]);
+
+  if (peroranganSnap.exists()) {
+    return {
+      tipe: "perorangan",
+      ...peroranganSnap.data(),
+    };
+  } else if (perusahaanSnap.exists()) {
+    return {
+      tipe: "perusahaan",
+      ...perusahaanSnap.data(),
+    };
+  } else {
+    return null;
+  }
+};
+
 const useAjukanFormSubmit = (keranjang) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { generateInvoiceBase64 } = useInvoiceAjuanPDF();
 
   const handleFormSubmit = async (files, formName) => {
     const penggunaSaatIni = localStorage.getItem("ID");
@@ -49,21 +76,18 @@ const useAjukanFormSubmit = (keranjang) => {
           return;
         }
 
-        // Cek MIME type
         if (!allowedMimeTypes.includes(fileMimeType)) {
           setLoading(false);
           toast.error(`Tipe file tidak diizinkan.`);
           return;
         }
 
-        // Cek ukuran file
         if (file.size > maxSizeInBytes) {
           setLoading(false);
           toast.error(`File melebihi ukuran maksimum 2MB.`);
           return;
         }
 
-        // Sanitasi nama file
         const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_");
         const uniqueFileName = `${sanitizedFileName}_${Date.now()}_${randomIDAjukan}.${fileExtension}`;
         const storageRef = ref(
@@ -77,7 +101,6 @@ const useAjukanFormSubmit = (keranjang) => {
         fileUrls.push(fileUrl);
       }
 
-      // Periksa apakah keranjang memiliki data
       const keranjangRef = doc(firestore, "keranjang", penggunaSaatIni);
       const keranjangSnapshot = await getDoc(keranjangRef);
 
@@ -91,7 +114,6 @@ const useAjukanFormSubmit = (keranjang) => {
         return;
       }
 
-      // Simpan data pengajuan ke Firestore
       const ajukanRef = doc(firestore, "ajukan", randomIDAjukan);
       const ajukanData = {
         Nama_Ajukan: formName,
@@ -103,7 +125,6 @@ const useAjukanFormSubmit = (keranjang) => {
       };
       await setDoc(ajukanRef, ajukanData);
 
-      // Simpan data pesanan
       const dataKeranjang = keranjangSnapshot.data();
       const dataPesanan = [
         ...dataKeranjang.Informasi.map(({ ID_Informasi, ...rest }) => ({
@@ -125,8 +146,8 @@ const useAjukanFormSubmit = (keranjang) => {
         0
       );
 
-      const pemesananRef = doc(firestore, "pemesanan", generateRandomID());
-
+      const ID_Pemesanan = generateRandomID();
+      const pemesananRef = doc(firestore, "pemesanan", ID_Pemesanan);
       const pemesananData = {
         ID_Pengguna: penggunaSaatIni,
         ID_Ajukan: randomIDAjukan,
@@ -136,18 +157,40 @@ const useAjukanFormSubmit = (keranjang) => {
         Status_Pesanan: "Belum Selesai",
         Status_Pembuatan: "Menunggu Pembuatan",
         Tanggal_Pemesanan: new Date(),
-        ...(formName === "Kegiatan Tarif PNBP" &&
-          ajukanData.Jenis_Ajukan === "Berbayar" && {
-            ID_Transaksi: generateRandomID(),
-          }),
+        ...(formName === "Kegiatan Tarif PNBP" && {
+          ID_Transaksi: generateRandomID(),
+        }),
       };
-
       await setDoc(pemesananRef, pemesananData);
+
+      const penggunaData = await getPenggunaData(penggunaSaatIni);
+      const base64PDF = await generateInvoiceBase64({
+        Nama_Lengkap: penggunaData.Nama_Lengkap,
+        Nama_Lengkap_Perusahaan: penggunaData.Nama_Lengkap_Perusahaan,
+        Email: penggunaData.Email,
+        Email_Perusahaan: penggunaData.Email_Perusahaan,
+        ID_Ajukan: randomIDAjukan,
+        Jenis_Ajukan: ajukanData.Jenis_Ajukan,
+        ID_Pemesanan: ID_Pemesanan,
+        Status_Pembayaran: pemesananData.Status_Pembayaran,
+        dataPesanan: dataPesanan,
+        Total_Harga_Pesanan: totalHargaPesanan,
+        Tanggal_Pemesanan: pemesananData.Tanggal_Pemesanan,
+        Tanggal_Pembuatan_Ajukan: ajukanData.Tanggal_Pembuatan_Ajukan,
+      });
+
+      await kirimEmailKonfirmasi(
+        penggunaData.Email,
+        formName,
+        penggunaData.Nama_Lengkap,
+        randomIDAjukan,
+        ID_Pemesanan,
+        base64PDF
+      );
 
       router.push("/Transaksi");
       toast.success("Pengajuan berhasil dibuat dan ditambahkan ke pemesanan!");
 
-      // Kosongkan keranjang setelah pemesanan
       await updateDoc(keranjangRef, {
         Informasi: [],
         Jasa: [],

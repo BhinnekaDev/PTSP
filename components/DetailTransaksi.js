@@ -326,7 +326,7 @@ const DetailTransaksi = ({
                 ).toLocaleString()}
               </span>
             </Typography>
-            <div className="grid grid-cols-1 lg:grid-cols-2 mb-6 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 mb-6 gap-2">
               <div className="bg-gradient-to-br from-secondary to-primary text-white p-4 rounded-lg shadow-xl border-2">
                 <h2 className="font-semibold mb-4">Alamat Pengiriman</h2>
                 <Typography>

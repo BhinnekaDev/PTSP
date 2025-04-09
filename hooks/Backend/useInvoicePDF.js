@@ -1,6 +1,6 @@
 import { toast } from "react-hot-toast";
 import jsPDF from "jspdf";
-import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 
 const useInvoicePDF = () => {
   const generateInvoicePDF = (pemesanan, userData, ajukanDetail) => {
@@ -75,13 +75,13 @@ const useInvoicePDF = () => {
 
     const billingDetails = [
       { label: "Nomor Pesanan", value: `#${pemesanan.id}` },
-      { label: "Nomor Ajukan", value: pemesanan.ID_Ajukan },
       {
         label: "Tanggal Pemesanan",
         value: new Date(
           pemesanan.Tanggal_Pemesanan.seconds * 1000
         ).toLocaleString(),
       },
+      { label: "Nomor Ajukan", value: pemesanan.ID_Ajukan },
       {
         label: "Tanggal Pengajuan",
         value: new Date(
@@ -91,20 +91,20 @@ const useInvoicePDF = () => {
       {
         label: "Detail Penerima",
         value: userData.Nama_Perusahaan
-          ? `${userData.Nama_Lengkap} || ${userData.Nama_Perusahaan}`
+          ? `${userData.Nama_Lengkap} / ${userData.Nama_Perusahaan}`
           : userData.Nama_Lengkap,
       },
       {
         label: "Email",
         value: userData.Email_Perusahaan
-          ? `${userData.Email} || ${userData.Email_Perusahaan}`
+          ? `${userData.Email} / ${userData.Email_Perusahaan}`
           : userData.Email,
       },
       {
-        label: "Tanggal Pembayaran",
+        label: "Jenis Pengajuan",
         value:
           pemesanan.ajukanDetail.Jenis_Ajukan === "Gratis"
-            ? "GRATIS"
+            ? "Gratis"
             : pemesanan.Status_Pembayaran === "Sedang Ditinjau"
             ? "Pembayaran sedang ditinjau"
             : pemesanan.Status_Pembayaran === "Ditolak"
@@ -126,15 +126,9 @@ const useInvoicePDF = () => {
       billingY += 8;
     });
 
-    doc.autoTable({
+    autoTable(doc, {
       head: [
-        [
-          "Nama Produk",
-          "Nama Instansi",
-          "Kuantitas",
-          "Harga Produk",
-          "Total Harga per Produk",
-        ],
+        ["Nama Produk", "Instansi", "Jumlah", "Harga Produk", "Total Harga"],
       ],
       body: pemesanan.Data_Keranjang.map((produk) => [
         produk.Nama,
@@ -143,31 +137,50 @@ const useInvoicePDF = () => {
         new Intl.NumberFormat("id-ID", {
           style: "currency",
           currency: "IDR",
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
         }).format(produk.Harga),
         new Intl.NumberFormat("id-ID", {
           style: "currency",
           currency: "IDR",
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
         }).format(produk.Harga * produk.Kuantitas),
       ]),
-      startY: billingY + 10,
-      margin: { top: 20 },
-    });
+      startY: billingY + 4,
+      margin: { left: 14, right: 14 },
+      styles: {
+        font: "helvetica",
+        fontSize: 10,
+        cellPadding: 6,
+        valign: "middle",
+        halign: "center", // Rata tengah semua kolom
+      },
+      headStyles: {
+        fillColor: [0, 112, 255], // Biru terang
+        textColor: 255,
+        fontStyle: "bold",
+      },
+      bodyStyles: {
+        fillColor: [245, 248, 255], // Abu muda
+        textColor: 0,
+      },
+      didDrawPage: function (data) {
+        const totalY = data.cursor.y + 10;
 
-    const totalPrice = new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(pemesanan.Total_Harga_Pesanan);
-    const totalYPosition = doc.lastAutoTable.finalY + 10;
-    doc.setFont("helvetica", "bold");
-    doc.text("Total Pesanan", 14, totalYPosition);
-    doc.setFont("helvetica", "normal");
-    doc.text(`: ${totalPrice}`, 60, totalYPosition);
+        doc.setFont("helvetica", "bold");
+        doc.text("Total Pesanan", 120, totalY);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFillColor(245, 248, 255);
+        doc.rect(150, totalY - 6, 45, 8, "F");
+
+        doc.text(
+          new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+          }).format(pemesanan.Total_Harga_Pesanan),
+          160,
+          totalY
+        );
+      },
+    });
 
     const noteText =
       "Catatan: Jika ada permasalahan atau kesalahan dalam dokumen ini, silakan hubungi stasiun sesuai pesanan anda.";
