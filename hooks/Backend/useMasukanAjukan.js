@@ -6,43 +6,49 @@ import {
   updateDoc,
   getDoc,
   deleteField,
-  onSnapshot,
 } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import kirimEmailKonfirmasi from "@/components/kirimEmailAjuan";
+import useInvoiceAjuanPDF from "@/hooks/Backend/useInvoiceAjuanPDF";
 
-const generateRandomIDAjukan = (length = 16) => {
+const generateRandomID = (length = 16) => {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
+  return Array.from({ length }, () =>
+    characters.charAt(Math.floor(Math.random() * characters.length))
+  ).join("");
 };
-const generateRandomIDPemesanan = (length = 16) => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=<>?";
-  let result = "";
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
+
+const getPenggunaData = async (penggunaSaatIni) => {
+  const peroranganRef = doc(firestore, "perorangan", penggunaSaatIni);
+  const perusahaanRef = doc(firestore, "perusahaan", penggunaSaatIni);
+
+  const [peroranganSnap, perusahaanSnap] = await Promise.all([
+    getDoc(peroranganRef),
+    getDoc(perusahaanRef),
+  ]);
+
+  if (peroranganSnap.exists()) {
+    return {
+      tipe: "perorangan",
+      ...peroranganSnap.data(),
+    };
+  } else if (perusahaanSnap.exists()) {
+    return {
+      tipe: "perusahaan",
+      ...perusahaanSnap.data(),
+    };
+  } else {
+    return null;
   }
-  return result;
-};
-const generateRandomIDTransaksi = (length = 16) => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=<>?";
-  let result = "";
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
 };
 
 const useAjukanFormSubmit = (keranjang) => {
-  const pengarah = useRouter();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { generateInvoiceBase64 } = useInvoiceAjuanPDF();
 
   const handleFormSubmit = async (files, formName) => {
     const penggunaSaatIni = localStorage.getItem("ID");
@@ -55,16 +61,24 @@ const useAjukanFormSubmit = (keranjang) => {
     try {
       const maxSizeInBytes = 2 * 1024 * 1024;
       const allowedExtensions = ["jpg", "jpeg", "png", "pdf"];
-      const randomIDAjukan = generateRandomIDAjukan();
+      const allowedMimeTypes = ["image/jpeg", "image/png", "application/pdf"];
+      const randomIDAjukan = generateRandomID();
       const storage = getStorage();
       const fileUrls = [];
 
       for (let file of files) {
         const fileExtension = file.name.split(".").pop().toLowerCase();
+        const fileMimeType = file.type;
 
         if (!allowedExtensions.includes(fileExtension)) {
           setLoading(false);
           toast.error(`File harus berformat JPG, JPEG, PNG, atau PDF.`);
+          return;
+        }
+
+        if (!allowedMimeTypes.includes(fileMimeType)) {
+          setLoading(false);
+          toast.error(`Tipe file tidak diizinkan.`);
           return;
         }
 
@@ -74,9 +88,8 @@ const useAjukanFormSubmit = (keranjang) => {
           return;
         }
 
-        const uniqueFileName = `${
-          file.name.split(".")[0]
-        }_${Date.now()}_${randomIDAjukan}.${fileExtension}`;
+        const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_");
+        const uniqueFileName = `${sanitizedFileName}_${Date.now()}_${randomIDAjukan}.${fileExtension}`;
         const storageRef = ref(
           storage,
           `File_Ajukan/${penggunaSaatIni}/${formName}/${uniqueFileName}`
@@ -133,12 +146,8 @@ const useAjukanFormSubmit = (keranjang) => {
         0
       );
 
-      const pemesananRef = doc(
-        firestore,
-        "pemesanan",
-        generateRandomIDPemesanan()
-      );
-
+      const ID_Pemesanan = generateRandomID();
+      const pemesananRef = doc(firestore, "pemesanan", ID_Pemesanan);
       const pemesananData = {
         ID_Pengguna: penggunaSaatIni,
         ID_Ajukan: randomIDAjukan,
@@ -148,15 +157,38 @@ const useAjukanFormSubmit = (keranjang) => {
         Status_Pesanan: "Belum Selesai",
         Status_Pembuatan: "Menunggu Pembuatan",
         Tanggal_Pemesanan: new Date(),
-        ...(formName === "Kegiatan Tarif PNBP" &&
-          ajukanData.Jenis_Ajukan === "Berbayar" && {
-            ID_Transaksi: generateRandomIDTransaksi(),
-          }),
+        ...(formName === "Kegiatan Tarif PNBP" && {
+          ID_Transaksi: generateRandomID(),
+        }),
       };
-
       await setDoc(pemesananRef, pemesananData);
 
-      pengarah.push("/Transaksi");
+      const penggunaData = await getPenggunaData(penggunaSaatIni);
+      const base64PDF = await generateInvoiceBase64({
+        Nama_Lengkap: penggunaData.Nama_Lengkap,
+        Nama_Lengkap_Perusahaan: penggunaData.Nama_Lengkap_Perusahaan,
+        Email: penggunaData.Email,
+        Email_Perusahaan: penggunaData.Email_Perusahaan,
+        ID_Ajukan: randomIDAjukan,
+        Jenis_Ajukan: ajukanData.Jenis_Ajukan,
+        ID_Pemesanan: ID_Pemesanan,
+        Status_Pembayaran: pemesananData.Status_Pembayaran,
+        dataPesanan: dataPesanan,
+        Total_Harga_Pesanan: totalHargaPesanan,
+        Tanggal_Pemesanan: pemesananData.Tanggal_Pemesanan,
+        Tanggal_Pembuatan_Ajukan: ajukanData.Tanggal_Pembuatan_Ajukan,
+      });
+
+      await kirimEmailKonfirmasi(
+        penggunaData.Email,
+        formName,
+        penggunaData.Nama_Lengkap,
+        randomIDAjukan,
+        ID_Pemesanan,
+        base64PDF
+      );
+
+      router.push("/Transaksi");
       toast.success("Pengajuan berhasil dibuat dan ditambahkan ke pemesanan!");
 
       await updateDoc(keranjangRef, {

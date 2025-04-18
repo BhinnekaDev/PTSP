@@ -114,12 +114,14 @@ const useInvoicePDF = () => {
       { label: "Nomor Pesanan", value: `#${ID_Pemesanan}` },
       {
         label: "Tanggal Pemesanan",
-        value: new Date(Tanggal_Pemesanan).toLocaleString(),
+        value: new Date(Tanggal_Pemesanan.seconds * 1000).toLocaleString(),
       },
       { label: "Nomor Ajukan", value: ID_Ajukan },
       {
         label: "Tanggal Pengajuan",
-        value: new Date(Tanggal_Pembuatan_Ajukan).toLocaleString(),
+        value: new Date(
+          Tanggal_Pembuatan_Ajukan.seconds * 1000
+        ).toLocaleString(),
       },
       {
         label: "Detail Penerima",
