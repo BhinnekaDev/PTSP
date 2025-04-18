@@ -1,10 +1,8 @@
-const kirimEmailKonfirmasi = async (
+const kirimEmailPerbaikan = async (
   toEmail,
   formName,
   Nama_Lengkap,
-  ID_Ajukan,
-  ID_Pemesanan,
-  invoiceAjuanPDFEmail
+  ID_Ajukan
 ) => {
   const htmlContent = `
   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
@@ -13,10 +11,11 @@ const kirimEmailKonfirmasi = async (
     </div>
 
     <p>Yth. <strong>${Nama_Lengkap}</strong></p>
-
     <p style="font-size: 15px; color: #333;">
-      Permohonan Anda telah kami terima dengan nomor Ajuan <strong>${ID_Ajukan}</strong> dengan jenis ajuan <strong>${formName}</strong> dan akan segera kami proses. Jika ada informasi tambahan yang diperlukan, kami akan menghubungi Anda kembali. Terima kasih.<br />
-      Silakan menghubungi kami jika ada pertanyaan lebih lanjut.
+      Kami telah menerima perbaikan dokumen untuk permohonan Anda dengan nomor Ajuan <strong>${ID_Ajukan}</strong> dan jenis ajuan <strong>${formName}</strong>. Permohonan Anda akan segera kami proses kembali.<br /><br />
+      Apabila diperlukan informasi tambahan, kami akan segera menghubungi Anda.  
+      Terima kasih atas perhatian dan kerja samanya.<br />
+      Jangan ragu untuk menghubungi kami jika ada pertanyaan lebih lanjut.
     </p>
 
     <p style="margin-top: 20px;">Hormat kami,<br /><strong>BMKG PTSP Bengkulu</strong></p>
@@ -43,23 +42,13 @@ const kirimEmailKonfirmasi = async (
 `;
 
   try {
-    await fetch("/api/postEmailAjukan", {
+    await fetch("/api/postEmailPerbaikanAjukan", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         to: toEmail,
-        subject: "Pengajuan Anda Berhasil Diajukan",
-
+        subject: "Perbaikan Pengajuan Anda Berhasil Diajukan Kembali",
         html: htmlContent,
-        attachments: invoiceAjuanPDFEmail
-          ? [
-              {
-                filename: `Invoice_Pesanan_${ID_Pemesanan}.pdf`,
-                content: invoiceAjuanPDFEmail,
-                encoding: "base64",
-              },
-            ]
-          : [],
       }),
     });
   } catch (error) {
@@ -67,4 +56,4 @@ const kirimEmailKonfirmasi = async (
   }
 };
 
-export default kirimEmailKonfirmasi;
+export default kirimEmailPerbaikan;

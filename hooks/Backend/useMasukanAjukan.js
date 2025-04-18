@@ -49,7 +49,7 @@ const getPenggunaData = async (penggunaSaatIni) => {
 const useAjukanFormSubmit = (keranjang) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const { generateInvoiceBase64 } = useInvoiceAjuanPDF();
+  const { invoiceAjuanPDF } = useInvoiceAjuanPDF();
 
   const handleFormSubmit = async (files, formName) => {
     const penggunaSaatIni = localStorage.getItem("ID");
@@ -148,6 +148,7 @@ const useAjukanFormSubmit = (keranjang) => {
       );
 
       const ID_Pemesanan = generateRandomID();
+      const ID_Transaksi = generateRandomID();
       const pemesananRef = doc(firestore, "pemesanan", ID_Pemesanan);
       const pemesananData = {
         ID_Pengguna: penggunaSaatIni,
@@ -159,7 +160,7 @@ const useAjukanFormSubmit = (keranjang) => {
         Status_Pembuatan: "Menunggu Pembuatan",
         Tanggal_Pemesanan: serverTimestamp(),
         ...(formName === "Kegiatan Tarif PNBP" && {
-          ID_Transaksi: generateRandomID(),
+          ID_Transaksi: ID_Transaksi,
         }),
       };
       await setDoc(pemesananRef, pemesananData);
@@ -173,7 +174,7 @@ const useAjukanFormSubmit = (keranjang) => {
         ? pemesananData.Tanggal_Pembuatan_Ajukan.toDate()
         : new Date();
 
-      const base64PDF = await generateInvoiceBase64({
+      const invoiceAjuanPDFEmail = await invoiceAjuanPDF({
         Nama_Lengkap: penggunaData.Nama_Lengkap,
         Nama_Lengkap_Perusahaan: penggunaData.Nama_Lengkap_Perusahaan,
         Email: penggunaData.Email,
@@ -181,6 +182,7 @@ const useAjukanFormSubmit = (keranjang) => {
         ID_Ajukan: randomIDAjukan,
         Jenis_Ajukan: ajukanData.Jenis_Ajukan,
         ID_Pemesanan: ID_Pemesanan,
+        ID_Transaksi: ID_Transaksi,
         Status_Pembayaran: pemesananData.Status_Pembayaran,
         dataPesanan: dataPesanan,
         Total_Harga_Pesanan: totalHargaPesanan,
@@ -194,7 +196,7 @@ const useAjukanFormSubmit = (keranjang) => {
         penggunaData.Nama_Lengkap,
         randomIDAjukan,
         ID_Pemesanan,
-        base64PDF
+        invoiceAjuanPDFEmail
       );
 
       router.push("/Transaksi");

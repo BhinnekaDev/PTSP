@@ -9,6 +9,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import toast from "react-hot-toast";
+import kirimEmailPerbaikan from "@/components/EmailPerbaikanAjuan";
 
 const usePerbaikiDokumen = () => {
   const [loading, setLoading] = useState(false);
@@ -21,11 +22,36 @@ const usePerbaikiDokumen = () => {
     "application/pdf",
   ];
 
+  const getPenggunaData = async (penggunaSaatIni) => {
+    const peroranganRef = doc(firestore, "perorangan", penggunaSaatIni);
+    const perusahaanRef = doc(firestore, "perusahaan", penggunaSaatIni);
+
+    const [peroranganSnap, perusahaanSnap] = await Promise.all([
+      getDoc(peroranganRef),
+      getDoc(perusahaanRef),
+    ]);
+
+    if (peroranganSnap.exists()) {
+      return {
+        tipe: "perorangan",
+        ...peroranganSnap.data(),
+      };
+    } else if (perusahaanSnap.exists()) {
+      return {
+        tipe: "perusahaan",
+        ...perusahaanSnap.data(),
+      };
+    } else {
+      return null;
+    }
+  };
+
   const handlePerbaikiDokumen = async (ID_Ajukan, newFiles) => {
+    const penggunaSaatIni = localStorage.getItem("ID");
+
     setLoading(true);
 
     try {
-      // Validasi semua file sebelum memulai proses
       const invalidFiles = newFiles.filter(
         (file) =>
           !SUPPORTED_FORMATS.includes(file.type) || file.size > MAX_FILE_SIZE
@@ -41,7 +67,6 @@ const usePerbaikiDokumen = () => {
         return;
       }
 
-      // Jika semua file valid, lanjutkan proses
       const ajukanRef = doc(firestore, "ajukan", ID_Ajukan);
       const ajukanSnapshot = await getDoc(ajukanRef);
 
@@ -52,7 +77,6 @@ const usePerbaikiDokumen = () => {
       const ajukanData = ajukanSnapshot.data();
       const storage = getStorage();
 
-      // Hapus file lama jika ada
       if (ajukanData.File_Ajukan && Array.isArray(ajukanData.File_Ajukan)) {
         for (let url of ajukanData.File_Ajukan) {
           try {
@@ -64,7 +88,6 @@ const usePerbaikiDokumen = () => {
         }
       }
 
-      // Unggah file baru
       const newFileUrls = [];
       for (let file of newFiles) {
         const fileExtension = file.name.split(".").pop();
@@ -81,13 +104,21 @@ const usePerbaikiDokumen = () => {
         newFileUrls.push(newFileUrl);
       }
 
-      // Update Firestore
       await updateDoc(ajukanRef, {
         File_Ajukan: newFileUrls,
         Status_Ajuan: "Sedang Ditinjau",
         Tanggal_Pembuatan_Ajukan: new Date(),
         Keterangan: deleteField(),
       });
+
+      const penggunaData = await getPenggunaData(penggunaSaatIni);
+
+      await kirimEmailPerbaikan(
+        penggunaData.Email,
+        ajukanData.Nama_Ajukan,
+        penggunaData.Nama_Lengkap,
+        ID_Ajukan
+      );
 
       toast.success(
         "Dokumen berhasil diperbarui dan sedang ditinjau oleh admin."

@@ -88,6 +88,7 @@ const useInvoicePDF = () => {
           ajukanDetail.Tanggal_Pembuatan_Ajukan.seconds * 1000
         ).toLocaleString(),
       },
+      { label: "Nomor Transaksi", value: pemesanan.ID_Transaksi || "-" },
       {
         label: "Detail Penerima",
         value: userData.Nama_Perusahaan
@@ -105,14 +106,7 @@ const useInvoicePDF = () => {
         value:
           pemesanan.ajukanDetail.Jenis_Ajukan === "Gratis"
             ? "Gratis"
-            : pemesanan.Status_Pembayaran === "Sedang Ditinjau"
-            ? "Pembayaran sedang ditinjau"
-            : pemesanan.Status_Pembayaran === "Ditolak"
-            ? "Pembayaran Anda Ditolak"
-            : new Date(
-                pemesanan.transaksiDetail?.Tanggal_Pengiriman_Bukti?.seconds *
-                  1000
-              ).toLocaleString() || "-",
+            : "Berbayar",
       },
     ];
 

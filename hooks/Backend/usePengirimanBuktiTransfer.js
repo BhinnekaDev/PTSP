@@ -14,10 +14,35 @@ import {
   deleteField,
 } from "firebase/firestore";
 import { toast } from "react-hot-toast";
+// import kirimEMailPembayaran from "@/components/EmailBuktiPembayaran";
 
 const useBuatTransaksi = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const penggunaSaatIni = localStorage.getItem("ID");
+  const getPenggunaData = async (penggunaSaatIni) => {
+    const peroranganRef = doc(firestore, "perorangan", penggunaSaatIni);
+    const perusahaanRef = doc(firestore, "perusahaan", penggunaSaatIni);
+
+    const [peroranganSnap, perusahaanSnap] = await Promise.all([
+      getDoc(peroranganRef),
+      getDoc(perusahaanRef),
+    ]);
+
+    if (peroranganSnap.exists()) {
+      return {
+        tipe: "perorangan",
+        ...peroranganSnap.data(),
+      };
+    } else if (perusahaanSnap.exists()) {
+      return {
+        tipe: "perusahaan",
+        ...perusahaanSnap.data(),
+      };
+    } else {
+      return null;
+    }
+  };
 
   const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
   const SUPPORTED_FORMATS = [
@@ -41,7 +66,6 @@ const useBuatTransaksi = () => {
     setError(null);
 
     try {
-      // ✅ 1. Cek validasi semua file sebelum upload
       const invalidFiles = files.filter(
         (file) =>
           !SUPPORTED_FORMATS.includes(file.type) || file.size > MAX_FILE_SIZE
@@ -57,7 +81,6 @@ const useBuatTransaksi = () => {
         return;
       }
 
-      // ✅ 2. Ambil data transaksi di Firestore
       const transaksiRef = doc(firestore, "transaksi", ID_Transaksi);
       const transaksiDoc = await getDoc(transaksiRef);
 
@@ -77,8 +100,6 @@ const useBuatTransaksi = () => {
 
         await Promise.all(deletePromises);
       }
-
-      // ✅ 3. Upload file baru
       const uploadPromises = files.map((file) => {
         const fileRef = ref(storage, `bukti-transfer/${file.name}`);
         const uploadTask = uploadBytesResumable(fileRef, file);
@@ -103,7 +124,6 @@ const useBuatTransaksi = () => {
       };
       await setDoc(transaksiRef, newTransaksiDoc, { merge: true });
 
-      // ✅ 4. Update status di Firestore
       const pemesananRef = doc(firestore, "pemesanan", ID_Pemesanan);
       const pemesananDoc = await getDoc(pemesananRef);
 
@@ -123,6 +143,14 @@ const useBuatTransaksi = () => {
         console.log("Field Keterangan pada pemesanan berhasil dihapus");
       }
 
+      const penggunaData = await getPenggunaData(penggunaSaatIni);
+
+      // await kirimEMailPembayaran(
+      //   penggunaData.Email,
+      //   penggunaData.Nama_Lengkap,
+      //   ID_Pemesanan
+      //   // base64PDF
+      // );
       toast.success("Bukti Transaksi berhasil dikirim!");
       window.location.reload();
     } catch (err) {

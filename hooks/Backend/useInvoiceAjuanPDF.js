@@ -26,7 +26,7 @@ const useInvoicePDF = () => {
     });
   };
 
-  const generateInvoiceBase64 = async ({
+  const invoiceAjuanPDF = async ({
     Nama_Lengkap,
     Nama_Lengkap_Perusahaan,
     Email,
@@ -35,6 +35,7 @@ const useInvoicePDF = () => {
     Jenis_Ajukan,
     ID_Pemesanan,
     Status_Pembayaran,
+    ID_Transaksi,
     dataPesanan,
     Total_Harga_Pesanan,
     Tanggal_Pemesanan,
@@ -122,6 +123,11 @@ const useInvoicePDF = () => {
         value: new Date(Tanggal_Pembuatan_Ajukan).toLocaleString(),
       },
       {
+        label: "Jenis Pengajuan",
+        value: Jenis_Ajukan === "Gratis" ? "Gratis" : "Berbayar",
+      },
+      { label: "Nomor Transaksi", value: ID_Transaksi || "-" },
+      {
         label: "Detail Penerima",
         value: Nama_Lengkap_Perusahaan
           ? `${Nama_Lengkap} / ${Nama_Lengkap_Perusahaan}`
@@ -130,20 +136,6 @@ const useInvoicePDF = () => {
       {
         label: "Email",
         value: Email_Perusahaan ? `${Email} / ${Email_Perusahaan}` : Email,
-      },
-      {
-        label: "Jenis Pengajuan",
-        value:
-          Jenis_Ajukan === "Gratis"
-            ? "Gratis"
-            : Status_Pembayaran === "Sedang Ditinjau"
-            ? "Pembayaran sedang ditinjau"
-            : Status_Pembayaran === "Ditolak"
-            ? "Pembayaran Anda Ditolak"
-            : new Date(
-                pemesanan.transaksiDetail?.Tanggal_Pengiriman_Bukti?.seconds *
-                  1000
-              ).toLocaleString() || "-",
       },
     ];
 
@@ -227,7 +219,7 @@ const useInvoicePDF = () => {
     });
   };
 
-  return { generateInvoiceBase64 };
+  return { invoiceAjuanPDF };
 };
 
 export default useInvoicePDF;
