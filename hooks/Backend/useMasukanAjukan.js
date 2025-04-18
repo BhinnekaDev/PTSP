@@ -6,11 +6,12 @@ import {
   updateDoc,
   getDoc,
   deleteField,
+  serverTimestamp,
 } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import kirimEmailKonfirmasi from "@/components/kirimEmailAjuan";
+import kirimEmailKonfirmasi from "@/components/EmailAjuan";
 import useInvoiceAjuanPDF from "@/hooks/Backend/useInvoiceAjuanPDF";
 
 const generateRandomID = (length = 16) => {
@@ -121,7 +122,7 @@ const useAjukanFormSubmit = (keranjang) => {
         Status_Ajuan: "Sedang Ditinjau",
         Jenis_Ajukan:
           formName === "Kegiatan Tarif PNBP" ? "Berbayar" : "Gratis",
-        Tanggal_Pembuatan_Ajukan: new Date(),
+        Tanggal_Pembuatan_Ajukan: serverTimestamp(),
       };
       await setDoc(ajukanRef, ajukanData);
 
@@ -156,7 +157,7 @@ const useAjukanFormSubmit = (keranjang) => {
         Total_Harga_Pesanan: totalHargaPesanan,
         Status_Pesanan: "Belum Selesai",
         Status_Pembuatan: "Menunggu Pembuatan",
-        Tanggal_Pemesanan: new Date(),
+        Tanggal_Pemesanan: serverTimestamp(),
         ...(formName === "Kegiatan Tarif PNBP" && {
           ID_Transaksi: generateRandomID(),
         }),
@@ -164,6 +165,14 @@ const useAjukanFormSubmit = (keranjang) => {
       await setDoc(pemesananRef, pemesananData);
 
       const penggunaData = await getPenggunaData(penggunaSaatIni);
+      const Tanggal_Pemesanan = pemesananData.Tanggal_Pemesanan?.toDate
+        ? pemesananData.Tanggal_Pemesanan.toDate()
+        : new Date();
+      const Tanggal_Pembuatan_Ajukan = pemesananData.Tanggal_Pembuatan_Ajukan
+        ?.toDate
+        ? pemesananData.Tanggal_Pembuatan_Ajukan.toDate()
+        : new Date();
+
       const base64PDF = await generateInvoiceBase64({
         Nama_Lengkap: penggunaData.Nama_Lengkap,
         Nama_Lengkap_Perusahaan: penggunaData.Nama_Lengkap_Perusahaan,
@@ -175,8 +184,8 @@ const useAjukanFormSubmit = (keranjang) => {
         Status_Pembayaran: pemesananData.Status_Pembayaran,
         dataPesanan: dataPesanan,
         Total_Harga_Pesanan: totalHargaPesanan,
-        Tanggal_Pemesanan: pemesananData.Tanggal_Pemesanan,
-        Tanggal_Pembuatan_Ajukan: ajukanData.Tanggal_Pembuatan_Ajukan,
+        Tanggal_Pemesanan: Tanggal_Pemesanan,
+        Tanggal_Pembuatan_Ajukan: Tanggal_Pembuatan_Ajukan,
       });
 
       await kirimEmailKonfirmasi(
