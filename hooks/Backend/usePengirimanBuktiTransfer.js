@@ -14,7 +14,8 @@ import {
   deleteField,
 } from "firebase/firestore";
 import { toast } from "react-hot-toast";
-// import kirimEMailPembayaran from "@/components/EmailBuktiPembayaran";
+import { formatTanggal } from "@/utils/utilsTanggal";
+import kirimEmailKonfirmasiPembayaran from "@/components/EmailBuktiPembayaran";
 
 const useBuatTransaksi = () => {
   const [loading, setLoading] = useState(false);
@@ -84,7 +85,6 @@ const useBuatTransaksi = () => {
       const transaksiRef = doc(firestore, "transaksi", ID_Transaksi);
       const transaksiDoc = await getDoc(transaksiRef);
 
-      // Hapus file lama jika ada
       if (transaksiDoc.exists() && transaksiDoc.data().Bukti_Pembayaran) {
         const fileUrls = transaksiDoc.data().Bukti_Pembayaran;
 
@@ -101,7 +101,7 @@ const useBuatTransaksi = () => {
         await Promise.all(deletePromises);
       }
       const uploadPromises = files.map((file) => {
-        const fileRef = ref(storage, `bukti-transfer/${file.name}`);
+        const fileRef = ref(storage, `Bukti_Pembayaran/${file.name}`);
         const uploadTask = uploadBytesResumable(fileRef, file);
 
         return new Promise((resolve, reject) => {
@@ -131,12 +131,39 @@ const useBuatTransaksi = () => {
         console.error("Dokumen pemesanan tidak ditemukan:", ID_Pemesanan);
         return;
       }
+      const dataPemesanan = pemesananDoc.data();
+      const ID_Ajukan = dataPemesanan.ID_Ajukan;
 
+      if (!ID_Ajukan) {
+        return;
+      }
+
+      const ajukanRef = doc(firestore, "ajukan", ID_Ajukan);
+      const ajukanDoc = await getDoc(ajukanRef);
+
+      if (!ajukanDoc.exists()) {
+        return;
+      }
+
+      const dataAjukan = ajukanDoc.data();
+
+      const transaksiData = transaksiDoc.data();
+      const Tanggal_Pengiriman_Bukti = formatTanggal(
+        transaksiData.Tanggal_Pengiriman_Bukti?.toDate
+          ? transaksiData.Tanggal_Pengiriman_Bukti.toDate()
+          : new Date()
+      );
+
+      const Tanggal_Pemesanan = formatTanggal(
+        dataPemesanan.Tanggal_Pemesanan?.toDate
+          ? dataPemesanan.Tanggal_Pemesanan.toDate()
+          : new Date()
+      );
       await updateDoc(pemesananRef, {
         Status_Pembayaran: "Sedang Ditinjau",
       });
 
-      if (pemesananDoc.data().Keterangan) {
+      if (dataPemesanan.Keterangan) {
         await updateDoc(pemesananRef, {
           Keterangan: deleteField(),
         });
@@ -145,12 +172,19 @@ const useBuatTransaksi = () => {
 
       const penggunaData = await getPenggunaData(penggunaSaatIni);
 
-      // await kirimEMailPembayaran(
-      //   penggunaData.Email,
-      //   penggunaData.Nama_Lengkap,
-      //   ID_Pemesanan
-      //   // base64PDF
-      // );
+      await kirimEmailKonfirmasiPembayaran(
+        penggunaData.Email,
+        penggunaData.Nama_Lengkap,
+        ID_Pemesanan,
+        dataPemesanan.ID_Ajukan,
+        Tanggal_Pemesanan,
+        dataAjukan.Nama_Ajukan,
+        dataPemesanan.Data_Keranjang,
+        dataPemesanan.Total_Harga_Pesanan,
+        Tanggal_Pengiriman_Bukti,
+        dataPemesanan.ID_Transaksi
+      );
+
       toast.success("Bukti Transaksi berhasil dikirim!");
       window.location.reload();
     } catch (err) {
