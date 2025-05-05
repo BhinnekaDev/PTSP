@@ -164,6 +164,12 @@ const useAjukanFormSubmit = (keranjang) => {
       };
       await setDoc(pemesananRef, pemesananData);
 
+      if (formName === "Kegiatan Tarif PNBP") {
+        const transaksiRef = doc(firestore, "transaksi", ID_Transaksi);
+        const transaksiData = {};
+        await setDoc(transaksiRef, transaksiData);
+      }
+
       const penggunaData = await getPenggunaData(penggunaSaatIni);
       const Tanggal_Pemesanan = formatTanggal(
         pemesananData.Tanggal_Pemesanan?.toDate
