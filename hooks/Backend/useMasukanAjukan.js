@@ -11,8 +11,8 @@ import {
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { formatTanggal } from "@/utils/utilsTanggal";
 import kirimEmailKonfirmasi from "@/components/EmailAjuan";
-import useInvoiceAjuanPDF from "@/hooks/Backend/useInvoiceAjuanPDF";
 
 const generateRandomID = (length = 16) => {
   const characters =
@@ -49,7 +49,6 @@ const getPenggunaData = async (penggunaSaatIni) => {
 const useAjukanFormSubmit = (keranjang) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const { invoiceAjuanPDF } = useInvoiceAjuanPDF();
 
   const handleFormSubmit = async (files, formName) => {
     const penggunaSaatIni = localStorage.getItem("ID");
@@ -166,37 +165,26 @@ const useAjukanFormSubmit = (keranjang) => {
       await setDoc(pemesananRef, pemesananData);
 
       const penggunaData = await getPenggunaData(penggunaSaatIni);
-      const Tanggal_Pemesanan = pemesananData.Tanggal_Pemesanan?.toDate
-        ? pemesananData.Tanggal_Pemesanan.toDate()
-        : new Date();
-      const Tanggal_Pembuatan_Ajukan = pemesananData.Tanggal_Pembuatan_Ajukan
-        ?.toDate
-        ? pemesananData.Tanggal_Pembuatan_Ajukan.toDate()
-        : new Date();
-
-      const invoiceAjuanPDFEmail = await invoiceAjuanPDF({
-        Nama_Lengkap: penggunaData.Nama_Lengkap,
-        Nama_Lengkap_Perusahaan: penggunaData.Nama_Lengkap_Perusahaan,
-        Email: penggunaData.Email,
-        Email_Perusahaan: penggunaData.Email_Perusahaan,
-        ID_Ajukan: randomIDAjukan,
-        Jenis_Ajukan: ajukanData.Jenis_Ajukan,
-        ID_Pemesanan: ID_Pemesanan,
-        ID_Transaksi: ID_Transaksi,
-        Status_Pembayaran: pemesananData.Status_Pembayaran,
-        dataPesanan: dataPesanan,
-        Total_Harga_Pesanan: totalHargaPesanan,
-        Tanggal_Pemesanan: Tanggal_Pemesanan,
-        Tanggal_Pembuatan_Ajukan: Tanggal_Pembuatan_Ajukan,
-      });
-
+      const Tanggal_Pemesanan = formatTanggal(
+        pemesananData.Tanggal_Pemesanan?.toDate
+          ? pemesananData.Tanggal_Pemesanan.toDate()
+          : new Date()
+      );
+      const Tanggal_Pembuatan_Ajukan = formatTanggal(
+        pemesananData.Tanggal_Pembuatan_Ajukan?.toDate
+          ? pemesananData.Tanggal_Pembuatan_Ajukan.toDate()
+          : new Date()
+      );
       await kirimEmailKonfirmasi(
         penggunaData.Email,
         formName,
         penggunaData.Nama_Lengkap,
         randomIDAjukan,
         ID_Pemesanan,
-        invoiceAjuanPDFEmail
+        Tanggal_Pembuatan_Ajukan,
+        Tanggal_Pemesanan,
+        dataPesanan,
+        totalHargaPesanan
       );
 
       router.push("/Transaksi");
