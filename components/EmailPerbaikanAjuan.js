@@ -18,7 +18,6 @@ const kirimEmailPerbaikan = async (
     </p>
     <p style="margin-top: 30px;">Hormat kami,<br /><strong>BMKG PTSP Bengkulu</strong></p>
     <p style="margin-top: 10px;">Butuh bantuan? Hubungi kami melalui email, telepon, atau datang langsung ke kantor kami. Atau bisa melalu fitur live chat yang terdapat pada website.</p>
-    <p style="margin-top: 20px;">Hormat kami,<br /><strong>BMKG PTSP Bengkulu</strong></p>
 
     <hr style="margin: 30px 0;" />
 
