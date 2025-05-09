@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Radio } from "@/app/MTailwind";
 import { firestore } from "@/lib/firebaseConfig";
 import { collection, doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
@@ -8,7 +7,6 @@ import useStepperFormIKM from "@/hooks/Frontend/useStepperFormIKM";
 import { Router } from "next/router";
 const useMasukanIKM = () => {
   const { serviceItems } = useStepperFormIKM();
-  const pengarah = useRouter();
   const [selectedOptions, setSelectedOptions] = useState({
     meteorologi: [],
     klimatologi: [],
@@ -33,7 +31,7 @@ const useMasukanIKM = () => {
   const [responses, setResponses] = useState(
     serviceItems.map((item) => ({
       ...item,
-      NamaPertanyaan: item.name,
+      Nama_Pertanyaan: item.name,
       KualitasLayanan: "",
       HarapanKonsumen: "",
     }))

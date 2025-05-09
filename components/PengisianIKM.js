@@ -17,7 +17,7 @@ const DialogPerbaikanDokumen = ({ open, onClose, pemesanan }) => {
       <DialogHeader>Pengisian Indeks Kepuasan Masyarakat</DialogHeader>
       <DialogBody>
         <Toaster position="top-right" reverseOrder={false} />
-        <div className="w-full p-6 mb-3 bg-white rounded-lg shadow-md">
+        <div className="w-full p-6 mb-3 bg-white rounded-lg shadow-md border-4 border-gray">
           <div className="stepPertama mb-2">
             {stepAktif === 0 && (
               <IKMPertama
