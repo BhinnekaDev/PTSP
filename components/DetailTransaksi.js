@@ -420,11 +420,13 @@ const DetailTransaksi = ({
                         {produk.Pemilik}{" "}
                       </Typography>
                     </div>
-                    <div className="col-span-2">
-                      <Typography className="font-semibold" variant="h6">
-                        Virtual Account Produk : {produk.Nomor_VA}
-                      </Typography>
-                    </div>
+                    {pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" && (
+                      <div className="col-span-2">
+                        <Typography className="font-semibold" variant="h6">
+                          Virtual Account Produk : {produk.Nomor_VA}
+                        </Typography>
+                      </div>
+                    )}
                     <div className="col-span-2"></div>
                     <div className="col-span-2">
                       <Typography variant="body1">
