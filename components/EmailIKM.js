@@ -1,10 +1,11 @@
-const kirimEmailKonfirmasiPembayaran = async (
+const kirimEmailIKM = async (
   toEmail,
   Nama_Lengkap,
   ID_Pemesanan,
   ID_Ajukan,
   Tanggal_Pemesanan,
   formName,
+  Tanggal_Pembuatan_Ajukan,
   dataPesanan,
   Total_Harga,
   Tanggal_Pengiriman_Bukti,
@@ -65,12 +66,17 @@ const kirimEmailKonfirmasiPembayaran = async (
     <div>
       <p>Yth. <strong>${Nama_Lengkap}</strong></p>
       <p style="font-size: 15px; color: #333; text-align: justify;">
-       Pengiriman bukti pembayaran Anda telah kami terima dengan nomor Ajuan <strong>${ID_Ajukan}</strong> dengan jenis ajuan <strong>${formName}</strong> pada tanggal <strong>${Tanggal_Pengiriman_Bukti}</strong>. Permohonan Anda dan akan segera kami proses. Jika ada informasi tambahan yang diperlukan, kami akan menghubungi Anda kembali. Terima kasih.<br />
+      Terima kasih telah meluangkan waktu untuk mengisi <strong>Indeks Kepuasan Masyarakat (IKM)</strong> dan telah menggunakan layanan <strong>PTSP BMKG Bengkulu</strong> dalam proses pembelian Anda. Masukan dan partisipasi Anda sangat berarti bagi kami untuk terus meningkatkan kualitas pelayanan. Kami berharap dapat terus memberikan layanan terbaik di masa mendatang.
       </p>
+
       <h3 style="margin-top: 35px;">RINCIAN PESANAN</h3>
+      <p><strong>No. Ajuan:</strong> <span style="color: #555;">#${ID_Ajukan} (${formName})</span></p>
+      <p><strong>Tanggal Ajukan:</strong> <span style="color: #555;">${Tanggal_Pembuatan_Ajukan}</span> </p>
       <p><strong>No. Pesanan:</strong> <span style="color: #555;">#${ID_Pemesanan}</span></p>
       <p><strong>Tanggal Pemesanan:</strong> <span style="color: #555;">${Tanggal_Pemesanan}</span> </p>
-      <p><strong>No. Transaksi:</strong> <span style="color: #555;">#${ID_Transaksi}</span></p>
+      <p><strong>No. Transaksi:</strong> <span style="color: #555;">#${
+        ID_Transaksi || "-"
+      }</span></p>
       <p><strong>Tanggal Pembayaran:</strong> <span style="color: #555;">${Tanggal_Pengiriman_Bukti}</span> </p>
 
       ${daftarProdukHTML}
@@ -101,7 +107,7 @@ const kirimEmailKonfirmasiPembayaran = async (
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         to: toEmail,
-        subject: "Pengiriman Bukti Pembayaran Anda Berhasil Dikirim",
+        subject: "Terima Kasih Atas Pengisian IKM Anda",
         html: htmlContent,
       }),
     });
@@ -110,4 +116,4 @@ const kirimEmailKonfirmasiPembayaran = async (
   }
 };
 
-export default kirimEmailKonfirmasiPembayaran;
+export default kirimEmailIKM;
