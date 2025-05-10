@@ -148,17 +148,15 @@ const useBuatTransaksi = () => {
       const dataAjukan = ajukanDoc.data();
 
       const transaksiData = transaksiDoc.data();
-      const Tanggal_Pengiriman_Bukti = formatTanggal(
-        transaksiData.Tanggal_Pengiriman_Bukti?.toDate
-          ? transaksiData.Tanggal_Pengiriman_Bukti.toDate()
-          : new Date()
-      );
 
-      const Tanggal_Pemesanan = formatTanggal(
-        dataPemesanan.Tanggal_Pemesanan?.toDate
-          ? dataPemesanan.Tanggal_Pemesanan.toDate()
-          : new Date()
-      );
+      const Tanggal_Pengiriman_Bukti = transaksiData.Tanggal_Pengiriman_Bukti
+        ?.toDate
+        ? formatTanggal(transaksiData.Tanggal_Pengiriman_Bukti.toDate())
+        : "-";
+      const Tanggal_Pemesanan = dataPemesanan?.Tanggal_Pemesanan?.toDate
+        ? formatTanggal(dataPemesanan.Tanggal_Pemesanan.toDate())
+        : "-";
+
       await updateDoc(pemesananRef, {
         Status_Pembayaran: "Sedang Ditinjau",
       });

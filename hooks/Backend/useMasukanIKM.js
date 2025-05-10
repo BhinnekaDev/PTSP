@@ -4,7 +4,8 @@ import { firestore } from "@/lib/firebaseConfig";
 import { collection, doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
 import { toast } from "react-hot-toast";
 import useStepperFormIKM from "@/hooks/Frontend/useStepperFormIKM";
-import { Router } from "next/router";
+import kirimEmailIKM from "@/components/EmailIKM";
+import { formatTanggal } from "@/utils/utilsTanggal";
 const useMasukanIKM = () => {
   const { serviceItems } = useStepperFormIKM();
   const [selectedOptions, setSelectedOptions] = useState({
@@ -96,9 +97,26 @@ const useMasukanIKM = () => {
   );
 
   const handleIKMSubmit = async (pemesananId) => {
-    const penggunaSaatIni = localStorage.getItem("ID");
-    if (!penggunaSaatIni) {
+    const penggunaID = localStorage.getItem("ID");
+    if (!penggunaID) {
       toast.error("Anda harus masuk untuk mengirimkan IKM.");
+      return;
+    }
+
+    const getPenggunaData = async (id) => {
+      const peroranganSnap = await getDoc(doc(firestore, "perorangan", id));
+      const perusahaanSnap = await getDoc(doc(firestore, "perusahaan", id));
+
+      if (peroranganSnap.exists())
+        return { tipe: "perorangan", ...peroranganSnap.data() };
+      if (perusahaanSnap.exists())
+        return { tipe: "perusahaan", ...perusahaanSnap.data() };
+      return null;
+    };
+
+    const penggunaData = await getPenggunaData(penggunaID);
+    if (!penggunaData) {
+      toast.error("Data pengguna tidak ditemukan.");
       return;
     }
 
@@ -128,10 +146,69 @@ const useMasukanIKM = () => {
       const pemesananSnapshot = await getDoc(pemesananRef);
 
       if (pemesananSnapshot.exists()) {
+        const pemesananData = pemesananSnapshot.data();
+        const ID_Ajukan = pemesananData.ID_Ajukan;
+        const ID_Transaksi = pemesananData.ID_Transaksi;
+        let Nama_Ajukan = "";
+        let Tanggal_Transaksi = "";
+        let Tanggal_Ajukan = "";
+        if (ID_Ajukan) {
+          const ajukanSnap = await getDoc(doc(firestore, "ajukan", ID_Ajukan));
+          if (ajukanSnap.exists()) {
+            const dataAjukan = ajukanSnap.data();
+            Nama_Ajukan = dataAjukan.Nama_Ajukan;
+            Tanggal_Ajukan = dataAjukan.Tanggal_Pembuatan_Ajukan;
+            console.log("Data Ajukan:", ajukanSnap.data());
+          } else {
+            console.warn("Data ajukan tidak ditemukan untuk ID:", ID_Ajukan);
+          }
+        }
+
+        if (ID_Transaksi) {
+          const transaksiSnap = await getDoc(
+            doc(firestore, "transaksi", ID_Transaksi)
+          );
+          if (transaksiSnap.exists()) {
+            const dataTransaksi = transaksiSnap.data();
+            Tanggal_Transaksi = dataTransaksi.Tanggal_Pengiriman_Bukti;
+          } else {
+            console.warn(
+              "Data transaksi tidak ditemukan untuk ID:",
+              ID_Transaksi
+            );
+          }
+        }
+
+        const Tanggal_Pengiriman_Bukti = Tanggal_Transaksi?.toDate
+          ? formatTanggal(Tanggal_Transaksi.toDate())
+          : "-";
+
+        const Tanggal_Pembuatan_Ajukan = Tanggal_Ajukan?.toDate
+          ? formatTanggal(Tanggal_Ajukan.toDate())
+          : "-";
+
+        const Tanggal_Pemesanan = pemesananData?.Tanggal_Pemesanan?.toDate
+          ? formatTanggal(pemesananData.Tanggal_Pemesanan.toDate())
+          : "-";
+
         await updateDoc(pemesananRef, {
           Status_Pengisian_IKM: "Telah Diisi",
           Status_Pesanan: "Selesai",
         });
+
+        await kirimEmailIKM(
+          penggunaData.Email,
+          penggunaData.Nama_Lengkap,
+          pemesananId,
+          pemesananData.ID_Ajukan,
+          Tanggal_Pemesanan,
+          Nama_Ajukan,
+          Tanggal_Pembuatan_Ajukan,
+          pemesananData.Data_Keranjang,
+          pemesananData.Total_Harga_Pesanan,
+          Tanggal_Pengiriman_Bukti,
+          pemesananData.ID_Transaksi
+        );
       } else {
         console.warn("Pemesanan dengan ID", pemesananId, "tidak ditemukan.");
       }
