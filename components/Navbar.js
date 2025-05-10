@@ -159,6 +159,21 @@ function Navigation() {
       >
         <a
           className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer ${
+            navbarAktif === "/PengajuanKunjungan"
+              ? "text-secondary"
+              : "text-white"
+          }`}
+          onClick={() => handlenavbarAktif("/PengajuanKunjungan")}
+        >
+          Kunjungan
+        </a>
+      </Typography>
+      <Typography
+        as="li"
+        className="flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer"
+      >
+        <a
+          className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer ${
             navbarAktif === "/Faq" ? "text-secondary" : "text-white"
           }`}
           onClick={() => handlenavbarAktif("/Faq")}
