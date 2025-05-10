@@ -260,7 +260,7 @@ function AdminChat() {
                           10.01
                         </Typography>
                         <Typography className="text-white bg-red-600 px-1.5 py-px rounded-full text-xs">
-                          2
+                          ...
                         </Typography>
                       </div>
                     </div>
@@ -296,8 +296,9 @@ function AdminChat() {
                 </Typography>
               </div>
             </div>
+            {/* Chat */}
             <div
-              className="h-auto overflow-auto p-2"
+              className="h-full w-full overflow-auto p-2"
               style={{
                 backgroundImage: "url('/assets/img/bgChat.png')",
               }}
@@ -435,6 +436,7 @@ function AdminChat() {
                 })}
               </div>
             </div>
+            {/* End Chat */}
             <div className="p-2 w-full flex relative">
               {tampilkanEmoji && (
                 <div
