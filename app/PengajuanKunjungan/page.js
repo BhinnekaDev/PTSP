@@ -10,9 +10,7 @@ function PengajuanKunjunganPage() {
       <Toaster position="top-right" reverseOrder={false} />
       <Navbar />
       <HeaderTemplate />
-
       <PengajuanKunjungan />
-
       <Footer />
     </div>
   );

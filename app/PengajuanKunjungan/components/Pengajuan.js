@@ -1,5 +1,5 @@
 "use client";
-
+import { useState } from "react";
 import {
   Card,
   CardBody,
@@ -9,84 +9,21 @@ import {
   Textarea,
   Select,
   Option,
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-} from "@material-tailwind/react";
-
-import { useState, useEffect } from "react";
+} from "@/app/MTailwind";
 import toast from "react-hot-toast";
 import useVerifikasiLogin from "@/hooks/Backend/useVerifikasiLogin";
+import useStepperForm from "@/hooks/Frontend/useStepperForm";
 import usePengirimanPengajuanKunjungan from "@/hooks/Backend/usePengirimanPengajuanKunjungan";
 
-const fieldsPerorangan = ["Nama_Lengkap", "No_Hp", "Email"];
-const fieldsPerusahaan = [
-  "Alamat_Perusahaan",
-  "Email_Perusahaan",
-  "Nama_Perusahaan",
-  "Kabupaten_Kota_Perusahaan",
-  "Nama_Lengkap",
-  "Email",
-  "No_Hp",
-  "No_Hp_Perusahaan",
-  "Provinsi_Perusahaan",
-];
-
-const PengajuanKunjungan = () => {
+function PengajuanKunjungan() {
+  const { stepAktif, handleSelanjutnya, handleSebelumnya } = useStepperForm();
+  const { apakahSudahLogin, detailPengguna } = useVerifikasiLogin();
   const {
-    apakahSudahLogin,
-    detailPengguna,
-    loading: loadingUser,
-  } = useVerifikasiLogin();
-  const { handleFormSubmit, loading } = usePengirimanPengajuanKunjungan();
-
-  const [step, setStep] = useState(1);
-  const [showModal, setShowModal] = useState(false);
-  const [penggunaId, setPenggunaId] = useState(null);
-
-  useEffect(() => {
-    const storedId = localStorage.getItem("ID");
-    if (storedId) {
-      setPenggunaId(storedId);
-    }
-  }, []);
-
-  const [Stasiun, setStasiun] = useState("");
-  const [TanggalKunjungan, setTanggalKunjungan] = useState("");
-  const [JamKunjungan, setJamKunjungan] = useState("");
-  const [JumlahPengunjung, setJumlahPengunjung] = useState("");
-  const [TujuanBerkunjung, setTujuanBerkunjung] = useState("");
-  const [NoSurat, setNoSurat] = useState("");
-  const [Keterangan, setKeterangan] = useState("");
-  const [File, setFile] = useState(null);
-  const [Instansi, setInstansi] = useState("");
-  const [NamaInstansi, setNamaInstansi] = useState("");
-
-  const isLoggedIn = Boolean(penggunaId);
-  const userType = detailPengguna?.type || "";
-  const fields =
-    userType === "perorangan" ? fieldsPerorangan : fieldsPerusahaan;
-
-  const nextStep = () => setStep((prev) => prev + 1);
-  const prevStep = () => setStep((prev) => prev - 1);
-
-  const handleKirimPengajuan = () => {
-    console.log("isLoggedIn:", isLoggedIn);
-    if (!isLoggedIn) {
-      toast.error("Silakan login terlebih dahulu.");
-      return;
-    }
-    console.log("Menampilkan modal...");
-    setShowModal(true);
-  };
-
-  console.log("loading:", loading);
-
-  const handleConfirmSubmit = async () => {
-    toast.success("Pengajuan berhasil dikirim!");
-
-    console.log("Data dikirim:", {
+    handleFormPengajuan,
+    loading,
+    tipePengguna,
+    fields,
+    formState: {
       Stasiun,
       TanggalKunjungan,
       JamKunjungan,
@@ -95,12 +32,25 @@ const PengajuanKunjungan = () => {
       NoSurat,
       Keterangan,
       File,
-      dataUser: detailPengguna,
       Instansi,
       NamaInstansi,
-    });
+    },
+    setFormState: {
+      setStasiun,
+      setTanggalKunjungan,
+      setJamKunjungan,
+      setJumlahPengunjung,
+      setTujuanBerkunjung,
+      setNoSurat,
+      setKeterangan,
+      setFile,
+      setInstansi,
+      setNamaInstansi,
+    },
+  } = usePengirimanPengajuanKunjungan();
 
-    const success = await handleFormSubmit({
+  const handleConfirmSubmit = async () => {
+    const success = await handleFormPengajuan({
       Stasiun,
       TanggalKunjungan,
       JamKunjungan,
@@ -116,25 +66,7 @@ const PengajuanKunjungan = () => {
 
     if (success) {
       toast.success("Pengajuan berhasil dikirim!");
-      setShowModal(false);
-      resetForm();
-    } else {
-      toast.error("Gagal mengirim pengajuan.");
     }
-  };
-
-  const resetForm = () => {
-    setStasiun("");
-    setTanggalKunjungan("");
-    setJamKunjungan("");
-    setJumlahPengunjung("");
-    setTujuanBerkunjung("");
-    setNoSurat("");
-    setKeterangan("");
-    setFile(null);
-    setInstansi("");
-    setNamaInstansi("");
-    setStep(1);
   };
 
   return (
@@ -145,13 +77,12 @@ const PengajuanKunjungan = () => {
             Form Pengajuan Kunjungan
           </Typography>
 
-          {/* STEP INDICATOR */}
           <div className="flex flex-col md:flex-row justify-center items-start md:items-center mb-8 gap-6">
             {["Data Pemohon", "Data Tujuan"].map((label, index) => (
               <div key={index} className="flex items-center">
                 <div
                   className={`w-6 h-6 md:w-8 md:h-8 flex items-center justify-center rounded-full text-xs md:text-sm font-bold transition-all duration-300 ${
-                    step === index + 1
+                    stepAktif === index
                       ? "bg-blue-600 text-white"
                       : "bg-gray-300 text-gray-600"
                   }`}
@@ -164,15 +95,13 @@ const PengajuanKunjungan = () => {
               </div>
             ))}
           </div>
-
-          {/* STEP 1 */}
-          {step === 1 && (
+          {stepAktif === 0 && (
             <>
               <Typography variant="h5" className="mb-4">
                 Data Pemohon
               </Typography>
 
-              {isLoggedIn ? (
+              {apakahSudahLogin ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {fields.map((field, idx) => (
                     <div key={idx} className="flex flex-col">
@@ -183,13 +112,10 @@ const PengajuanKunjungan = () => {
                         label=""
                         value={detailPengguna?.[field] || ""}
                         disabled
-                        crossOrigin={undefined}
                       />
                     </div>
                   ))}
-
-                  {/* Hanya Perorangan */}
-                  {userType === "perorangan" && (
+                  {tipePengguna === "perorangan" && (
                     <>
                       <div className="flex flex-col">
                         <label className="mb-1 text-sm font-medium text-gray-700">
@@ -220,8 +146,6 @@ const PengajuanKunjungan = () => {
                           <Option value="Umum">Umum</Option>
                         </Select>
                       </div>
-
-                      {/* Input tambahan tergantung kategori */}
                       {Instansi === "Lembaga Penelitian" && (
                         <div className="flex flex-col">
                           <label className="mb-1 text-sm font-medium text-gray-700">
@@ -231,11 +155,9 @@ const PengajuanKunjungan = () => {
                           <Input
                             value={NamaInstansi}
                             onChange={(e) => setNamaInstansi(e.target.value)}
-                            crossOrigin={undefined}
                           />
                         </div>
                       )}
-
                       {Instansi === "Komunitas" && (
                         <div className="flex flex-col">
                           <label className="mb-1 text-sm font-medium text-gray-700">
@@ -245,11 +167,9 @@ const PengajuanKunjungan = () => {
                           <Input
                             value={NamaInstansi}
                             onChange={(e) => setNamaInstansi(e.target.value)}
-                            crossOrigin={undefined}
                           />
                         </div>
                       )}
-
                       {Instansi === "Sekolah/Perguruan Tinggi" && (
                         <div className="flex flex-col">
                           <label className="mb-1 text-sm font-medium text-gray-700">
@@ -259,11 +179,9 @@ const PengajuanKunjungan = () => {
                           <Input
                             value={NamaInstansi}
                             onChange={(e) => setNamaInstansi(e.target.value)}
-                            crossOrigin={undefined}
                           />
                         </div>
                       )}
-
                       {Instansi === "Media Massa" && (
                         <div className="flex flex-col">
                           <label className="mb-1 text-sm font-medium text-gray-700">
@@ -273,11 +191,9 @@ const PengajuanKunjungan = () => {
                           <Input
                             value={NamaInstansi}
                             onChange={(e) => setNamaInstansi(e.target.value)}
-                            crossOrigin={undefined}
                           />
                         </div>
                       )}
-
                       {Instansi === "Pekerja Independen/Freelancer" && (
                         <div className="flex flex-col">
                           <label className="mb-1 text-sm font-medium text-gray-700">
@@ -287,7 +203,6 @@ const PengajuanKunjungan = () => {
                           <Input
                             value={NamaInstansi}
                             onChange={(e) => setNamaInstansi(e.target.value)}
-                            crossOrigin={undefined}
                           />
                         </div>
                       )}
@@ -301,7 +216,6 @@ const PengajuanKunjungan = () => {
                           <Input
                             value={NamaInstansi}
                             onChange={(e) => setNamaInstansi(e.target.value)}
-                            crossOrigin={undefined}
                           />
                         </div>
                       )}
@@ -314,17 +228,10 @@ const PengajuanKunjungan = () => {
                 </Typography>
               )}
 
-              <div className="flex justify-between mt-6">
+              <div className="flex justify-end mt-6">
                 <Button
-                  onClick={() => window.history.back()}
-                  className="bg-gray-500 hover:bg-gray-600 text-black font-semibold px-6 py-2 rounded-md"
-                >
-                  Kembali
-                </Button>
-
-                <Button
-                  onClick={nextStep}
-                  disabled={!isLoggedIn}
+                  onClick={handleSelanjutnya}
+                  disabled={!apakahSudahLogin}
                   className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md"
                 >
                   Lanjutkan
@@ -333,8 +240,7 @@ const PengajuanKunjungan = () => {
             </>
           )}
 
-          {/* STEP 2 */}
-          {step === 2 && (
+          {stepAktif === 1 && (
             <>
               <Typography variant="h5" className="mb-4">
                 Data Tujuan Reservasi
@@ -363,7 +269,6 @@ const PengajuanKunjungan = () => {
                     type="date"
                     value={TanggalKunjungan}
                     onChange={(e) => setTanggalKunjungan(e.target.value)}
-                    crossOrigin={undefined}
                   />
                 </div>
 
@@ -397,7 +302,6 @@ const PengajuanKunjungan = () => {
                     max={50}
                     value={JumlahPengunjung}
                     onChange={(e) => setJumlahPengunjung(e.target.value)}
-                    crossOrigin={undefined}
                   />
                 </div>
 
@@ -421,7 +325,6 @@ const PengajuanKunjungan = () => {
                   <Input
                     value={NoSurat}
                     onChange={(e) => setNoSurat(e.target.value)}
-                    crossOrigin={undefined}
                   />
                 </div>
 
@@ -435,7 +338,6 @@ const PengajuanKunjungan = () => {
                       type="file"
                       onChange={(e) => {
                         setFile(e.target.files[0]);
-                        setFile(e.target.files[0]?.name || "");
                       }}
                       className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4
               file:rounded-md file:border-0
@@ -443,12 +345,8 @@ const PengajuanKunjungan = () => {
               file:bg-blue-600 file:text-white
               hover:file:bg-blue-700
               cursor-pointer"
-                      crossOrigin={undefined}
                     />
                   </div>
-                  {File && (
-                    <span className="text-green-600 text-xs mt-1">{File}</span>
-                  )}
                 </div>
 
                 {/* Keterangan Tambahan */}
@@ -467,17 +365,13 @@ const PengajuanKunjungan = () => {
 
               <div className="flex justify-between mt-6">
                 <Button
-                  onClick={() => {
-                    setFile(File?.name || "");
-                    prevStep();
-                  }}
+                  onClick={handleSebelumnya}
                   className="bg-gray-500 hover:bg-gray-600 text-black font-semibold px-6 py-2 rounded-md"
                 >
                   Kembali
                 </Button>
-
                 <Button
-                  onClick={handleKirimPengajuan}
+                  onClick={handleConfirmSubmit}
                   disabled={loading}
                   className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md flex items-center justify-center"
                 >
@@ -506,34 +400,6 @@ const PengajuanKunjungan = () => {
                     "Kirim Pengajuan"
                   )}
                 </Button>
-
-                {/* Modal Konfirmasi */}
-                <Dialog open={showModal} handler={setShowModal}>
-                  <DialogHeader>Konfirmasi Pengajuan</DialogHeader>
-                  <DialogBody>
-                    Apakah Anda yakin ingin mengajukan kunjungan?
-                  </DialogBody>
-                  <DialogFooter>
-                    <Button
-                      variant="text"
-                      color="red"
-                      onClick={() => setShowModal(false)}
-                      className="mr-2"
-                    >
-                      Batal
-                    </Button>
-                    <Button
-                      variant="gradient"
-                      color="green"
-                      onClick={() => {
-                        setShowModal(false);
-                        handleConfirmSubmit();
-                      }}
-                    >
-                      {loading ? "Mengirim..." : "Ya, Kirim"}
-                    </Button>
-                  </DialogFooter>
-                </Dialog>
               </div>
             </>
           )}
@@ -541,6 +407,6 @@ const PengajuanKunjungan = () => {
       </Card>
     </div>
   );
-};
+}
 
 export default PengajuanKunjungan;

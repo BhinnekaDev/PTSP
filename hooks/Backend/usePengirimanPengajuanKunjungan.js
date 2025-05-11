@@ -1,25 +1,46 @@
-"use client";
-
 import { useState } from "react";
+import { storage, firestore } from "@/lib/firebaseConfig";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, setDoc, addDoc, Timestamp } from "firebase/firestore";
+import useVerifikasiLogin from "@/hooks/Backend/useVerifikasiLogin";
+import kirimEmailKunjunganPengguna from "@/components/EmailKunjunganPengguna";
+import kirimEmailKunjunganAdmin from "@/components/EmailKunjunganAdmin";
+import { formatTanggal } from "@/utils/utilsTanggal";
 import toast from "react-hot-toast";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  Timestamp,
-} from "firebase/firestore";
-import { app } from "@/lib/firebaseConfig";
 
-const storage = getStorage(app);
-const database = getFirestore(app);
-
-const usePengirimanPengajuanKunjungan = () => {
+function usePengirimanPengajuanKunjungan() {
   const [loading, setLoading] = useState(false);
+  const { detailPengguna } = useVerifikasiLogin();
+  const fieldsPerorangan = ["Nama_Lengkap", "No_Hp", "Email"];
+  const fieldsPerusahaan = [
+    "Nama_Lengkap",
+    "No_Hp",
+    "Email",
+    "Nama_Perusahaan",
+    "Alamat_Perusahaan",
+    "Kabupaten_Kota_Perusahaan",
+    "Provinsi_Perusahaan",
+    "No_Hp_Perusahaan",
+    "Email_Perusahaan",
+  ];
+  const tipePengguna = detailPengguna?.type || "";
+  const fields =
+    tipePengguna === "perorangan" ? fieldsPerorangan : fieldsPerusahaan;
 
-  const handleFormSubmit = async ({
-    Stasiun,
+  const [Stasiun, setStasiun] = useState("");
+  const [TanggalKunjungan, setTanggalKunjungan] = useState("");
+  const [JamKunjungan, setJamKunjungan] = useState("");
+  const [JumlahPengunjung, setJumlahPengunjung] = useState("");
+  const [TujuanBerkunjung, setTujuanBerkunjung] = useState("");
+  const [NoSurat, setNoSurat] = useState("");
+  const [Keterangan, setKeterangan] = useState("");
+  const [File, setFile] = useState(null);
+  const [Instansi, setInstansi] = useState("");
+  const [NamaInstansi, setNamaInstansi] = useState("");
+
+  const handleFormPengajuan = async ({
     File,
+    Stasiun,
     Keterangan,
     TanggalKunjungan,
     JamKunjungan,
@@ -32,74 +53,41 @@ const usePengirimanPengajuanKunjungan = () => {
   }) => {
     setLoading(true);
 
-    console.log("DATA MASUK:", {
-      Stasiun,
-      File,
-      Keterangan,
-      TanggalKunjungan,
-      JamKunjungan,
-      NoSurat,
-      TujuanBerkunjung,
-      JumlahPengunjung,
-      Instansi,
-      NamaInstansi,
-      dataUser,
-    });
-
     const penggunaSaatIni = localStorage.getItem("ID");
 
-    if (!penggunaSaatIni) {
-      toast.error("Anda harus masuk untuk mengajukan.");
-      setLoading(false);
-      return false;
-    }
+    const validasiFields = [
+      {
+        condition: !penggunaSaatIni,
+        message: "Anda harus masuk untuk mengajukan.",
+      },
+      { condition: !Stasiun?.trim(), message: "Field Stasiun kosong!" },
+      { condition: !TanggalKunjungan, message: "Tanggal Kunjungan kosong!" },
+      { condition: !JamKunjungan, message: "Jam Kunjungan kosong!" },
+      {
+        condition:
+          isNaN(parseInt(JumlahPengunjung, 10)) ||
+          parseInt(JumlahPengunjung, 10) < 1 ||
+          parseInt(JumlahPengunjung, 10) > 50,
+        message: "Jumlah Pengunjung harus minimal 1 dan maksimal 50 orang!",
+      },
+      {
+        condition: !TujuanBerkunjung?.trim(),
+        message: "Tujuan Berkunjung kosong!",
+      },
+      { condition: !NoSurat?.trim(), message: "No Surat kosong!" },
+      { condition: !File, message: "File belum diupload!" },
+    ];
 
-    if (!Stasiun?.trim()) {
-      toast.error("Field Stasiun kosong!");
-      setLoading(false);
-      return false;
-    }
-
-    if (!File) {
-      toast.error("File belum diupload!");
-      setLoading(false);
-      return false;
-    }
-
-    if (!TanggalKunjungan) {
-      toast.error("Tanggal Kunjungan kosong!");
-      setLoading(false);
-      return false;
-    }
-
-    if (!JamKunjungan) {
-      toast.error("Jam Kunjungan kosong!");
-      setLoading(false);
-      return false;
-    }
-
-    if (!NoSurat?.trim()) {
-      toast.error("No Surat kosong!");
-      setLoading(false);
-      return false;
-    }
-
-    if (!TujuanBerkunjung?.trim()) {
-      toast.error("Tujuan Berkunjung kosong!");
-      setLoading(false);
-      return false;
-    }
-
-    const jumlah = parseInt(JumlahPengunjung, 10);
-
-    if (isNaN(jumlah) || jumlah < 1 || jumlah > 50) {
-      toast.error("Jumlah Pengunjung harus minimal 1 dan maksimal 50 orang!");
-      setLoading(false);
-      return false;
+    for (const field of validasiFields) {
+      if (field.condition) {
+        toast.error(field.message);
+        setLoading(false);
+        return false;
+      }
     }
 
     if (dataUser?.type === "perorangan") {
-      if (Instansi === "Umum" && NamaInstansi?.trim() !== "") {
+      if (Instansi === "Umum" && NamaInstansi?.trim()) {
         toast.error(
           "Jika Instansi adalah Umum, Nama Instansi harus dikosongkan."
         );
@@ -108,19 +96,13 @@ const usePengirimanPengajuanKunjungan = () => {
       }
 
       if (Instansi !== "Umum" && !NamaInstansi?.trim()) {
-        toast.error("Keterangan Instansi harus diisi.");
+        toast.error("Keterangan Nama Instansi harus diisi.");
         setLoading(false);
         return false;
       }
-    } else {
-      Instansi = null;
-      NamaInstansi = null;
     }
 
     try {
-      toast.loading("Mengirim pengajuan...", { id: "kirimPengajuan" });
-
-      // filter field
       const fieldsToExclude = [
         "alamatPerusahaan",
         "emailPerusahaan",
@@ -146,51 +128,80 @@ const usePengirimanPengajuanKunjungan = () => {
         },
         {}
       );
+      const pengajuanRef = collection(firestore, "pengajuan_kunjungan");
+      const docRef = await addDoc(pengajuanRef, {});
 
       const storageRef = ref(
         storage,
-        `pengajuan_kunjungan/${Date.now()}_${File.name}`
+        `pengajuan_kunjungan/${docRef.id}/${File.name}`
       );
       await uploadBytes(storageRef, File);
-
       const FileURL = await getDownloadURL(storageRef);
 
-      const dataToSave = {
-        userId: penggunaSaatIni,
+      const dataPengajuanKunjungan = {
+        Data_Pengguna: filteredDataUser,
         Stasiun: Stasiun.trim(),
-        Keterangan: Keterangan?.trim() || null,
         TanggalKunjungan,
         JamKunjungan,
-        NoSurat: NoSurat.trim(),
+        JumlahPengunjung,
         TujuanBerkunjung: TujuanBerkunjung.trim(),
-        JumlahPengunjung: jumlah,
-        dataUser: filteredDataUser,
+        NoSurat: NoSurat.trim(),
         FileURL,
-        timestamp: Timestamp.now(),
-        Instansi,
-        NamaInstansi,
+        Tanggal_Pengajuan_Kunjungan: Timestamp.now(),
       };
 
-      console.log("Data yang akan dikirim ke API:", dataToSave);
-
-      const pengajuanRef = collection(database, "pengajuan_kunjungan");
-      await addDoc(pengajuanRef, dataToSave);
-
-      toast.success("Pengajuan berhasil dikirim!", { id: "kirimPengajuan" });
-
-      const res = await fetch("/api/postPengajuanKunjungan", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSave),
-      });
-
-      if (!res.ok) {
-        throw new Error("Gagal mengirim email ke stasiun.");
+      if (dataUser?.type === "perorangan") {
+        if (Instansi === "Umum") {
+          dataPengajuanKunjungan.Instansi = "Umum";
+        } else if (Instansi && NamaInstansi?.trim()) {
+          dataPengajuanKunjungan.Instansi = Instansi;
+          dataPengajuanKunjungan.NamaInstansi = NamaInstansi.trim();
+        }
       }
 
-      toast.success("Email berhasil dikirim ke stasiun!");
+      if (Keterangan?.trim()) {
+        dataPengajuanKunjungan.Keterangan = Keterangan.trim();
+      }
+
+      await setDoc(docRef, dataPengajuanKunjungan);
+
+      const Tanggal_Pengajuan_Kunjungan = formatTanggal(
+        dataPengajuanKunjungan.Tanggal_Pengajuan_Kunjungan?.toDate
+          ? dataPengajuanKunjungan.Tanggal_Pengajuan_Kunjungan.toDate()
+          : new Date()
+      );
+      await kirimEmailKunjunganPengguna(
+        dataUser.Email,
+        dataUser.Nama_Lengkap,
+        docRef.id,
+        Tanggal_Pengajuan_Kunjungan,
+        dataUser.Nama_Perusahaan,
+        dataUser.Email_Perusahaan,
+        dataUser.Alamat_Perusahaan,
+        dataUser.Kabupaten_Kota_Perusahaan,
+        dataUser.Provinsi_Perusahaan,
+        dataUser.No_Hp,
+        dataUser.No_Hp_Perusahaan,
+        dataPengajuanKunjungan
+      );
+      await kirimEmailKunjunganAdmin(
+        dataUser.Email,
+        dataUser.Nama_Lengkap,
+        docRef.id,
+        Tanggal_Pengajuan_Kunjungan,
+        dataUser.Nama_Perusahaan,
+        dataUser.Email_Perusahaan,
+        dataUser.Alamat_Perusahaan,
+        dataUser.Kabupaten_Kota_Perusahaan,
+        dataUser.Provinsi_Perusahaan,
+        dataUser.No_Hp,
+        dataUser.No_Hp_Perusahaan,
+        dataPengajuanKunjungan
+      );
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
 
       return true;
     } catch (error) {
@@ -206,9 +217,35 @@ const usePengirimanPengajuanKunjungan = () => {
   };
 
   return {
-    handleFormSubmit,
+    handleFormPengajuan,
     loading,
+    tipePengguna,
+    fields,
+    formState: {
+      Stasiun,
+      TanggalKunjungan,
+      JamKunjungan,
+      JumlahPengunjung,
+      TujuanBerkunjung,
+      NoSurat,
+      Keterangan,
+      File,
+      Instansi,
+      NamaInstansi,
+    },
+    setFormState: {
+      setStasiun,
+      setTanggalKunjungan,
+      setJamKunjungan,
+      setJumlahPengunjung,
+      setTujuanBerkunjung,
+      setNoSurat,
+      setKeterangan,
+      setFile,
+      setInstansi,
+      setNamaInstansi,
+    },
   };
-};
+}
 
 export default usePengirimanPengajuanKunjungan;
