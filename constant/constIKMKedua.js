@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import useServiceItemsPagination from "@/hooks/Frontend/useStepperFormIKM";
 import useMasukanIKM from "@/hooks/Backend/useMasukanIKM";
 import { Button } from "@material-tailwind/react";
@@ -83,13 +82,20 @@ const FormIKMKedua = ({ pemesanan }) => {
 
   const totalPages = Math.ceil(serviceItems.length / itemsPerPage);
   const progressWidth = ((currentStep + 1) / totalPages) * 100;
-  const pengarah = useRouter();
+  const [loading, setLoading] = useState(false);
   const handleSubmitIKM = () => {
     if (!pemesanan?.id) {
       toast.error("Data pemesanan tidak ditemukan.");
       return;
     }
-    handleIKMSubmit(pemesanan.id);
+    setLoading(true);
+    try {
+      handleIKMSubmit(pemesanan.id);
+    } catch (error) {
+      toast.error("Terjadi kesalahan saat menyimpan data IKM.");
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <>
@@ -116,9 +122,36 @@ const FormIKMKedua = ({ pemesanan }) => {
         <div className="flex justify-end">
           <Button
             onClick={() => handleSubmitIKM()}
-            className="px-4 py-2 mt-6 bg-green-500 text-white rounded-lg button-effect"
+            disabled={loading}
+            className="relative px-4 py-2 mt-6 bg-green-500 text-white rounded-lg button-effect disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Simpan IKM
+            {loading ? (
+              <div className="flex items-center justify-center gap-2">
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8z"
+                  ></path>
+                </svg>
+                Menyimpan...
+              </div>
+            ) : (
+              "Simpan IKM"
+            )}
           </Button>
         </div>
       )}

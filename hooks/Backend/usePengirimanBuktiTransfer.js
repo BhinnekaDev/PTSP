@@ -147,12 +147,9 @@ const useBuatTransaksi = () => {
 
       const dataAjukan = ajukanDoc.data();
 
-      const transaksiData = transaksiDoc.data();
-
-      const Tanggal_Pengiriman_Bukti = transaksiData.Tanggal_Pengiriman_Bukti
-        ?.toDate
-        ? formatTanggal(transaksiData.Tanggal_Pengiriman_Bukti.toDate())
-        : "-";
+      const Tanggal_Bukti = formatTanggal(
+        newTransaksiDoc.Tanggal_Pengiriman_Bukti
+      );
       const Tanggal_Pemesanan = dataPemesanan?.Tanggal_Pemesanan?.toDate
         ? formatTanggal(dataPemesanan.Tanggal_Pemesanan.toDate())
         : "-";
@@ -179,7 +176,7 @@ const useBuatTransaksi = () => {
         dataAjukan.Nama_Ajukan,
         dataPemesanan.Data_Keranjang,
         dataPemesanan.Total_Harga_Pesanan,
-        Tanggal_Pengiriman_Bukti,
+        Tanggal_Bukti,
         dataPemesanan.ID_Transaksi
       );
 

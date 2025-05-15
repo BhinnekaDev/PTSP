@@ -1,19 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { Checkbox, Typography, Button } from "@/app/MTailwind";
 import useMasukanIKM from "@/hooks/Backend/useMasukanIKM";
 
 const FormIKMPertama = ({ handleSelanjutnya, pemesanan }) => {
   const { selectedOptions, handleCheckboxChange, handleIKMSubmit } =
     useMasukanIKM();
+  const [loading, setLoading] = useState(false);
   const handleSubmitWithNextStep = async () => {
     if (!pemesanan?.id) {
-      console.error("Pemesanan ID tidak valid");
       toast.error("Data pemesanan tidak ditemukan.");
       return;
     }
-    await handleIKMSubmit(pemesanan.id);
-    handleSelanjutnya();
+
+    setLoading(true);
+    try {
+      await handleIKMSubmit(pemesanan.id);
+      handleSelanjutnya();
+    } catch (error) {
+      toast.error("Terjadi kesalahan saat menyimpan data IKM.");
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <div className="grid grid-cols-2 gap-4 mb-2">
       {/* Meteorologi Section */}
@@ -305,9 +314,36 @@ const FormIKMPertama = ({ handleSelanjutnya, pemesanan }) => {
           <div className="flex justify-end">
             <Button
               onClick={handleSubmitWithNextStep}
-              className="px-4 py-2 mt-6 bg-green-500 text-white rounded-lg button-effect"
+              disabled={loading}
+              className="relative px-4 py-2 mt-6 bg-green-500 text-white rounded-lg button-effect disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Selanjutnya
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8z"
+                    ></path>
+                  </svg>
+                  Memproses...
+                </div>
+              ) : (
+                "Selanjutnya"
+              )}
             </Button>
           </div>
         </div>

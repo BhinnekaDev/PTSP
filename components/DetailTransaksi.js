@@ -148,18 +148,30 @@ const DetailTransaksi = ({
                   </Typography>
                 </TimelineHeader>
                 <TimelineBody className="pb-4">
-                  <Typography
-                    color="gray"
-                    className="font-normal text-blue-gray-600"
-                  >
-                    Tanggal Billing : 11/3/2025, 13.23.51
-                  </Typography>
-                  <Typography
-                    color="gray"
-                    className="font-normal text-blue-gray-600"
-                  >
-                    Tanggal Kadaluwarsa : 18/3/2025, 13.23.51
-                  </Typography>
+                  {pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" &&
+                    pemesanan.ajukanDetail.Status_Ajuan === "Diterima" && (
+                      <Typography
+                        color="gray"
+                        className="font-normal text-blue-gray-600"
+                      >
+                        Tanggal Billing : {""}
+                        {new Date(
+                          pemesanan.ajukanDetail.Tanggal_Masuk
+                        ).toLocaleString()}
+                      </Typography>
+                    )}
+                  {pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" &&
+                    pemesanan.ajukanDetail.Status_Ajuan === "Diterima" && (
+                      <Typography
+                        color="gray"
+                        className="font-normal text-blue-gray-600"
+                      >
+                        Tanggal Kadaluwarsa : {""}
+                        {new Date(
+                          pemesanan.ajukanDetail.Tanggal_Kadaluwarsa
+                        ).toLocaleString()}
+                      </Typography>
+                    )}
                   <Typography
                     color="gray"
                     className="font-normal text-gray-600"
@@ -190,27 +202,24 @@ const DetailTransaksi = ({
                       Keterangan Ditolak: {pemesanan.Keterangan}
                     </Typography>
                   )}
-                  {pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" && (
-                    <Typography
-                      color="gray"
-                      className="font-normal text-gray-600"
-                    >
-                      {pemesanan.ajukanDetail.Status_Ajuan === "Diterima"
-                        ? `Tanggal Pembayaran : ${
-                            pemesanan?.Status_Pembayaran === "Sedang Ditinjau"
-                              ? pemesanan.transaksiDetail
-                                  ?.Tanggal_Pengiriman_Bukti
-                                ? new Date(
-                                    pemesanan.transaksiDetail
-                                      .Tanggal_Pengiriman_Bukti.seconds * 1000
-                                  ).toLocaleString()
-                                : "..."
-                              : "..."
-                          }`
-                        : "Tanggal Pembayaran : ..."}
-                    </Typography>
-                  )}
-
+                  {pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" &&
+                    pemesanan.ajukanDetail.Status_Ajuan === "Diterima" &&
+                    (pemesanan.Status_Pembayaran === "Lunas" ||
+                      pemesanan.Status_Pembayaran === "Sedang Ditinjau") && (
+                      <Typography
+                        color="gray"
+                        className="font-normal text-gray-600"
+                      >
+                        Tanggal Pembayaran :{" "}
+                        {pemesanan.transaksiDetail?.Tanggal_Pengiriman_Bukti
+                          ?.seconds
+                          ? new Date(
+                              pemesanan.transaksiDetail.Tanggal_Pengiriman_Bukti
+                                .seconds * 1000
+                            ).toLocaleString()
+                          : "..."}
+                      </Typography>
+                    )}
                   {pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" &&
                     pemesanan.ajukanDetail.Status_Ajuan === "Diterima" &&
                     (pemesanan.Status_Pembayaran === "Menunggu Pembayaran" ||
