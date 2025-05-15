@@ -11,6 +11,7 @@ import {
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getAuth } from "firebase/auth";
 import { formatTanggal } from "@/utils/utilsTanggal";
 import kirimEmailKonfirmasi from "@/components/EmailAjuan";
 
@@ -47,6 +48,11 @@ const getPenggunaData = async (penggunaSaatIni) => {
 };
 
 const useAjukanFormSubmit = (keranjang) => {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const auth = getAuth(); // hanya jalan di client
+    }
+  }, []);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 

@@ -17,6 +17,7 @@ import KegiatanPemerintahanForm from "@/constant/constFormPemerintahan";
 import KegiatanPendidikanPenelitianForm from "@/constant/constFormPendidikan";
 import KegiatanTarifPNBPForm from "@/constant/constFormPNBP";
 import useAjukanFormSubmit from "@/hooks/Backend/useMasukanAjukan";
+export const dynamic = "force-dynamic";
 
 function FormAjukan() {
   const [sectionAktif, setSectionAktif] = useState(1);
