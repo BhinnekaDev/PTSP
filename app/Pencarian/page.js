@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import HeaderTemplate from "@/components/HeaderTemplate";
 import TampilanPencarian from "@/app/Pencarian/components/Pencarian";
@@ -10,7 +11,9 @@ function Pencarian() {
       <Toaster position="top-right" reverseOrder={false} />
       <Navbar />
       <HeaderTemplate />
-      <TampilanPencarian />
+      <Suspense fallback={<div>Memuat hasil pencarian...</div>}>
+        <TampilanPencarian />
+      </Suspense>
       <Footer />
     </div>
   );
