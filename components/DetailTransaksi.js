@@ -32,6 +32,7 @@ const DetailTransaksi = ({
   userData,
   ajukanDetail,
 }) => {
+  const { handleDownload } = useInvoicePDF();
   const {
     bukaPerbaikanDokumen,
     setBukaPerbaikanDokumen,
@@ -45,7 +46,6 @@ const DetailTransaksi = ({
     setBukaInvoicePemesanan,
   } = constDetailTransaksi();
   if (!pemesanan) return null;
-  const { handleDownload } = useInvoicePDF();
   return (
     <Dialog
       open={isOpen}
