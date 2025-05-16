@@ -19,8 +19,13 @@ const useTampilanJasaGeofisika = () => {
         const filteredJasaList = jasaList.filter(
           (jasa) => jasa.Pemilik === "Geofisika"
         );
+        const sortedJasaList = filteredJasaList.sort((a, b) => {
+          const isATop = a.Status === "Top" ? 1 : 0;
+          const isBTop = b.Status === "Top" ? 1 : 0;
+          return isBTop - isATop;
+        });
 
-        setProdukJasaGeofisika(filteredJasaList);
+        setProdukJasaGeofisika(sortedJasaList);
       } catch (error) {
         console.error("Error fetching data: ", error);
         setError(error);

@@ -21,6 +21,7 @@ import {
   Typography,
 } from "@/app/MTailwind";
 import { Toaster, Toast } from "react-hot-toast";
+import { PiStarFill } from "react-icons/pi";
 // PENGAIT KAMI
 import useMasukanKekeranjangInformasi from "@/hooks/Backend/useMasukanKekeranjangInformasi";
 // KOMPONEN KAMI
@@ -57,9 +58,14 @@ export default function InformasiKlimatologi() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {itemTerkini.map((product) => (
           <Card
-            className="border-2 hover:shadow-2xl transition relative py-6"
+            className="border-2 hover:shadow-2xl transition relative py-6 pl-6"
             key={product.id}
           >
+            {product.Status === "Top" && (
+              <div className="absolute top-4 left-4 text-yellow-400 drop-shadow-[0_0_1px_black]">
+                <PiStarFill size={20} />
+              </div>
+            )}
             <Popover>
               <PopoverHandler>
                 <div className="absolute top-4 right-4">

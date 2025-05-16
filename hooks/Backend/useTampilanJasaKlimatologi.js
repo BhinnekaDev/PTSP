@@ -19,8 +19,13 @@ const useTampilanJasaKlimatologi = () => {
         const filteredJasaList = jasaList.filter(
           (jasa) => jasa.Pemilik === "Klimatologi"
         );
+        const sortedJasaList = filteredJasaList.sort((a, b) => {
+          const isATop = a.Status === "Top" ? 1 : 0;
+          const isBTop = b.Status === "Top" ? 1 : 0;
+          return isBTop - isATop;
+        });
 
-        setProdukJasaKlimatologi(filteredJasaList);
+        setProdukJasaKlimatologi(sortedJasaList);
       } catch (error) {
         console.error("Error fetching data: ", error);
         setError(error);

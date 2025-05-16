@@ -9,6 +9,7 @@ import {
   FaCartShopping,
   FaCircleInfo,
 } from "react-icons/fa6";
+import { PiStarFill } from "react-icons/pi";
 import iconInformasiGeofisika from "@/assets/img/Icon/Informasi-Geofisika.png";
 import {
   Card,
@@ -58,9 +59,14 @@ export default function InformasiGeofisika() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {itemTerkini.map((product) => (
           <Card
-            className="border-2 hover:shadow-2xl transition relative py-6 shadow-lg "
+            className="border-2 hover:shadow-2xl transition relative py-6 pl-6"
             key={product.id}
           >
+            {product.Status === "Top" && (
+              <div className="absolute top-4 left-4 text-yellow-400 drop-shadow-[0_0_1px_black]">
+                <PiStarFill size={20} />
+              </div>
+            )}
             <Popover>
               <PopoverHandler>
                 <div className="absolute top-4 right-4">

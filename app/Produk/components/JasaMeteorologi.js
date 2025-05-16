@@ -9,6 +9,7 @@ import {
   FaCartShopping,
   FaCircleInfo,
 } from "react-icons/fa6";
+import { PiStarFill } from "react-icons/pi";
 import {
   Card,
   CardBody,
@@ -57,7 +58,12 @@ export default function JasaMeteorologi() {
         {itemTerkini.map((product) => (
           <Popover key={product.id}>
             <PopoverHandler>
-              <Card className="border-2 hover:shadow-2xl transition relative py-6">
+              <Card className="border-2 hover:shadow-2xl transition relative py-6 pl-6">
+                {product.Status === "Top" && (
+                  <div className="absolute top-4 left-4 text-yellow-400 drop-shadow-[0_0_1px_black]">
+                    <PiStarFill size={20} />
+                  </div>
+                )}
                 <Popover>
                   <PopoverHandler>
                     <div className="absolute top-4 right-4">

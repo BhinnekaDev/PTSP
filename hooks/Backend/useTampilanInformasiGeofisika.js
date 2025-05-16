@@ -19,8 +19,13 @@ const useTampilanInformasiGeofisika = () => {
         const filteredInformasiList = informasiList.filter(
           (informasi) => informasi.Pemilik === "Geofisika"
         );
+        const sortedInformasiList = filteredInformasiList.sort((a, b) => {
+          const isATop = a.Status === "Top" ? 1 : 0;
+          const isBTop = b.Status === "Top" ? 1 : 0;
+          return isBTop - isATop;
+        });
 
-        setProdukInformasiGeofisika(filteredInformasiList);
+        setProdukInformasiGeofisika(sortedInformasiList);
       } catch (error) {
         console.error("Error fetching data: ", error);
         setError(error);

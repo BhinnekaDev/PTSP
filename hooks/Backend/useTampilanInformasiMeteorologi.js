@@ -22,7 +22,13 @@ const useTampilanInformasiMeteorologi = () => {
           (informasi) => informasi.Pemilik === "Meteorologi"
         );
 
-        setProdukInformasiMeteorologi(filteredInformasiList);
+        const sortedInformasiList = filteredInformasiList.sort((a, b) => {
+          const isATop = a.Status === "Top" ? 1 : 0;
+          const isBTop = b.Status === "Top" ? 1 : 0;
+          return isBTop - isATop;
+        });
+
+        setProdukInformasiMeteorologi(sortedInformasiList);
       } catch (error) {
         console.error("Error fetching data: ", error);
         setError(error);
