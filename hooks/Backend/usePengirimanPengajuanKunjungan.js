@@ -133,7 +133,7 @@ function usePengirimanPengajuanKunjungan() {
 
       const storageRef = ref(
         storage,
-        `pengajuan_kunjungan/${docRef.id}/${File.name}`
+        `Pengajuan_Kunjungan/${docRef.id}/${File.name}`
       );
       await uploadBytes(storageRef, File);
       const FileURL = await getDownloadURL(storageRef);

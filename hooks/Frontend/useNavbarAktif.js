@@ -22,7 +22,11 @@ const useNavbarAktif = (initialPath = "/Beranda") => {
     router.push(path);
   };
 
-  return { navbarAktif, handlenavbarAktif };
+  const handlenavbarAktifLink = (link) => {
+    window.open(link, "_blank", "noopener,noreferrer");
+  };
+
+  return { navbarAktif, handlenavbarAktif, handlenavbarAktifLink };
 };
 
 export default useNavbarAktif;

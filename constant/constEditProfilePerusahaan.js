@@ -3,12 +3,10 @@ import DOMPurify from "dompurify";
 import { Typography, Input, Button } from "@/app/MTailwind";
 import useVerifikasiLogin from "@/hooks/Backend/useVerifikasiLogin";
 import useEditProfile from "@/hooks/Backend/useEditProfile";
-import { toast } from "react-toastify";
 import { formatNPWP } from "@/utils/utilsNPWP";
 import { formatNoIdentitas } from "@/utils/utilsNoIdentitas";
 import { formatHuruf } from "@/utils/utilsHuruf";
 import { formatNoTeleponPerusahaan } from "@/utils/utilsNoTeleponPerusahaan";
-import { formatPendidikanTerakhir } from "@/utils/utilsPendidikanTerakhir";
 import { formatNoTelepon } from "@/utils/utilsNoTelepon";
 
 function EditProfile() {
@@ -33,12 +31,6 @@ function EditProfile() {
     if (name === "No_Identitas") {
       tanganiGantiPengguna({
         target: { name, value: formatNoIdentitas(sanitizedValue) },
-      });
-      return;
-    }
-    if (name === "Pendidikan_Terakhir") {
-      tanganiGantiPengguna({
-        target: { name, value: formatPendidikanTerakhir(sanitizedValue) },
       });
       return;
     }
@@ -79,7 +71,7 @@ function EditProfile() {
           <div className="mb-6">
             <Typography variant="h4">Edit Profile Perusahaan</Typography>
           </div>
-          <div className="grid grid-cols-2 text-center gap-x-3 gap-y-3">
+          <div className="grid grid-cols-2 text-center gap-x-2 gap-y-3">
             <div>
               <Typography variant="h6" className="mb-2">
                 Nomor Identitas
@@ -117,12 +109,30 @@ function EditProfile() {
               <Typography variant="h6" className="mb-2">
                 Pendidikan Terakhir
               </Typography>
-              <Input
+              <select
                 name="Pendidikan_Terakhir"
                 value={editedDetailPengguna.Pendidikan_Terakhir || ""}
                 onChange={handleInputChange}
-                className="input-custom"
-              />
+                className="block w-full mt-1 p-2 border rounded-lg text-gray-500 input-custom"
+                required
+              >
+                <option value="">Pilih Pendidikan Terakhir</option>
+                <option value="Tidak Sekolah">Tidak Sekolah</option>
+                <option value="SD Sederajat">
+                  SD Sederajat (SD, MI, Paket A)
+                </option>
+                <option value="SMP Sederajat">
+                  SMP Sederajat (SMP, MTs, Paket B)
+                </option>
+                <option value="SMA Sederajat">
+                  SMA Sederajat (SMA, MA, SMK, Paket C)
+                </option>
+                <option value="D1 - D3">Diploma (D1 - D3)</option>
+                <option value="S1 / D4">Sarjana / Diploma IV (S1 / D4)</option>
+                <option value="S2">Magister (S2)</option>
+                <option value="S3">Doktor (S3)</option>
+                <option value="Lulusan Luar Negeri">Lulusan Luar Negeri</option>
+              </select>
             </div>
             <div>
               <Typography variant="h6" className="mb-2">

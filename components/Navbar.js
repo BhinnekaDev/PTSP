@@ -26,7 +26,8 @@ import { useDialogRegulasi } from "@/hooks/Frontend/useDialogRegulasi";
 import useMasukkanPencarian from "@/hooks/Backend/useMasukkanPencarian";
 
 function Navigation() {
-  const { navbarAktif, handlenavbarAktif } = useNavbarAktif();
+  const { navbarAktif, handlenavbarAktif, handlenavbarAktifLink } =
+    useNavbarAktif();
   const router = useRouter();
   const { navbarBg, openPengaturan, setOpenPengaturan } = useNavbarEfek();
   const { apakahSudahLogin } = useVerifikasiLogin();
@@ -150,6 +151,12 @@ function Navigation() {
             onClick={() => handlenavbarAktif("/Pengaduan")}
           >
             Pengaduan
+          </MenuItem>
+          <MenuItem
+            className="hover:!bg-secondary hover:!text-white p-2 font-semibold cursor-pointer"
+            onClick={() => handlenavbarAktifLink("https://www.lapor.go.id/")}
+          >
+            SP4N Lapor
           </MenuItem>
         </MenuList>
       </Menu>

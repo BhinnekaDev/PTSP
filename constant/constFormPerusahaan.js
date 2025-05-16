@@ -8,7 +8,6 @@ import { formatNoIdentitas } from "@/utils/utilsNoIdentitas";
 import { formatHuruf } from "@/utils/utilsHuruf";
 import { formatNoTelepon } from "@/utils/utilsNoTelepon";
 import { formatNoTeleponPerusahaan } from "@/utils/utilsNoTeleponPerusahaan";
-import { formatPendidikanTerakhir } from "@/utils/utilsPendidikanTerakhir";
 import { formatEmail } from "@/utils/utilsEmail";
 import { formatAlamat } from "@/utils/utilsAlamat";
 import { toast } from "react-hot-toast";
@@ -72,14 +71,6 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
       setFormDataPerusahaan((prev) => ({
         ...prev,
         [name]: formattedInputAlamat,
-      }));
-      return;
-    }
-    if (name === "Pendidikan_Terakhir") {
-      const formattedInputPendidikanTerakhir = formatPendidikanTerakhir(value);
-      setFormDataPerusahaan((prev) => ({
-        ...prev,
-        [name]: formattedInputPendidikanTerakhir,
       }));
       return;
     }
@@ -198,17 +189,34 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
               </div>
               <div>
                 <p className="text-sm font-bold">Pendidikan Terakhir</p>
-                <Input
+                <select
                   name="Pendidikan_Terakhir"
-                  className="input-custom"
-                  placeholder="Pendidikan Terakhir"
                   value={formDataPerusahaan.Pendidikan_Terakhir}
                   onChange={handleInputChange}
-                  size="lg"
-                  labelProps={{
-                    className: "hidden",
-                  }}
-                />
+                  className="block w-full mt-1 p-2 border rounded-lg text-gray-500 input-custom"
+                  required
+                >
+                  <option value="">Pilih Pendidikan Terakhir</option>
+                  <option value="Tidak Sekolah">Tidak Sekolah</option>
+                  <option value="SD Sederajat">
+                    SD Sederajat (SD, MI, Paket A)
+                  </option>
+                  <option value="SMP Sederajat">
+                    SMP Sederajat (SMP, MTs, Paket B)
+                  </option>
+                  <option value="SMA Sederajat">
+                    SMA Sederajat (SMA, MA, SMK, Paket C)
+                  </option>
+                  <option value="D1 - D3">Diploma (D1 - D3)</option>
+                  <option value="S1 / D4">
+                    Sarjana / Diploma IV (S1 / D4)
+                  </option>
+                  <option value="S2">Magister (S2)</option>
+                  <option value="S3">Doktor (S3)</option>
+                  <option value="Lulusan Luar Negeri">
+                    Lulusan Luar Negeri
+                  </option>
+                </select>
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700">
