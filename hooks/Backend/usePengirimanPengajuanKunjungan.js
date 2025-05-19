@@ -147,6 +147,7 @@ function usePengirimanPengajuanKunjungan() {
         TujuanBerkunjung: TujuanBerkunjung.trim(),
         NoSurat: NoSurat.trim(),
         FileURL,
+        Status_Kunjungan: "Sedang Ditinjau",
         Tanggal_Pengajuan_Kunjungan: Timestamp.now(),
       };
 
