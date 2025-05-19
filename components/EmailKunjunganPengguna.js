@@ -103,7 +103,7 @@ const kirimEmailKunjunganPengguna = async (
       <p><strong>Nama Pengaju:</strong> <span style="color: #333;">
         ${Nama_Lengkap}${Nama_Perusahaan ? " - " + Nama_Perusahaan : ""}
       </span></p>
-      <p><strong>Nama Pengaju:</strong> <span style="color: #333;">
+      <p><strong>Email Pengaju:</strong> <span style="color: #333;">
         ${toEmail}${Email_Perusahaan ? " - " + Email_Perusahaan : ""}
       </span></p>
       <p><strong>Alamat Pengaju:</strong> <span style="color: #333;">

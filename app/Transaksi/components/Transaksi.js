@@ -80,10 +80,12 @@ const ListPesanan = () => {
                 </Typography>
                 <Typography className="!text-gray-600 text-xs font-normal">
                   Tanggal Pengajuan:{" "}
-                  {new Date(
-                    pemesanan.ajukanDetail.Tanggal_Pembuatan_Ajukan.seconds *
-                      1000
-                  ).toLocaleString()}
+                  {pemesanan.ajukanDetail?.Tanggal_Pembuatan_Ajukan?.seconds
+                    ? new Date(
+                        pemesanan.ajukanDetail.Tanggal_Pembuatan_Ajukan
+                          .seconds * 1000
+                      ).toLocaleString()
+                    : "Belum Tersedia"}
                 </Typography>
               </div>
             </div>
