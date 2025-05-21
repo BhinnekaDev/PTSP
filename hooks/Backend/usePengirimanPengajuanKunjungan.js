@@ -141,12 +141,12 @@ function usePengirimanPengajuanKunjungan() {
       const dataPengajuanKunjungan = {
         Data_Pengguna: filteredDataUser,
         Stasiun: Stasiun.trim(),
-        TanggalKunjungan,
-        JamKunjungan,
-        JumlahPengunjung,
-        TujuanBerkunjung: TujuanBerkunjung.trim(),
-        NoSurat: NoSurat.trim(),
-        FileURL,
+        TanggalKunjungan: TanggalKunjungan,
+        Jam_Kunjungan: JamKunjungan,
+        JumlahPengunjung: JumlahPengunjung,
+        Tujuan_Berkunjung: TujuanBerkunjung.trim(),
+        No_Surat: NoSurat.trim(),
+        Lampiran_Kunjungan: FileURL,
         Status_Kunjungan: "Sedang Ditinjau",
         Tanggal_Pengajuan_Kunjungan: Timestamp.now(),
       };

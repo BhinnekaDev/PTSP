@@ -68,7 +68,7 @@ const useSaranSubmit = () => {
         Nama: Nama,
         Email: Email,
         Saran: Saran,
-        ...(fileUrls.length > 0 && { File_Attachment: fileUrls }),
+        ...(fileUrls.length > 0 && { File_Saran: fileUrls[0] }),
         Tanggal_Pembuatan: serverTimestamp(),
       };
 
