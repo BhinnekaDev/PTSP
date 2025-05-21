@@ -141,9 +141,9 @@ function usePengirimanPengajuanKunjungan() {
       const dataPengajuanKunjungan = {
         Data_Pengguna: filteredDataUser,
         Stasiun: Stasiun.trim(),
-        TanggalKunjungan: TanggalKunjungan,
+        Tanggal_Kunjungan: TanggalKunjungan,
         Jam_Kunjungan: JamKunjungan,
-        JumlahPengunjung: JumlahPengunjung,
+        Jumlah_Pengunjung: JumlahPengunjung,
         Tujuan_Berkunjung: TujuanBerkunjung.trim(),
         No_Surat: NoSurat.trim(),
         Lampiran_Kunjungan: FileURL,
@@ -156,7 +156,7 @@ function usePengirimanPengajuanKunjungan() {
           dataPengajuanKunjungan.Instansi = "Umum";
         } else if (Instansi && NamaInstansi?.trim()) {
           dataPengajuanKunjungan.Instansi = Instansi;
-          dataPengajuanKunjungan.NamaInstansi = NamaInstansi.trim();
+          dataPengajuanKunjungan.Nama_Instansi = NamaInstansi.trim();
         }
       }
 

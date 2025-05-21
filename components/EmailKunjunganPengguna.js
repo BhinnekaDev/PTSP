@@ -30,7 +30,7 @@ const kirimEmailKunjunganPengguna = async (
             <tr>
               <td style="border: 1px solid #ddd; padding: 10px;">Nama Instansi</td>
               <td style="border: 1px solid #ddd; padding: 10px;">${
-                dataPengajuan.NamaInstansi || "-"
+                dataPengajuan.Nama_Instansi || "-"
               }</td>
             </tr>
             <tr>
@@ -42,38 +42,38 @@ const kirimEmailKunjunganPengguna = async (
             <tr>
               <td style="border: 1px solid #ddd; padding: 10px;">Tanggal Kunjungan</td>
               <td style="border: 1px solid #ddd; padding: 10px;">${
-                dataPengajuan.TanggalKunjungan
+                dataPengajuan.Tanggal_Kunjungan
               }</td>
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 10px;">Jam Kunjungan</td>
               <td style="border: 1px solid #ddd; padding: 10px;">${
-                dataPengajuan.JamKunjungan
+                dataPengajuan.Jam_Kunjungan
               }</td>
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 10px;">Jumlah Pengunjung</td>
               <td style="border: 1px solid #ddd; padding: 10px;">${
-                dataPengajuan.JumlahPengunjung
+                dataPengajuan.Jumlah_Pengunjung
               }</td>
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 10px;">Tujuan Kunjungan</td>
               <td style="border: 1px solid #ddd; padding: 10px;">${
-                dataPengajuan.TujuanBerkunjung
+                dataPengajuan.Tujuan_Berkunjung
               }</td>
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 10px;">No Surat</td>
               <td style="border: 1px solid #ddd; padding: 10px;">${
-                dataPengajuan.NoSurat
+                dataPengajuan.No_Surat
               }</td>
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 10px;">Lampiran Dokumen</td>
              <td style="border: 1px solid #ddd; padding: 10px;">
               <a href="${
-                dataPengajuan.FileURL
+                dataPengajuan.Lampiran_Kunjungan
               }" target="_blank" style="color: #007bff; text-decoration: underline;">
                 Preview
               </a>
