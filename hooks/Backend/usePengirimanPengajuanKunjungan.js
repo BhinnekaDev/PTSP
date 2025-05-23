@@ -141,7 +141,7 @@ function usePengirimanPengajuanKunjungan() {
       const dataPengajuanKunjungan = {
         Data_Pengguna: filteredDataUser,
         Stasiun: Stasiun.trim(),
-        Tanggal_Kunjungan: TanggalKunjungan,
+        Tanggal_Kunjungan: Timestamp.fromDate(new Date(TanggalKunjungan)),
         Jam_Kunjungan: JamKunjungan,
         Jumlah_Pengunjung: JumlahPengunjung,
         Tujuan_Berkunjung: TujuanBerkunjung.trim(),
