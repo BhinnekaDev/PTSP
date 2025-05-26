@@ -72,7 +72,7 @@ function Navigation() {
             <a className="flex items-center">Layanan</a>
           </Typography>
         </MenuHandler>
-        <MenuList className="bg-primary text-white uppercase text-sm lg:text-base">
+        <MenuList className="bg-primary text-white uppercase text-sm lg:text-base lg:w-52 w-full">
           <MenuItem
             className="hover:!bg-secondary hover:!text-white"
             onClick={handleDialogOpenAlurLayanan}
@@ -131,7 +131,7 @@ function Navigation() {
             <a className="flex items-center">Saran & Pengaduan</a>
           </Typography>
         </MenuHandler>
-        <MenuList className="bg-primary text-white uppercase text-sm lg:text-base">
+        <MenuList className="bg-primary text-white uppercase text-sm lg:text-base lg:w-52 w-full">
           <MenuItem
             className={`hover:!bg-secondary hover:!text-white p-2 font-semibold cursor-pointer ${
               navbarAktif === "/Saran"
@@ -189,10 +189,10 @@ function Navigation() {
         </a>
       </Typography>
       <form onSubmit={handleSearch} className="relative">
-        <div className="relative">
+        <div className="relative lg:px-0 px-8">
           <Typography
             as="li"
-            className="flex items-center bg-white rounded-full gap-x-2 font-bold lg:text-xl cursor-pointer"
+            className="flex items-center bg-white rounded-full gap-x-2 font-bold lg:text-xl cursor-pointer lg:w-72 w-full "
           >
             <Input
               type="text"
@@ -210,9 +210,8 @@ function Navigation() {
               <FaMagnifyingGlass className="h-6 w-6 text-white" />
             </Button>
           </Typography>
-
           {suggestions.length > 0 && (
-            <ul className="absolute z-50 w-[350px] mt-2 bg-white border border-gray-300 rounded-lg shadow-lg">
+            <ul className="absolute z-50 lg:w-[350px] mt-2 bg-white border border-gray-300 rounded-lg shadow-lg">
               {suggestions.map((item) => (
                 <li
                   key={item.id}
@@ -244,13 +243,13 @@ function Navigation() {
       {DialogPanduan}
       <div className="flex items-center justify-between text-white">
         <div
-          className="ml-6 cursor-pointer py-1.5 text-white flex items-center gap-x-2 uppercase font-bold"
+          className="lg:ml-6 cursor-pointer py-1.5 text-white flex items-center gap-x-2 uppercase font-bold"
           onClick={() => handlenavbarAktif("/Beranda")}
         >
           <Image
             src={LogoBMKG}
             alt="Logo BMKG"
-            className="w-full h-full"
+            className="lg:w-full lg:h-full"
             width={130}
             height={130}
             quality={100}
@@ -329,10 +328,10 @@ function Navigation() {
             </Menu>
           </div>
         </div>
-        <div className="hidden sm:flex items-center gap-x-5">
+        <div className="sm:flex items-center gap-x-5">
           {!apakahSudahLogin ? (
             <Button
-              className="border-2 border-white uppercase font-bold bg-secondary rounded-full"
+              className="lg:block hidden border-2 border-white uppercase font-bold bg-secondary rounded-full"
               onClick={() => handlenavbarAktif("/Login")}
             >
               Login
@@ -378,54 +377,37 @@ function Navigation() {
         </div>
       </div>
       <Collapse open={openPengaturan}>
-        <div className="container mx-auto hidden">
+        <div className="block lg:hidden">
           {navList}
-          <div className="flex justify-center items-center gap-x-20">
-            <a
-              className="font-bold text-white hover:text-primary"
-              onClick={() => handlenavbarAktif("/Keranjang")}
-            >
-              <FaCartShopping className="w-5 h-5" />
-            </a>
-            <Menu
-              animate={{
-                mount: { y: 30 },
-                unmount: { y: 50 },
-              }}
-            >
-              <MenuHandler>
-                <a className="font-bold text-white">
-                  <FaGear className="w-5 h-5" />
-                </a>
-              </MenuHandler>
-              <MenuList className="text-white text-base bg-primary border-2 border-white uppercase">
-                <MenuItem
-                  className="hover:!bg-secondary hover:!text-white"
-                  onClick={() => handlenavbarAktif("/ProfileSetting")}
-                >
-                  Profile Saya
-                </MenuItem>
-                <MenuItem
-                  className="hover:!bg-secondary hover:!text-white"
-                  onClick={() => handlenavbarAktif("/Transaksi")}
-                >
-                  Pesanan Saya
-                </MenuItem>
-                <hr className="my-1" />
-                <MenuItem className="hover:!bg-secondary hover:!text-white">
-                  Keluar
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          </div>
-          <div className="flex justify-center items-center gap-x-20">
-            {!apakahSudahLogin && (
+          <div className="flex flex-col items-center gap-4 py-4">
+            {!apakahSudahLogin ? (
               <Button
-                className="button-effect"
+                className="border-2 border-white uppercase font-bold bg-secondary rounded-full"
                 onClick={() => handlenavbarAktif("/Login")}
               >
                 Login
               </Button>
+            ) : (
+              <>
+                <a
+                  className="text-white font-bold"
+                  onClick={() => handlenavbarAktif("/Keranjang")}
+                >
+                  <FaCartShopping className="w-5 h-5" />
+                </a>
+                <a
+                  className="text-white font-bold"
+                  onClick={() => handlenavbarAktif("/PengaturanProfil")}
+                >
+                  <FaGear className="w-5 h-5" />
+                </a>
+                <Button
+                  onClick={keluarAkun}
+                  className="bg-secondary rounded-full"
+                >
+                  Keluar
+                </Button>
+              </>
             )}
           </div>
         </div>

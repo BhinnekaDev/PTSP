@@ -5,62 +5,64 @@ import { FaInstagram, FaTelegramPlane, FaGlobe } from "react-icons/fa";
 
 function Footer() {
   return (
-    <footer className="bg-darkgray text-white py-20 z-10 relative">
+    <footer className="bg-darkgray text-white lg:py-20 py-10 z-10 relative">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="text-center lg:text-left">
-          <Typography variant="h5" className="font-semibold mb-3">
+          <Typography className="font-semibold mb-3 lg:text-lg text-base">
             ©2024 PTSP BMKG BENGKULU
           </Typography>
           <hr className="border-t-2 border-primary w-full mx-auto md:mx-0 mb-4" />
-          <Typography className="text-base">
+          <Typography className="lg:text-base text-sm">
             PTSP BMKG Provinsi Bengkulu merupakan lembaga penyedia jasa atau
             informasi yang berada di wilayah Bengkulu dan sekitarnya yang
             berhubungan dengan klimatologi, meteorologi dan geofisika
           </Typography>
         </div>
         <div className="text-center lg:text-center">
-          <Typography variant="h5" className="font-semibold mb-3">
+          <Typography className="font-semibold mb-3 lg:text-lg text-base">
             STASIUN METEOROLOGI
           </Typography>
           <hr className="border-t-2 border-primary w-full mx-auto md:mx-0 mb-4" />
-          <Typography className="text-base">
+          <Typography className="lg:text-base text-sm">
             Jl. Depati Payung Negara, Pekan Sabtu, Kec. Selebar, Kota Bengkulu,
             Bengkulu 38213
           </Typography>
           <Typography className="text-base mt-2">0736-51064</Typography>
         </div>
         <div className="text-center lg:text-center">
-          <Typography variant="h5" className="font-semibold mb-3">
+          <Typography className="font-semibold mb-3 lg:text-lg text-base">
             STASIUN KLIMATOLOGI
           </Typography>
           <hr className="border-t-2 border-primary w-full mx-auto md:mx-0 mb-4" />
-          <Typography className="text-base">
+          <Typography className="lg:text-base text-sm">
             Jl. Ir. Rustandi Sugianto P. Baai Bengkulu 39172
           </Typography>
-          <Typography className="text-base mt-2">
+          <Typography className="lg:text-base text-sm mt-2">
             0736-51251 / 0736-51426 / 0736-53030
           </Typography>
-          <Typography className="text-base mt-2">
+          <Typography className="lg:text-base text-sm mt-2">
             staklim.pulaubaai@bmkg.go.id
           </Typography>
         </div>
         <div className="text-center lg:text-center">
-          <Typography variant="h5" className="font-semibold mb-3">
+          <Typography className="font-semibold mb-3 lg:text-lg text-base">
             STASIUN GEOFISIKA
           </Typography>
           <hr className="border-t-2 border-primary w-full mx-auto md:mx-0 mb-4" />
-          <Typography className="text-base">
+          <Typography className="lg:text-base text-sm">
             Jl. Pembangunan No. 156 Pasar Ujung, Kepahyang, Bengkulu
           </Typography>
-          <Typography className="text-base mt-2">0732-391600</Typography>
-          <Typography className="text-base mt-2">
+          <Typography className="lg:text-base text-sm mt-2">
+            0732-391600
+          </Typography>
+          <Typography className="lg:text-base text-sm mt-2">
             stageof.kepahiang@bmkg.go.id
           </Typography>
         </div>
       </div>
       <div className="border-t border-primary mt-10 pt-4">
-        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-          <Typography variant="h6" className="">
+        <div className="container mx-auto flex flex-col lg:flex-row lg:justify-between justify-center text-center items-center">
+          <Typography className="lg:text-base text-sm">
             Copyrights © 2024 -{" "}
             <span className="font-semibold text-secondary">
               PTSP BMKG Provinsi Bengkulu

@@ -10,7 +10,7 @@ function CarouselSection() {
   return (
     <Carousel
       transition={{ duration: 2 }}
-      className="rounded-none z-10 relative top-0"
+      className="rounded-none z-10 relative lg:top-0"
       prevArrow={({ handlePrev }) => (
         <IconButton
           variant="text"
@@ -38,7 +38,7 @@ function CarouselSection() {
         <Image
           src={Slider1}
           alt="Seasonal sale banner offering big discounts in December"
-          className="h-[90vh] w-full object-fill brightness-50"
+          className="w-full h-[50vh] lg:h-[90vh] object-cover brightness-50"
         />
         <div className="absolute top-1/2 right-0 transform -translate-y-1/2 me-2 lg:me-36 p-4 text-white text-xl font-bold animate-slide-fade-in">
           <div className="uppercase text-center lg:text-end tracking-widest px-10 lg:px-0">
@@ -55,7 +55,7 @@ function CarouselSection() {
         <Image
           src={Slider2}
           alt="New innovations and updates from E-Mart Ndaru Farm"
-          className="h-[90vh] w-full object-fill brightness-50"
+          className="w-full h-[50vh] lg:h-[90vh] object-cover brightness-50"
         />
         <div className="absolute top-1/2 right-0 transform -translate-y-1/2 me-2 lg:me-36 p-4 text-white text-xl font-bold animate-slide-fade-in">
           <div className="uppercase text-center lg:text-end tracking-widest px-10 lg:px-0">
@@ -72,7 +72,7 @@ function CarouselSection() {
         <Image
           src={Slider3}
           alt="Welcome back banner from Ndaru Farm"
-          className="h-[90vh] w-full object-fill brightness-50"
+          className="w-full h-[50vh] lg:h-[90vh] object-cover brightness-50"
         />
         <div className="absolute top-1/2 right-0 transform -translate-y-1/2 me-2 lg:me-36 p-4 text-white text-xl font-bold">
           <div className="uppercase text-center lg:text-end tracking-widest px-10 lg:px-0">

@@ -6,10 +6,10 @@ import Pamflet2 from "@/assets/img/Pamflet/2.png";
 
 function EventsSection() {
   return (
-    <div className="mt-10 py-10 lg:py-32 z-10 relative ">
-      <div className="flex flex-col items-center gap-10">
-        <Image src={Pamflet1} alt="Ndaru Farm Logo" />
-        <Image src={Pamflet2} alt="Ndaru Farm Logo" />
+    <div className="lg:mt-10 lg:py-12 py-3 z-10 relative ">
+      <div className="flex flex-col items-center lg:gap-10 gap-5">
+        <Image src={Pamflet1} alt="" />
+        <Image src={Pamflet2} alt="" />
       </div>
     </div>
   );

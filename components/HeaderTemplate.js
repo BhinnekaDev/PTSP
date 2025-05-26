@@ -62,12 +62,12 @@ function HeaderTemplate() {
       <Image
         src={HeaderImage}
         alt="image 2"
-        className="h-110 w-full object-cover brightness-50"
+        className="lg:h-[70vh] h-[40vh] w-full object-cover brightness-50"
         priority
       />
-      <div className="absolute top-0 left-0 w-full h-full bg-[rgba(7,33,46,0.8)] blur-[10px] z-2"></div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 text-white text-xl font-bold animate-slide-fade-in">
-        <div className="uppercase text-center tracking-widest px-10 lg:px-0">
+      <div className="absolute top-0 left-0 w-full h-full bg-[rgba(7,33,46,0.8)] blur-[10px] z-2 "></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:p-4 p-0 text-white text-xl font-bold animate-slide-fade-in">
+        <div className="uppercase text-center tracking-widest">
           {loading ? (
             <>
               <Skeleton className="mb-2" width={200} height={20} />
@@ -75,10 +75,10 @@ function HeaderTemplate() {
             </>
           ) : (
             <>
-              <h3 className="text-base lg:text-lg text-primary uppercase">
+              <h3 className="text-xl lg:text-lg text-primary uppercase">
                 {currentContent.desc}
               </h3>
-              <h3 className="text-base lg:text-5xl text-white capitalize">
+              <h3 className="text-lg lg:text-5xl text-white capitalize">
                 {currentContent.title}
               </h3>
             </>
