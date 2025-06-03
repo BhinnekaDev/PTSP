@@ -14,7 +14,13 @@ import {
   Input,
 } from "@/app/MTailwind";
 import { useRouter } from "next/navigation";
-import { FaGear, FaCartShopping, FaMagnifyingGlass } from "react-icons/fa6";
+import {
+  FaGear,
+  FaCartShopping,
+  FaMagnifyingGlass,
+  FaAddressCard,
+  FaCreditCard,
+} from "react-icons/fa6";
 import LogoBMKG from "@/assets/img/Logo/logo.png";
 import useKeluar from "@/hooks/Backend/useKeluarAkun";
 import useHitungKeranjangSesuaiID from "@/hooks/Backend/useHitungKeranjangSesuaiID";
@@ -388,26 +394,62 @@ function Navigation() {
                 Login
               </Button>
             ) : (
-              <>
-                <a
-                  className="text-white font-bold"
-                  onClick={() => handlenavbarAktif("/Keranjang")}
-                >
-                  <FaCartShopping className="w-5 h-5" />
-                </a>
-                <a
-                  className="text-white font-bold"
-                  onClick={() => handlenavbarAktif("/PengaturanProfil")}
-                >
-                  <FaGear className="w-5 h-5" />
-                </a>
+              <div className="flex flex-col items-center gap-2">
+                {/* Baris icon */}
+                <div className="flex items-center gap-6">
+                  {/* Icon Keranjang */}
+                  <a
+                    className={`relative font-bold hover:text-secondary cursor-pointer ${
+                      navbarAktif === "/Keranjang" ||
+                      navbarAktif === "/Pemesanan"
+                        ? "text-secondary"
+                        : "text-white"
+                    }`}
+                    onClick={() => handlenavbarAktif("/Keranjang")}
+                  >
+                    {apakahSudahLogin && (
+                      <div className="relative">
+                        <FaCartShopping className="w-5 h-5" />
+                        <span className="absolute -top-3 -right-3 border-2 border-white bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                          {jumlahKeranjang > 0 ? jumlahKeranjang : "0"}
+                        </span>
+                      </div>
+                    )}
+                  </a>
+
+                  {/* Icon Profil */}
+                  <a
+                    className={`relative font-bold hover:text-secondary cursor-pointer ${
+                      navbarAktif === "/PengaturanProfil"
+                        ? "text-secondary"
+                        : "text-white"
+                    }`}
+                    onClick={() => handlenavbarAktif("/PengaturanProfil")}
+                  >
+                    <FaAddressCard className="w-5 h-5" />
+                  </a>
+
+                  {/* Icon Transaksi */}
+                  <a
+                    className={`relative font-bold hover:text-secondary cursor-pointer ${
+                      navbarAktif === "/Transaksi"
+                        ? "text-secondary"
+                        : "text-white"
+                    }`}
+                    onClick={() => handlenavbarAktif("/Transaksi")}
+                  >
+                    <FaCreditCard className="w-5 h-5" />
+                  </a>
+                </div>
+
+                {/* Tombol Keluar di baris terpisah */}
                 <Button
                   onClick={keluarAkun}
-                  className="bg-secondary rounded-full"
+                  className="bg-secondary rounded-full mt-2"
                 >
                   Keluar
                 </Button>
-              </>
+              </div>
             )}
           </div>
         </div>
