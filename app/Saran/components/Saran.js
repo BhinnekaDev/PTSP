@@ -51,7 +51,9 @@ export default function Saran() {
 
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-lg font-semibold mb-1">Nama</label>
+          <label className="block text-base lg:text-lg font-semibold mb-1">
+            Nama
+          </label>
           <Input
             type="text"
             className="w-full input-custom"
@@ -61,7 +63,9 @@ export default function Saran() {
         </div>
 
         <div className="mb-4">
-          <label className="block text-lg font-semibold mb-1">Email</label>
+          <label className="block text-base lg:text-lg font-semibold mb-1">
+            Email
+          </label>
           <Input
             type="email"
             className="w-full input-custom"
@@ -71,7 +75,9 @@ export default function Saran() {
         </div>
 
         <div className="mb-4">
-          <label className="block text-lg font-semibold mb-1">Saran</label>
+          <label className="block text-base lg:text-lg font-semibold mb-1">
+            Saran
+          </label>
           <Textarea
             rows={4}
             className="w-full input-custom"
@@ -81,14 +87,14 @@ export default function Saran() {
         </div>
 
         <div className="mb-6">
-          <label className="block text-lg font-semibold mb-1">
+          <label className="block text-base lg:text-lg font-semibold mb-1">
             Upload Lampiran (Jika ada)
           </label>
           <input type="file" className="w-full" onChange={handleFileChange} />
         </div>
         <Button
           type="submit"
-          color="green"
+          className="text-white bg-secondary lg:w-1/12 w-full text-base font-semibold py-2 px-4 rounded-md"
           disabled={!apakahSudahLogin || loading}
         >
           {loading ? "Mengirim..." : "KIRIM"}

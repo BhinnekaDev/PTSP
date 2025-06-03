@@ -158,9 +158,9 @@ function Katalog() {
           </div>
         </section>
       )}
-      <div className="max-w-screen-xl mx-auto px-8 py-20 ">
+      <div className="max-w-screen-xl mx-auto px-2 lg:px-8 py-4lg:py-20 ">
         {pilihStasiun && (
-          <div className="border p-6 rounded-lg shadow-lg ">
+          <div className="border p-2 lg:p-6 rounded-lg shadow-lg ">
             <button
               className="flex items-center mb-4 text-primary"
               onClick={() => setPilihComponent(null)}

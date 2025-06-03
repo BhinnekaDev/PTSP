@@ -17,8 +17,8 @@ function AuthPage() {
     useMasukDenganGoogle();
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-50">
-      <div className="flex flex-col-reverse lg:flex-row w-full max-w-4xl h-auto lg:h-[60vh] shadow-lg rounded-lg overflow-hidden bg-white">
+    <div className="flex h-screen items-center justify-center">
+      <div className="flex flex-col-reverse lg:flex-row w-full max-w-4xl h-auto lg:h-[60vh] shadow-lg rounded-none lg:rounded-lg overflow-hidden bg-white">
         {navbarAktif === "/Login" ? (
           <>
             <div className="flex flex-1 flex-col justify-center items-center p-8">
@@ -39,7 +39,7 @@ function AuthPage() {
               )}
             </div>
 
-            <div className="flex flex-1 flex-col justify-center items-center bg-primary text-white py-8 px-6 mt-16 lg:mt-0">
+            <div className="flex flex-1 flex-col justify-center items-center bg-primary text-white py-8 px-6 lg:mt-0">
               <div className="text-center lg:text-right">
                 <h3 className="text-2xl font-semibold mt-4">
                   Penasaran Bagaimana Kami

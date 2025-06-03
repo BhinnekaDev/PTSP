@@ -211,11 +211,11 @@ function Navigation() {
             </Button>
           </Typography>
           {suggestions.length > 0 && (
-            <ul className="absolute z-50 lg:w-[350px] mt-2 bg-white border border-gray-300 rounded-lg shadow-lg">
+            <ul className="fixed mt-3 lg:mt-2 left-4 right-4 z-[100] bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto lg:absolute lg:top-full lg:left-0 lg:w-[350px] lg:z-50">
               {suggestions.map((item) => (
                 <li
                   key={item.id}
-                  className="p-2 hover:bg-gray-100 text-sm cursor-pointer text-black hover:text-primary hover:delay-75 hover:-translate-y-1 hover:shadow-sm"
+                  className="p-2 hover:bg-gray-100 text-sm cursor-pointer text-black hover:text-primary"
                   onClick={() =>
                     router.push(
                       `/Pencarian?query=${encodeURIComponent(item.Nama)}`

@@ -39,11 +39,13 @@ const KegiatanKeagamaanForm = ({ onSubmit }) => {
       onSubmit={handleFormSubmit}
       className="section-keagamaan w-full max-w-7xl p-6 bg-gray-200 rounded-lg shadow-lg"
     >
-      <h2 className="text-2xl font-semibold text-center mb-6">
+      <h2 className="text-lg lg:text-2xl font-semibold text-center mb-6">
         Form Kegiatan Keagamaan
       </h2>
       <div className="mb-6">
-        <h3 className="text-xl font-semibold mb-4">Data Keperluan</h3>
+        <h3 className="text-lg lg:text-xl font-semibold mb-4">
+          Data Keperluan
+        </h3>
         <div className="mb-4">
           <p className="text-sm font-bold">
             Surat Permintaan Ditandatangani Camat atau Pejabat Setingkat

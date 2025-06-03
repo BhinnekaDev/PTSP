@@ -38,7 +38,9 @@ export default function Saran() {
         </Typography>
         <div className="w-32 h-1 bg-secondary mb-6 rounded-md"></div>
         <div className="mb-4">
-          <label className="block text-lg font-semibold mb-1">Nama</label>
+          <label className="block text-base lg:text-lg font-semibold mb-1">
+            Nama
+          </label>
           <Input
             type="text"
             className="w-full input-custom"
@@ -48,7 +50,9 @@ export default function Saran() {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-lg font-semibold mb-1">Email</label>
+          <label className="block text-base lg:text-lg font-semibold mb-1">
+            Email
+          </label>
           <Input
             type="email"
             className="w-full input-custom"
@@ -58,7 +62,9 @@ export default function Saran() {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-lg font-semibold mb-1">Pengaduan</label>
+          <label className="block text-base lg:text-lg font-semibold mb-1">
+            Pengaduan
+          </label>
           <Textarea
             rows={4}
             className="w-full input-custom"
@@ -70,8 +76,8 @@ export default function Saran() {
         <div className="flex justify-end">
           <Button
             type="submit"
-            color="green"
             disabled={!apakahSudahLogin || loading}
+            className="text-white bg-secondary lg:w-1/12 w-full text-base font-semibold py-2 px-4 rounded-md"
           >
             {loading ? "MENGIRIM..." : "KIRIM"}
           </Button>

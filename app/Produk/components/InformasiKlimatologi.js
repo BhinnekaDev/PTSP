@@ -55,7 +55,7 @@ export default function InformasiKlimatologi() {
         Informasi
       </h1>
       <h5 className="text-center uppercase mb-8">Stasiun Klimatologi</h5>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
         {itemTerkini.map((product) => (
           <Card
             className="border-2 hover:shadow-2xl transition relative py-6 pl-6"
@@ -129,7 +129,7 @@ export default function InformasiKlimatologi() {
                     memuatMasukKeKeranjang
                   }
                 >
-                  <FaCartShopping size={15} />
+                  <FaCartShopping size={30} className="hidden lg:block" />
                   <span className="text-sm">
                     {memuatMasukKeKeranjang ? (
                       <Memuat />
