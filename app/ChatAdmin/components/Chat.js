@@ -139,8 +139,8 @@ const ChatMessages = ({
         const showMore = pesan.teks.length > batasTeksPesan;
 
         return (
-          <div key={index} className="w-full flex justify-start px-8 py-2">
-            <motion.div className="flex flex-col w-1/2 p-3 bg-[#3182B7] rounded-lg gap-1">
+          <div key={index} className="w-full flex justify-end px-8 py-2">
+            <motion.div className="flex flex-col w-1/2 p-3 bg-secondary rounded-lg gap-1">
               <motion.div
                 initial={{ height: 50, opacity: 0.8 }}
                 animate={{ height: isExpanded ? "auto" : 50, opacity: 1 }}
