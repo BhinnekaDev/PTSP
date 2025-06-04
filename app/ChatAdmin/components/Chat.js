@@ -98,9 +98,6 @@ const StationList = ({
                           })
                       : ""}
                   </Typography>
-                  <Typography className="text-white bg-red-600 px-1.5 py-px rounded-full text-xs">
-                    ...
-                  </Typography>
                 </div>
               </div>
             </motion.div>
@@ -123,24 +120,37 @@ const ChatHeader = ({ stasiun }) => (
   </div>
 );
 
-// Komponen: Chat Messages
-const ChatMessages = ({
-  pesanList,
-  selengkapnya2,
-  toggleSelengkapnya2,
-  setChatRoomId,
-}) => {
+const ChatMessages = ({ pesanList, selengkapnya2, toggleSelengkapnya2 }) => {
   const batasTeksPesan = 200;
+  const containerRef = useRef(null);
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [pesanList]);
 
   return (
-    <div className="space-y-1">
+    <div ref={containerRef} className="space-y-1 overflow-y-auto max-h-[600px]">
       {pesanList.map((pesan, index) => {
         const isExpanded = selengkapnya2.includes(index);
         const showMore = pesan.teks.length > batasTeksPesan;
 
+        const isPengirimPersonal =
+          pesan.tipePengirim === "perorangan" ||
+          pesan.tipePengirim === "perusahaan";
+
         return (
-          <div key={index} className="w-full flex justify-end px-8 py-2">
-            <motion.div className="flex flex-col w-1/2 p-3 bg-secondary rounded-lg gap-1">
+          <div
+            key={pesan.id || index}
+            className={`w-full flex px-8 py-2 ${
+              isPengirimPersonal ? "justify-end" : "justify-start"
+            }`}
+          >
+            <motion.div
+              className={`flex flex-col w-1/2 p-3 rounded-lg gap-1 ${
+                isPengirimPersonal ? "bg-secondary" : "bg-primary"
+              }`}
+            >
               <motion.div
                 initial={{ height: 50, opacity: 0.8 }}
                 animate={{ height: isExpanded ? "auto" : 50, opacity: 1 }}
@@ -148,6 +158,7 @@ const ChatMessages = ({
               >
                 <Typography className="text-white">{pesan.teks}</Typography>
               </motion.div>
+
               {showMore && (
                 <button
                   onClick={() => toggleSelengkapnya2(index)}
@@ -156,6 +167,7 @@ const ChatMessages = ({
                   {isExpanded ? "Tampilkan Lebih Sedikit" : "Baca Selengkapnya"}
                 </button>
               )}
+
               <div className="flex justify-end items-center">
                 <span className="text-sm text-white">
                   {pesan.waktu
@@ -242,12 +254,18 @@ const ChatInput = ({
         placeholder="Ketik pesan"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+          }
+        }}
       />
     </div>
     <div className="flex items-center px-8">
       <BiSolidSend
         onClick={handleSendMessage}
-        className="bg-[#808080]/40 rounded-full p-2 w-9 h-9 text-black cursor-pointer"
+        className="bg-secondary/50 rounded-full p-2 w-9 h-9 text-white cursor-pointer hover:bg-secondary hover:text-white"
       />
     </div>
   </div>

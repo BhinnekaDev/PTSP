@@ -395,9 +395,7 @@ function Navigation() {
               </Button>
             ) : (
               <div className="flex flex-col items-center gap-2">
-                {/* Baris icon */}
-                <div className="flex items-center gap-6">
-                  {/* Icon Keranjang */}
+                <div className="flex items-center gap-8">
                   <a
                     className={`relative font-bold hover:text-secondary cursor-pointer ${
                       navbarAktif === "/Keranjang" ||
@@ -409,8 +407,8 @@ function Navigation() {
                   >
                     {apakahSudahLogin && (
                       <div className="relative">
-                        <FaCartShopping className="w-5 h-5" />
-                        <span className="absolute -top-3 -right-3 border-2 border-white bg-primary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                        <FaCartShopping className="w-6 h-6" />
+                        <span className="absolute -top-3 -right-3 border-2 border-white bg-primary text-white text-xs w-6 h-6 rounded-full flex items-center justify-center">
                           {jumlahKeranjang > 0 ? jumlahKeranjang : "0"}
                         </span>
                       </div>
@@ -426,7 +424,7 @@ function Navigation() {
                     }`}
                     onClick={() => handlenavbarAktif("/PengaturanProfil")}
                   >
-                    <FaAddressCard className="w-5 h-5" />
+                    <FaAddressCard className="w-6 h-6" />
                   </a>
 
                   {/* Icon Transaksi */}
@@ -438,16 +436,14 @@ function Navigation() {
                     }`}
                     onClick={() => handlenavbarAktif("/Transaksi")}
                   >
-                    <FaCreditCard className="w-5 h-5" />
+                    <FaCreditCard className="w-6 h-6" />
                   </a>
                 </div>
-
-                {/* Tombol Keluar di baris terpisah */}
                 <Button
                   onClick={keluarAkun}
-                  className="bg-secondary rounded-full mt-2"
+                  className="bg-secondary rounded-full mt-3"
                 >
-                  Keluar
+                  Keluar Akun
                 </Button>
               </div>
             )}

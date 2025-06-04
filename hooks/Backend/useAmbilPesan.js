@@ -27,6 +27,7 @@ const usePesanChatRoom = (chatRoomId) => {
           return {
             id: doc.id,
             teks: data.isi || "",
+            tipePengirim: data.tipePengirim || null, // tambahan
             namaFile: data.namaFile || null,
             urlFile: data.urlFile || null,
             waktu: data.waktu ? data.waktu.toDate() : null,

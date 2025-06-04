@@ -39,6 +39,16 @@ export default function useMengirimChat() {
     return null;
   };
 
+  // Fungsi pembanding array peserta tanpa sensitif urutan
+  const samaPeserta = (a, b) => {
+    return (
+      Array.isArray(a) &&
+      Array.isArray(b) &&
+      a.length === b.length &&
+      a.every((id) => b.includes(id))
+    );
+  };
+
   const kirimChat = async (pesan, stasiunTerpilihNama, selectedFile) => {
     setLoading(true);
     setError(null);
@@ -51,7 +61,6 @@ export default function useMengirimChat() {
       const tipeUser = await cekTipeUser(UserID);
       if (!tipeUser) throw new Error("User tidak ditemukan di koleksi manapun");
 
-      const stasiunAdmin = stasiunTerpilihNama.replace(/^Stasiun\s*/i, "");
       const peserta = [UserID];
       const tipePeserta = [tipeUser];
 
@@ -67,6 +76,8 @@ export default function useMengirimChat() {
         urlFile = await getDownloadURL(storageRef);
       }
 
+      const stasiunAdmin = stasiunTerpilihNama.replace(/^Stasiun\s*/i, "");
+
       const chatsRoomsRef = collection(firestore, "chatRooms");
       const q = query(
         chatsRoomsRef,
@@ -75,22 +86,24 @@ export default function useMengirimChat() {
       );
       const querySnapshot = await getDocs(q);
 
+      console.log("QuerySnapshot size:", querySnapshot.size);
+
       let chatRoomDocId = null;
 
       querySnapshot.forEach((docSnap) => {
         const data = docSnap.data();
         if (
-          Array.isArray(data.peserta) &&
-          data.peserta.length === peserta.length &&
-          data.peserta.every((val, idx) => val === peserta[idx]) &&
-          data.roomChat === stasiunTerpilihNama // Pastikan roomChat sesuai
+          data.peserta.includes(UserID) &&
+          data.roomChat === stasiunTerpilihNama
         ) {
           chatRoomDocId = docSnap.id;
         }
       });
 
+      console.log("chatRoomDocId ditemukan:", chatRoomDocId);
+
       if (!chatRoomDocId) {
-        // Buat chat room baru
+        console.log("Membuat chatRoom baru karena tidak ada yang cocok");
         const docRef = await addDoc(chatsRoomsRef, {
           pesanTerakhir: pesan,
           peserta,
@@ -101,6 +114,7 @@ export default function useMengirimChat() {
         });
         chatRoomDocId = docRef.id;
       } else {
+        console.log("Mengupdate chatRoom yang sudah ada:", chatRoomDocId);
         const chatRoomDocRef = doc(firestore, "chatRooms", chatRoomDocId);
         await updateDoc(chatRoomDocRef, {
           pesanTerakhir: pesan,
