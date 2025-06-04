@@ -24,8 +24,8 @@ const UserProfile = () => {
   return (
     <div className="flex justify-center items-center min-h-full bg-gray py-24 ">
       <Toaster position="top-right" reverseOrder={false} />
-      <div className="w-full max-w-full flex">
-        <div className="w-1/6 p-4">
+      <div className="w-full max-w-full flex flex-col lg:flex-row">
+        <div className="w-full lg:w-1/6 p-3 lg:p-4">
           <Button
             className={`w-full mb-4 ${
               !modeEdit ? "bg-primary text-white" : "bg-secondary text-white"
@@ -43,7 +43,7 @@ const UserProfile = () => {
             Pengaturan Profil
           </Button>
         </div>
-        <div className="w-3/4">
+        <div className="w-full lg:w-3/4 px-2 lg:px-0">
           <Card className="border border-blue-gray-400 shadow-lg rounded-lg">
             <CardBody>
               {modeEdit ? (

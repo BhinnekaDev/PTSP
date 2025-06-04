@@ -71,8 +71,8 @@ function EditProfile() {
           <div className="mb-6">
             <Typography variant="h4">Edit Profile Perusahaan</Typography>
           </div>
-          <div className="grid grid-cols-2 text-center gap-x-2 gap-y-3">
-            <div>
+          <div className="flex flex-col lg:flex-row justify-center text-center gap-x-2 gap-y-3 mb-5">
+            <div className="w-full lg:w-1/2">
               <Typography variant="h6" className="mb-2">
                 Nomor Identitas
               </Typography>
@@ -83,7 +83,7 @@ function EditProfile() {
                 onChange={handleInputChange}
               />
             </div>
-            <div>
+            <div className="w-full lg:w-1/2">
               <Typography variant="h6" className="mb-2">
                 Nama Lengkap
               </Typography>
@@ -94,7 +94,9 @@ function EditProfile() {
                 className="input-custom"
               />
             </div>
-            <div>
+          </div>
+          <div className="flex flex-col lg:flex-row justify-center text-center gap-x-2 gap-y-3 mb-5">
+            <div className="w-full lg:w-1/2">
               <Typography variant="h6" className="mb-2">
                 Pekerjaan
               </Typography>
@@ -105,7 +107,7 @@ function EditProfile() {
                 className="input-custom"
               />
             </div>
-            <div>
+            <div className="w-full lg:w-1/2">
               <Typography variant="h6" className="mb-2">
                 Pendidikan Terakhir
               </Typography>
@@ -134,7 +136,9 @@ function EditProfile() {
                 <option value="Lulusan Luar Negeri">Lulusan Luar Negeri</option>
               </select>
             </div>
-            <div>
+          </div>
+          <div className="flex flex-col lg:flex-row justify-center text-center gap-x-2 gap-y-3 mb-5">
+            <div className="w-full lg:w-1/2">
               <Typography variant="h6" className="mb-2">
                 Jenis Kelamin
               </Typography>
@@ -158,7 +162,7 @@ function EditProfile() {
                 <option value="Wanita">Wanita</option>
               </select>
             </div>
-            <div>
+            <div className="w-full lg:w-1/2">
               <Typography variant="h6" className="mb-2">
                 No. Handphone
               </Typography>
@@ -169,7 +173,9 @@ function EditProfile() {
                 className="input-custom"
               />
             </div>
-            <div>
+          </div>
+          <div className="flex flex-col lg:flex-row justify-center text-center gap-x-2 gap-y-3 mb-5">
+            <div className="w-full lg:w-1/2">
               <Typography variant="h6" className="mb-2">
                 NPWP Perusahaan
               </Typography>
@@ -180,7 +186,7 @@ function EditProfile() {
                 className="input-custom"
               />
             </div>
-            <div>
+            <div className="w-full lg:w-1/2">
               <Typography variant="h6" className="mb-2">
                 Alamat Perusahaan
               </Typography>
@@ -191,7 +197,9 @@ function EditProfile() {
                 className="input-custom"
               />
             </div>
-            <div>
+          </div>
+          <div className="flex flex-col lg:flex-row justify-center text-center gap-x-2 gap-y-3 mb-5">
+            <div className="w-full lg:w-1/2">
               <Typography variant="h6" className="mb-2">
                 Nama Perusahaan
               </Typography>
@@ -202,7 +210,7 @@ function EditProfile() {
                 className="input-custom"
               />
             </div>
-            <div>
+            <div className="w-full lg:w-1/2">
               <Typography variant="h6" className="mb-2">
                 Provinsi Perusahaan
               </Typography>
@@ -213,7 +221,9 @@ function EditProfile() {
                 className="input-custom"
               />
             </div>
-            <div>
+          </div>
+          <div className="flex flex-col lg:flex-row justify-center text-center gap-x-2 gap-y-3 mb-5">
+            <div className="w-full lg:w-1/2">
               <Typography variant="h6" className="mb-2">
                 Kabupaten / Kota Perusahaan
               </Typography>
@@ -224,7 +234,7 @@ function EditProfile() {
                 className="input-custom"
               />
             </div>
-            <div>
+            <div className="w-full lg:w-1/2">
               <Typography variant="h6" className="mb-2">
                 Nomor HP / No Telepon Perusahaan
               </Typography>
@@ -235,7 +245,9 @@ function EditProfile() {
                 className="input-custom"
               />
             </div>
-            <div>
+          </div>
+          <div className="flex flex-col lg:flex-row justify-start text-start gap-x-2 gap-y-3">
+            <div className="w-full lg:w-1/2">
               <Typography variant="h6" className="mb-2">
                 Email Perusahaan
               </Typography>
@@ -246,16 +258,16 @@ function EditProfile() {
                 className="input-custom"
               />
             </div>
-            <div className="col-span-2 flex justify-end">
-              <Button
-                color="green"
-                onClick={tanganiSimpan}
-                disabled={loading}
-                className="mt-4"
-              >
-                {loading ? "Menyimpan..." : "Simpan"}
-              </Button>
-            </div>
+          </div>
+          <div className="flex justify-end">
+            <Button
+              color="green"
+              onClick={tanganiSimpan}
+              disabled={loading}
+              className="mt-6 w-full"
+            >
+              {loading ? "Menyimpan..." : "Simpan"}
+            </Button>
           </div>
         </>
       )}
