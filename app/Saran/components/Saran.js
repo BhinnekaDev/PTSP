@@ -82,6 +82,7 @@ export default function Saran() {
             rows={4}
             className="w-full input-custom"
             value={Saran}
+            maxLength={300}
             onChange={(e) => setSaran(e.target.value)}
           />
         </div>

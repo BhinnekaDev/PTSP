@@ -135,7 +135,7 @@ const PemesananProduk = () => {
 
         <div className="flex flex-col items-center justify-center w-full h-full mx-auto text-center leading-relaxed px-4 lg:px-96 overflow-x-hidden lg:overflow-x-hidden">
           <div className="w-full">
-            <div className="w-full max-w-full lg:min-w-full overflow-x-hidden lg:overflow-x-hidden py-4 lg:py-0">
+            <div className="w-full max-w-full lg:min-w-full overflow-y-hidden overflow-x-hidden lg:overflow-x-hidden py-4 lg:py-0">
               <table className="w-full table-auto bg-secondary text-white rounded-2xl text-sm lg:text-base">
                 <thead className="text-center">
                   <tr>

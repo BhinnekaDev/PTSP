@@ -105,8 +105,8 @@ const ListPesanan = () => {
             </Button>
           </div>
           <div className="grid grid-cols-1 gap-1">
-            <div className="border-b border-gray-200 pb-2 mb-2">
-              <Typography className="mb-1 text-xs !font-medium !text-gray-600">
+            <div className="border-b border-gray-200 pb-2 mb-2 break-words">
+              <Typography className="mb-1 text-xs !font-medium !text-gray-600 break-words">
                 {userData.Nama_Lengkap && userData.Nama_Perusahaan ? (
                   <>
                     {userData.Nama_Lengkap} - {userData.Nama_Perusahaan}
@@ -115,7 +115,7 @@ const ListPesanan = () => {
                   userData.Nama_Lengkap || userData.Nama_Perusahaan || "N/A"
                 )}
               </Typography>
-              <Typography className="mb-1 text-xs !font-medium !text-gray-600">
+              <Typography className="mb-1 text-xs !font-medium !text-gray-600 break-words">
                 {userData.Email && userData.Email_Perusahaan ? (
                   <>
                     {userData.Email} - {userData.Email_Perusahaan}
@@ -124,7 +124,7 @@ const ListPesanan = () => {
                   userData.Email || userData.Email_Perusahaan || "N/A"
                 )}
               </Typography>
-              <Typography className="mb-1 text-xs !font-medium !text-gray-600">
+              <Typography className="mb-1 text-xs !font-medium !text-gray-600 break-words">
                 {userData.No_Hp && userData.No_Hp_Perusahaan ? (
                   <>
                     {userData.No_Hp} - {userData.No_Hp_Perusahaan}
@@ -152,11 +152,11 @@ const TrackingPesanan = () => {
   const { handlenavbarAktif } = useNavbarAktif();
 
   return (
-    <section className="p-6 w-1/2 mx-auto bg-white rounded-xl shadow-2xl my-16">
-      <div className="flex items-center justify-between p-4">
+    <section className="p-2 lg:p-6 lg:px-5 w-full lg:w-1/2 lg:mx-auto bg-white rounded-xl shadow-2xl my-16 overflow-x-hidden">
+      <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between p-4">
         <h1 className="text-xl font-semibold">Tracking Pesanan</h1>
         <Button
-          className="flex items-center gap-2"
+          className="flex mt-4 lg:mt-2 w-full lg:w-1/4 justify-center items-center gap-2"
           color="blue"
           onClick={() => handlenavbarAktif("/Produk")}
         >

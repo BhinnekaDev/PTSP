@@ -20,7 +20,7 @@ function TampilanProfile() {
         </div>
       ) : detailPengguna?.type === "perusahaan" ? (
         <>
-          <div className="mb-6">
+          <div className="mb-6 overflow-x-hidden">
             <Typography variant="h4">Tampilan Profile Perusahaan</Typography>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 text-center gap-y-3">
@@ -136,7 +136,7 @@ function TampilanProfile() {
         </>
       ) : detailPengguna?.type === "perorangan" ? (
         <>
-          <div className="mb-6">
+          <div className="mb-6 overflow-x-hidden">
             <Typography variant="h4">Tampilan Profile Perorangan</Typography>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 text-center gap-y-6">

@@ -7,7 +7,6 @@ function FormBiodata() {
     <div className="position-relative top-0 overflow-x-hidden">
       <Toaster position="top-right" reverseOrder={false} />
       <KategoriForm />
-      <Footer />
     </div>
   );
 }

@@ -166,6 +166,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   value={formDataPerusahaan.Nama_Lengkap}
                   onChange={handleInputChange}
                   size="lg"
+                  maxLength={100}
                   labelProps={{
                     className: "hidden",
                   }}
@@ -181,6 +182,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   value={formDataPerusahaan.Pekerjaan}
                   onChange={handleInputChange}
                   size="lg"
+                  maxLength={50}
                   labelProps={{
                     className: "hidden",
                   }}
@@ -227,6 +229,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   value={formDataPerusahaan.Jenis_Kelamin}
                   onChange={handleInputChange}
                   className="block w-full mt-1 p-2 border rounded-lg text-gray-500 input-custom"
+                  required
                 >
                   <option value="">Pilih Jenis Kelamin</option>
                   <option value="Pria">Pria</option>
@@ -246,6 +249,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   labelProps={{
                     className: "hidden",
                   }}
+                  required
                 />
               </div>
             </div>
@@ -300,6 +304,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   value={formDataPerusahaan.Nama_Perusahaan}
                   onChange={handleInputChange}
                   size="lg"
+                  maxLength={100}
                   labelProps={{
                     className: "hidden",
                   }}
@@ -316,6 +321,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                 value={formDataPerusahaan.Alamat_Perusahaan}
                 onChange={handleInputChange}
                 size="lg"
+                maxLength={200}
                 labelProps={{
                   className: "hidden",
                 }}
@@ -332,6 +338,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   value={formDataPerusahaan.Provinsi_Perusahaan}
                   onChange={handleInputChange}
                   size="lg"
+                  maxLength={50}
                   labelProps={{
                     className: "hidden",
                   }}
@@ -347,6 +354,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   value={formDataPerusahaan.Kabupaten_Kota_Perusahaan}
                   onChange={handleInputChange}
                   size="lg"
+                  maxLength={50}
                   labelProps={{
                     className: "hidden",
                   }}
@@ -362,9 +370,11 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   value={formDataPerusahaan.Email_Perusahaan}
                   onChange={handleInputChange}
                   size="lg"
+                  maxLength={200}
                   labelProps={{
                     className: "hidden",
                   }}
+                  pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
                   required
                 />
               </div>

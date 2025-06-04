@@ -23,7 +23,7 @@ function FormPerorangan() {
           priority
         />
       </div>
-      <div className="flex items-center justify-center p-8">
+      <div className="flex items-center justify-center p-8 max-w-3xl">
         <div className="w-full max-w-screen-xl">
           <h2 className="text-black text-center text-2xl font-bold mb-6 uppercase">
             Daftar Perorangan

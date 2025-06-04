@@ -70,6 +70,7 @@ export default function Saran() {
             className="w-full input-custom"
             labelProps={{ className: "hidden" }}
             value={Pengaduan}
+            maxLength={1000}
             onChange={(e) => setPengaduan(e.target.value)}
           />
         </div>

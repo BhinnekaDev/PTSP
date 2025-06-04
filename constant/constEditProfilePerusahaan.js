@@ -81,6 +81,7 @@ function EditProfile() {
                 className="input-custom"
                 value={editedDetailPengguna.No_Identitas || ""}
                 onChange={handleInputChange}
+                required
               />
             </div>
             <div className="w-full lg:w-1/2">
@@ -92,6 +93,8 @@ function EditProfile() {
                 value={editedDetailPengguna.Nama_Lengkap || ""}
                 onChange={handleInputChange}
                 className="input-custom"
+                maxLength={100}
+                required
               />
             </div>
           </div>
@@ -105,6 +108,8 @@ function EditProfile() {
                 value={editedDetailPengguna.Pekerjaan || ""}
                 onChange={handleInputChange}
                 className="input-custom"
+                maxLength={50}
+                required
               />
             </div>
             <div className="w-full lg:w-1/2">
@@ -118,7 +123,9 @@ function EditProfile() {
                 className="block w-full mt-1 p-2 border rounded-lg text-gray-500 input-custom"
                 required
               >
-                <option value="">Pilih Pendidikan Terakhir</option>
+                <option value="" disabled>
+                  Pilih Pendidikan Terakhir
+                </option>
                 <option value="Tidak Sekolah">Tidak Sekolah</option>
                 <option value="SD Sederajat">
                   SD Sederajat (SD, MI, Paket A)
@@ -154,6 +161,7 @@ function EditProfile() {
                   })
                 }
                 className="block w-full mt-1 p-2 border rounded-lg text-gray-500 input-custom"
+                required
               >
                 <option value="" disabled>
                   Pilih Jenis Kelamin
@@ -171,6 +179,7 @@ function EditProfile() {
                 value={editedDetailPengguna.No_Hp || ""}
                 onChange={handleInputChange}
                 className="input-custom"
+                required
               />
             </div>
           </div>
@@ -184,6 +193,7 @@ function EditProfile() {
                 value={editedDetailPengguna.NPWP_Perusahaan || ""}
                 onChange={handleInputChange}
                 className="input-custom"
+                required
               />
             </div>
             <div className="w-full lg:w-1/2">
@@ -195,6 +205,8 @@ function EditProfile() {
                 value={editedDetailPengguna.Alamat_Perusahaan || ""}
                 onChange={handleInputChange}
                 className="input-custom"
+                maxLength={200}
+                required
               />
             </div>
           </div>
@@ -208,6 +220,8 @@ function EditProfile() {
                 value={editedDetailPengguna.Nama_Perusahaan || ""}
                 onChange={handleInputChange}
                 className="input-custom"
+                maxLength={100}
+                required
               />
             </div>
             <div className="w-full lg:w-1/2">
@@ -219,6 +233,8 @@ function EditProfile() {
                 value={editedDetailPengguna.Provinsi_Perusahaan || ""}
                 onChange={handleInputChange}
                 className="input-custom"
+                maxLength={50}
+                required
               />
             </div>
           </div>
@@ -232,6 +248,8 @@ function EditProfile() {
                 value={editedDetailPengguna.Kabupaten_Kota_Perusahaan || ""}
                 onChange={handleInputChange}
                 className="input-custom"
+                maxLength={50}
+                required
               />
             </div>
             <div className="w-full lg:w-1/2">
@@ -243,11 +261,12 @@ function EditProfile() {
                 value={editedDetailPengguna.No_Hp_Perusahaan || ""}
                 onChange={handleInputChange}
                 className="input-custom"
+                required
               />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row justify-start text-start gap-x-2 gap-y-3">
-            <div className="w-full lg:w-1/2">
+          <div className="flex flex-col lg:flex-row justify-center text-start gap-x-2 gap-y-3">
+            <div className="w-full min-w-0">
               <Typography variant="h6" className="mb-2">
                 Email Perusahaan
               </Typography>
@@ -256,6 +275,9 @@ function EditProfile() {
                 value={editedDetailPengguna.Email_Perusahaan || ""}
                 onChange={handleInputChange}
                 className="input-custom"
+                maxLength={200}
+                pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
+                required
               />
             </div>
           </div>

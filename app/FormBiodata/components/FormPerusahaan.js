@@ -23,7 +23,7 @@ function FormPerusahaan() {
           priority
         />
       </div>
-      <div className="flex items-center justify-center p-8">
+      <div className="flex items-center justify-center p-8 max-w-3xl">
         <div className="w-full max-w-screen-xl">
           <h2 className="text-black text-center text-2xl font-bold mb-6 uppercase">
             Daftar Perusahaan
@@ -39,12 +39,12 @@ function FormPerusahaan() {
           <div className="mt-8 flex justify-between">
             {stepAktif > 0 && (
               <Button className="bg-primary" onClick={handleSebelumnya}>
-                Prev
+                Sebelumnya
               </Button>
             )}
             {stepAktif < 1 && (
               <Button className="bg-primary" onClick={handleSelanjutnya}>
-                Next
+                Selanjutnya
               </Button>
             )}
           </div>

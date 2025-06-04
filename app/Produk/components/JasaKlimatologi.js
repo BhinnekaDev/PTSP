@@ -50,7 +50,7 @@ export default function JasaKlimatologi() {
   }
 
   return (
-    <div className="max-w-screen-xl mx-auto p-8 bg-gradient-to-br from-primary via-white to-secondary rounded-md">
+    <div className="max-w-screen-lg mx-auto p-8 bg-gradient-to-br from-primary via-white to-secondary rounded-md overflow-x-hidden">
       <Toaster position="top-right" reverseOrder={false} />
       <h1 className="text-2xl font-extrabold text-center mb-6 uppercase">
         Jasa

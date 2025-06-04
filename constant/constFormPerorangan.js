@@ -115,6 +115,7 @@ const StepFormPerorangan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   value={formDataPerorangan.Nama_Lengkap}
                   onChange={handleInputChange}
                   size="lg"
+                  maxLength={100}
                   labelProps={{
                     className: "hidden",
                   }}
@@ -130,6 +131,7 @@ const StepFormPerorangan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   value={formDataPerorangan.Pekerjaan}
                   onChange={handleInputChange}
                   size="lg"
+                  maxLength={50}
                   labelProps={{
                     className: "hidden",
                   }}
@@ -176,6 +178,7 @@ const StepFormPerorangan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   value={formDataPerorangan.Jenis_Kelamin}
                   onChange={handleInputChange}
                   className="block w-full mt-1 p-2 border rounded-lg text-gray-500 input-custom"
+                  required
                 >
                   <option value="">Pilih Jenis Kelamin</option>
                   <option value="Pria">Pria</option>
