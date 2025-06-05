@@ -134,7 +134,7 @@ const ChatMessages = ({ pesanList, selengkapnya2, toggleSelengkapnya2 }) => {
   }, [pesanList]);
 
   return (
-    <div ref={containerRef} className="space-y-1 overflow-y-auto max-h-[600px]">
+    <div ref={containerRef} className="space-y-1 overflow-y-auto h-full pr-2">
       {pesanList.map((pesan, index) => {
         const isExpanded = selengkapnya2.includes(index);
         const showMore = pesan.teks.length > batasTeksPesan;
@@ -370,29 +370,30 @@ function AdminChat() {
         ) : (
           <div className="flex flex-col w-full h-full">
             <ChatHeader stasiun={stasiunTerpilih} />
-            <div className="h-full w-full overflow-auto p-2 bg-[url('/assets/img/bgChat.png')]">
-              <ChatMessages
-                pesanList={pesanDariFirestore}
-                selengkapnya2={selengkapnya2}
-                toggleSelengkapnya2={toggleSelengkapnya2}
-                setChatRoomId={setChatRoomId}
+            <div className="flex flex-col flex-1 overflow-hidden">
+              <div className="flex-1 overflow-y-auto p-2 bg-[url('/assets/img/bgChat.png')]">
+                <ChatMessages
+                  pesanList={pesanDariFirestore}
+                  selengkapnya2={selengkapnya2}
+                  toggleSelengkapnya2={toggleSelengkapnya2}
+                />
+              </div>
+              <ChatInput
+                {...{
+                  message,
+                  setMessage,
+                  fileInputRef,
+                  selectedFile,
+                  handleFileChange,
+                  handleRemoveFile,
+                  tampilkanEmoji,
+                  setTampilkanEmoji,
+                  handleBukaEmoji,
+                  handleSendMessage,
+                  emojiPickerRef,
+                }}
               />
             </div>
-            <ChatInput
-              {...{
-                message,
-                setMessage,
-                fileInputRef,
-                selectedFile,
-                handleFileChange,
-                handleRemoveFile,
-                tampilkanEmoji,
-                setTampilkanEmoji,
-                handleBukaEmoji,
-                handleSendMessage,
-                emojiPickerRef,
-              }}
-            />
           </div>
         )}
       </div>
