@@ -40,6 +40,10 @@ const StationList = ({
       setChatRoomId(stasiun.chatRoomId || null);
     }
     setIsContextMenuOpen(false);
+
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      setIsOpen(false);
+    }
   };
 
   return (
@@ -53,7 +57,7 @@ const StationList = ({
             isOpen ? "rotate-180" : ""
           }`}
         />
-        <Typography className="text-black font-bold text-lg">
+        <Typography className="text-black font-bold text-base lg:text-lg">
           Pesan Saya
         </Typography>
       </div>
@@ -78,7 +82,7 @@ const StationList = ({
               <div className="flex items-center gap-3 justify-between">
                 <div className="text-2xl">{s.icon}</div>
                 <div>
-                  <Typography className="text-black font-bold text-lg">
+                  <Typography className="text-black font-bold text-base lg:text-lg">
                     {s.nama}
                   </Typography>
                   <Typography className="text-[#808080]/70 line-clamp-1 text-sm">
@@ -199,7 +203,7 @@ const ChatInput = ({
   handleSendMessage,
   emojiPickerRef,
 }) => (
-  <div className="p-2 w-full flex relative">
+  <div className="p-2 w-full flex relative -top-1 lg:top-0">
     {tampilkanEmoji && (
       <div
         ref={emojiPickerRef}
@@ -331,11 +335,11 @@ function AdminChat() {
     return () => document.removeEventListener("mousedown", closeOnClickOutside);
   }, []);
   return (
-    <div className="w-screen h-screen px-24">
-      <div className="h-[90%] flex shadow-xl rounded-lg border-2 border-[#D9D9D9]/80">
-        <div className="flex flex-col w-[30%] border-r-2 border-[#D9D9D9]/80">
+    <div className="w-screen h-screen px-2 lg:px-24">
+      <div className="h-[90%] flex flex-col lg:flex-row shadow-xl rounded-none lg:rounded-lg border-2 border-[#D9D9D9]/80">
+        <div className="flex flex-col w-[100%] lg:w-[30%] border-r-2 border-[#D9D9D9]/80 ">
           <div className="flex w-full border-b-2 p-3.5 border-[#D9D9D9]/80">
-            <Typography className="text-black font-bold text-3xl">
+            <Typography className="text-black font-bold text-lg lg:text-3xl">
               Pesan
             </Typography>
           </div>
