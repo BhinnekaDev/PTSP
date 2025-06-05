@@ -146,7 +146,7 @@ export default function InformasiKlimatologi() {
       <div className="flex items-center justify-center gap-4 mt-10">
         <Button
           variant="text"
-          className="flex items-center gap-2 text-black"
+          className="items-center gap-2 text-black hidden lg:flex"
           onClick={prevPage}
           disabled={activePage === 1}
         >
@@ -161,7 +161,7 @@ export default function InformasiKlimatologi() {
         </div>
         <Button
           variant="text"
-          className="flex items-center gap-2 text-black"
+          className="hidden lg:flex items-center gap-2 text-black"
           onClick={nextPage}
           disabled={activePage === totalHalaman}
         >
