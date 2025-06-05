@@ -117,10 +117,19 @@ const DialogPerbaikanDokumen = ({
       }}
       size="xl"
     >
-      <DialogHeader>Perbaiki Dokumen Ajukan</DialogHeader>
+      <DialogHeader className="flex justify-between items-center text-base lg:text-xl">
+        <span>Perbaiki Dokumen Ajukan</span>
+        <button
+          onClick={onClose}
+          aria-label="Close dialog"
+          className="text-gray-500 hover:text-gray-700 focus:outline-none"
+        >
+          &#x2715;
+        </button>
+      </DialogHeader>
       <DialogBody>
         <Toaster position="top-right" reverseOrder={false} />
-        <div className="w-full p-6 bg-white rounded-lg shadow-md ">
+        <div className="w-full p-0 lg:p-6 bg-white rounded-lg shadow-md ">
           <Alert className="bg-red-200 border-2 border-red-800 mb-4 p-4">
             <div className="flex items-center mb-2">
               <IoWarningOutline className="text-red-800 mr-2 w-5 h-5" />

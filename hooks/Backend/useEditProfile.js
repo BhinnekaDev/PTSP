@@ -4,6 +4,23 @@ import { firestore } from "@/lib/firebaseConfig";
 import { doc, updateDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 
+// Konversi nama field agar ramah dibaca pengguna
+const labelField = {
+  Jenis_Kelamin: "Jenis Kelamin",
+  Nama_Lengkap: "Nama Lengkap",
+  No_Hp: "No HP",
+  No_Identitas: "No Identitas",
+  Pekerjaan: "Pekerjaan",
+  Pendidikan_Terakhir: "Pendidikan Terakhir",
+  Alamat_Perusahaan: "Alamat Perusahaan",
+  Email_Perusahaan: "Email Perusahaan",
+  Nama_Perusahaan: "Nama Perusahaan",
+  Kabupaten_Kota_Perusahaan: "Kabupaten/Kota Perusahaan",
+  NPWP_Perusahaan: "NPWP Perusahaan",
+  No_Hp_Perusahaan: "No HP Perusahaan",
+  Provinsi_Perusahaan: "Provinsi Perusahaan",
+};
+
 function useEditProfile(inisialisasiDataProfil = {}) {
   const [detailPengguna, setDetailPengguna] = useState(inisialisasiDataProfil);
   const [loading, setLoading] = useState(false);
@@ -25,10 +42,12 @@ function useEditProfile(inisialisasiDataProfil = {}) {
     const penggunaId = localStorage.getItem("ID");
 
     if (!penggunaId) {
-      toast.error("Gagal menyimpan data.");
+      toast.error("Gagal menyimpan data: ID pengguna tidak ditemukan.");
       return;
     }
+
     setLoading(true);
+
     const fieldsPerorangan = [
       "Jenis_Kelamin",
       "Nama_Lengkap",
@@ -37,6 +56,7 @@ function useEditProfile(inisialisasiDataProfil = {}) {
       "Pekerjaan",
       "Pendidikan_Terakhir",
     ];
+
     const fieldsPerusahaan = [
       "Alamat_Perusahaan",
       "Email_Perusahaan",
@@ -45,7 +65,6 @@ function useEditProfile(inisialisasiDataProfil = {}) {
       "Kabupaten_Kota_Perusahaan",
       "NPWP_Perusahaan",
       "Nama_Lengkap",
-      "Nama_Perusahaan",
       "No_Hp",
       "No_Hp_Perusahaan",
       "No_Identitas",
@@ -54,18 +73,38 @@ function useEditProfile(inisialisasiDataProfil = {}) {
       "Provinsi_Perusahaan",
     ];
 
+    const requiredFields =
+      detailPengguna.type === "perorangan"
+        ? fieldsPerorangan
+        : fieldsPerusahaan;
+
+    // Cari field yang kosong
+    const emptyFields = requiredFields.filter(
+      (field) =>
+        !detailPengguna[field] || detailPengguna[field].toString().trim() === ""
+    );
+
+    if (emptyFields.length > 0) {
+      const readableFields = emptyFields
+        .map((field) => labelField[field] || field)
+        .join(", ");
+      toast.error(`Harap isi field ${readableFields}`);
+      setLoading(false);
+      return;
+    }
+
     const dataToSave = Object.fromEntries(
       Object.entries(detailPengguna).filter(([key]) =>
-        detailPengguna.type === "perorangan"
-          ? fieldsPerorangan.includes(key)
-          : fieldsPerusahaan.includes(key)
+        requiredFields.includes(key)
       )
     );
+
     try {
       const docRef =
         detailPengguna.type === "perorangan"
           ? doc(firestore, "perorangan", penggunaId)
           : doc(firestore, "perusahaan", penggunaId);
+
       await updateDoc(docRef, dataToSave);
       toast.success("Data berhasil disimpan.");
       window.location.reload();

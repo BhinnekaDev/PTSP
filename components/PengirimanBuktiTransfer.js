@@ -103,7 +103,16 @@ const DialogPengirimanBuktiTransfer = ({
       className="fixed inset-0 items-center justify-center w-96 h-auto mx-auto overflow-y-auto"
     >
       <Toaster position="top-right" reverseOrder={false} />
-      <DialogHeader>Pengiriman Dokumen Transaksi {ID_Pemesanan}</DialogHeader>
+      <DialogHeader className="flex justify-between items-center text-base lg:text-xl">
+        <span>Pengiriman Dokumen Transaksi {ID_Pemesanan}</span>
+        <button
+          onClick={handleClose}
+          aria-label="Close dialog"
+          className="text-gray-500 hover:text-gray-700 focus:outline-none"
+        >
+          &#x2715;
+        </button>
+      </DialogHeader>
       <DialogBody>
         <div className="w-full p-6 bg-white rounded-lg shadow-md">
           {pemesanan.Status_Pembayaran === "Ditolak" && (
@@ -180,11 +189,11 @@ const DialogPengirimanBuktiTransfer = ({
               </div>
             ))}
           </div>
-          <div className="flex justify-between mt-4">
+          <div className="flex flex-col lg:flex-row justify-between mt-4 gap-y-3 lg:gap-y-0">
             <Button
               size="sm"
               color="blue"
-              className="w-[48%]"
+              className="w-full lg:w-[48%]"
               onClick={simpanBuktiTransfer}
               disabled={loading}
             >
@@ -194,7 +203,7 @@ const DialogPengirimanBuktiTransfer = ({
               size="sm"
               color="red"
               onClick={handleClose}
-              className="w-[48%]"
+              className="w-full lg:w-[48%]"
             >
               Tutup
             </Button>

@@ -22,12 +22,24 @@ const InvoicePesanan = ({
       className="fixed z-50 w-screen h-full"
       size="xl"
     >
-      <DialogHeader>Dokumen Pesanan Anda</DialogHeader>
+      <DialogHeader className="flex justify-between items-center text-lg lg:text-xl">
+        <span>Dokumen Pesanan Anda</span>
+        <button
+          onClick={onClose}
+          aria-label="Close dialog"
+          className="text-gray-500 hover:text-gray-700 focus:outline-none"
+        >
+          &#x2715;
+        </button>
+      </DialogHeader>
       <DialogBody className="overflow-y-scroll h-full w-full py-5 absolute">
         <div className="bg-gray-100 min-h-screen p-2">
           <div className="mx-auto bg-white rounded-lg shadow-lg border-2 border-gray p-6">
-            <div className="flex justify-between items-center pb-4 border-b">
-              <Typography variant="h5" className="font-bold text-gray-700">
+            <div className="flex flex-col lg:flex-row justify-between items-center gap-y-3 pb-4 border-b">
+              <Typography
+                variant="h5"
+                className="font-bold text-center text-gray-700 text-base lg:text-xl"
+              >
                 Nomor Pesanan # {pemesanan.id}
               </Typography>
               <span
@@ -73,9 +85,12 @@ const InvoicePesanan = ({
 
             {/* Billing Details */}
             <div className="mb-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
-                  <Typography variant="small" className="text-gray-600">
+                  <Typography
+                    variant="small"
+                    className="text-gray-600 font-semibold"
+                  >
                     Nomor Pesanan
                   </Typography>
                   <Typography variant="paragraph" className="text-gray-800">
@@ -83,7 +98,10 @@ const InvoicePesanan = ({
                   </Typography>
                 </div>
                 <div>
-                  <Typography variant="small" className="text-gray-600">
+                  <Typography
+                    variant="small"
+                    className="text-gray-600 font-semibold"
+                  >
                     Nomor Ajukan
                   </Typography>
                   <Typography variant="paragraph" className="text-gray-800">
@@ -91,7 +109,10 @@ const InvoicePesanan = ({
                   </Typography>
                 </div>
                 <div>
-                  <Typography variant="small" className="text-gray-600">
+                  <Typography
+                    variant="small"
+                    className="text-gray-600 font-semibold"
+                  >
                     Email Perusahaan
                   </Typography>
                   <Typography variant="paragraph" className="text-gray-800">
@@ -101,7 +122,10 @@ const InvoicePesanan = ({
                   </Typography>
                 </div>
                 <div>
-                  <Typography variant="small" className="text-gray-600">
+                  <Typography
+                    variant="small"
+                    className="text-gray-600 font-semibold"
+                  >
                     Detail Penerima
                   </Typography>
                   <Typography variant="paragraph" className="text-gray-800">
@@ -111,7 +135,10 @@ const InvoicePesanan = ({
                   </Typography>
                 </div>
                 <div>
-                  <Typography variant="small" className="text-gray-600">
+                  <Typography
+                    variant="small"
+                    className="text-gray-600 font-semibold"
+                  >
                     Tanggal Pemesanan
                   </Typography>
                   <Typography variant="paragraph" className="text-gray-800">
@@ -121,7 +148,10 @@ const InvoicePesanan = ({
                   </Typography>
                 </div>
                 <div>
-                  <Typography variant="small" className="text-gray-600">
+                  <Typography
+                    variant="small"
+                    className="text-gray-600 font-semibold"
+                  >
                     Tanggal Pengajuan
                   </Typography>
                   <Typography variant="paragraph" className="text-gray-800">
@@ -132,9 +162,9 @@ const InvoicePesanan = ({
                 </div>
               </div>
             </div>
-            <Card className="overflow-hidden mb-4">
+            <Card className="overflow-x-scroll lg:overflow-hidden mb-4">
               <table className="min-w-full bg-white">
-                <thead className="bg-gray-200 text-gray-600 uppercase text-sm border-b text-center">
+                <thead className="bg-gray-200 text-gray-600 font-semibold uppercase text-sm border-b text-center">
                   <tr>
                     <th className="py-3 px-5">Nama Produk</th>
                     <th className="py-3 px-5">Nama Instansi</th>
@@ -200,10 +230,10 @@ const InvoicePesanan = ({
                 <Typography variant="small" className="font-bold text-gray-700">
                   Catatan
                 </Typography>
-                <p>
+                <Typography variant="paragraph" className="break-words">
                   Jika ada permasalahan atau kesalahan dalam dokumen ini,
                   silakan hubungi stasiun sesuai pesanan anda.
-                </p>
+                </Typography>
               </div>
             </div>
           </div>

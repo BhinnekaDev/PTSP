@@ -99,7 +99,7 @@ const ListPesanan = () => {
               }}
             >
               <FaInfoCircle className="h-4 w-4 text-gray-600" />
-              <Typography className="!font-semibold text-xs text-gray-600 md:block hidden">
+              <Typography className="!font-semibold text-xs text-gray-600 lg:block hidden">
                 Lihat Detail
               </Typography>
             </Button>

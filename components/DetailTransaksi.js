@@ -50,12 +50,21 @@ const DetailTransaksi = ({
     <Dialog
       open={isOpen}
       handler={onClose}
-      className="fixed z-50 w-screen h-full"
+      className="fixed z-50 w-screen h-screen"
       size="xl"
     >
-      <DialogHeader>Tracking Pesanan Anda</DialogHeader>
-      <DialogBody className="overflow-y-scroll h-full w-full py-5 absolute">
-        <div className="grid grid-cols-1 lg:grid-cols-[3.5fr_6.5fr] w-full ">
+      <DialogHeader className="flex justify-between items-center">
+        <span>Tracking Pesanan Anda</span>
+        <button
+          onClick={onClose}
+          aria-label="Close dialog"
+          className="text-gray-500 hover:text-gray-700 focus:outline-none"
+        >
+          &#x2715;
+        </button>
+      </DialogHeader>
+      <DialogBody className="overflow-y-scroll h-screen w-full lg:p-5">
+        <div className="grid grid-cols-1 lg:grid-cols-[3.5fr_6.5fr] pb-20">
           <div>
             <Timeline>
               <TimelineItem>
@@ -77,7 +86,7 @@ const DetailTransaksi = ({
                     Status Pengajuan
                   </Typography>
                 </TimelineHeader>
-                <TimelineBody className="pb-4">
+                <TimelineBody className="pb-4 px-1 break-words">
                   <Typography
                     color="gray"
                     className="font-normal text-gray-600"
@@ -112,7 +121,7 @@ const DetailTransaksi = ({
                     <Button
                       size="sm"
                       onClick={() => setBukaPerbaikanDokumen(true)}
-                      className="bg-primary border-2 border-blue-gray-300 shadow-xl text-white"
+                      className="bg-primary border-2 border-blue-gray-300 shadow-xl text-white mt-2"
                     >
                       Perbaikan Dokumen
                     </Button>
@@ -147,7 +156,7 @@ const DetailTransaksi = ({
                     Status Pembayaran
                   </Typography>
                 </TimelineHeader>
-                <TimelineBody className="pb-4">
+                <TimelineBody className="pb-4 px-1 break-words">
                   {pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" &&
                     pemesanan.ajukanDetail.Status_Ajuan === "Diterima" && (
                       <Typography
@@ -257,7 +266,7 @@ const DetailTransaksi = ({
                     Status Pembuatan{" "}
                   </Typography>
                 </TimelineHeader>
-                <TimelineBody className="pb-4">
+                <TimelineBody className="pb-4 px-1 break-words">
                   <Typography
                     color="gray"
                     className="font-normal text-gray-600"
@@ -283,7 +292,7 @@ const DetailTransaksi = ({
                     Pesanan Selesai
                   </Typography>
                 </TimelineHeader>
-                <TimelineBody className="pb-4">
+                <TimelineBody className="pb-4 px-1 break-words">
                   <Typography
                     color="gray"
                     className="font-normal text-gray-600"
@@ -380,10 +389,10 @@ const DetailTransaksi = ({
                 </Typography>
               </div>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 ">
-              <div className="rounded-lg p-5 bg-gradient-to-bl from-secondary to-primary text-white">
-                <div className="flex justify-between items-center mb-4">
-                  <div>
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
+              <div className="rounded-lg p-6 pb-10 bg-gradient-to-bl from-secondary to-primary text-white">
+                <div className="flex flex-col-reverse lg:flex-row justify-between items-center mb-4">
+                  <div className="flex flex-col">
                     <Typography>
                       Nomor Pesanan : #{pemesanan.id || "N/A"}
                     </Typography>
@@ -395,7 +404,7 @@ const DetailTransaksi = ({
                       ).toLocaleString()}
                     </Typography>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-row gap-2 mb-5 lg:mb-0">
                     <Button
                       className="border-2 bg-white text-black"
                       size="sm"
@@ -414,19 +423,21 @@ const DetailTransaksi = ({
                     </Button>
                   </div>
                 </div>
+
+                {/* Produk list */}
                 {pemesanan.Data_Keranjang.map((produk, index) => (
                   <div
                     className="grid grid-cols-2 items-center mb-4"
                     key={produk.produkId || index}
                   >
-                    <div className="">
+                    <div>
                       <Typography className="font-medium" variant="h6">
                         {produk.Nama}
                       </Typography>
                     </div>
                     <div className="text-end">
                       <Typography className="font-semibold" variant="h6">
-                        {produk.Pemilik}{" "}
+                        {produk.Pemilik}
                       </Typography>
                     </div>
                     {pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" && (
@@ -436,7 +447,6 @@ const DetailTransaksi = ({
                         </Typography>
                       </div>
                     )}
-                    <div className="col-span-2"></div>
                     <div className="col-span-2">
                       <Typography variant="body1">
                         {new Intl.NumberFormat("id-ID", {
@@ -468,7 +478,7 @@ const DetailTransaksi = ({
                   </div>
                 ))}
 
-                <hr className="my-2" />
+                <hr className="" />
               </div>
             </div>
           </div>
