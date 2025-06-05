@@ -203,7 +203,7 @@ const ChatInput = ({
   handleSendMessage,
   emojiPickerRef,
 }) => (
-  <div className="p-2 w-full flex relative -top-1 lg:top-0">
+  <div className="p-2 w-full flex relative top-0">
     {tampilkanEmoji && (
       <div
         ref={emojiPickerRef}
@@ -370,29 +370,29 @@ function AdminChat() {
         ) : (
           <div className="flex flex-col w-full h-full">
             <ChatHeader stasiun={stasiunTerpilih} />
-            <div className="flex flex-col flex-1 overflow-hidden">
-              <div className="flex-1 overflow-y-auto p-2 bg-[url('/assets/img/bgChat.png')]">
+            <div className="flex flex-col flex-1 overflow-hidden relative">
+              <div className="flex-1 overflow-y-auto p-2 bg-[url('/assets/img/bgChat.png')] max-h-[calc(100vh-6rem)] md:max-h-full">
                 <ChatMessages
                   pesanList={pesanDariFirestore}
                   selengkapnya2={selengkapnya2}
                   toggleSelengkapnya2={toggleSelengkapnya2}
                 />
               </div>
-              <ChatInput
-                {...{
-                  message,
-                  setMessage,
-                  fileInputRef,
-                  selectedFile,
-                  handleFileChange,
-                  handleRemoveFile,
-                  tampilkanEmoji,
-                  setTampilkanEmoji,
-                  handleBukaEmoji,
-                  handleSendMessage,
-                  emojiPickerRef,
-                }}
-              />
+              <div className="sticky w-screen lg:w-full bottom-0 z-20 bg-white md:static md:z-0">
+                <ChatInput
+                  message={message}
+                  setMessage={setMessage}
+                  fileInputRef={fileInputRef}
+                  selectedFile={selectedFile}
+                  handleFileChange={handleFileChange}
+                  handleRemoveFile={handleRemoveFile}
+                  tampilkanEmoji={tampilkanEmoji}
+                  setTampilkanEmoji={setTampilkanEmoji}
+                  handleBukaEmoji={handleBukaEmoji}
+                  handleSendMessage={handleSendMessage}
+                  emojiPickerRef={emojiPickerRef}
+                />
+              </div>
             </div>
           </div>
         )}
