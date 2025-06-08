@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Typography, Button } from "@/app/MTailwind";
 import { FaInfoCircle, FaPlus } from "react-icons/fa";
 import { RiFileList3Fill } from "react-icons/ri";
@@ -14,6 +14,26 @@ const ListPesanan = () => {
   const { pemesananData, userData, loading, error } = useAmbilPemesanan();
   const [selectedPesanan, setSelectedPesanan] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const openDialogParam = params.get("openDialog");
+    const idParam = params.get("id");
+    console.log("openDialog param:", openDialogParam);
+    console.log("id param:", idParam);
+    console.log("pemesananData:", pemesananData);
+
+    if (openDialogParam === "true" && pemesananData.length > 0) {
+      const foundPesanan = pemesananData.find((p) => p.id === idParam);
+      if (foundPesanan) {
+        setSelectedPesanan({ pemesanan: foundPesanan });
+        setOpenDialog(true);
+      } else {
+        console.warn("Pesanan dengan ID tersebut tidak ditemukan");
+      }
+    }
+  }, [pemesananData]);
+
   if (loading) {
     return (
       <div>
@@ -137,13 +157,15 @@ const ListPesanan = () => {
           </div>
         </Card>
       ))}
-      <DetailTransaksi
-        isOpen={openDialog}
-        onClose={() => setOpenDialog(false)}
-        pemesanan={selectedPesanan?.pemesanan}
-        userData={userData}
-        ajukanDetail={selectedPesanan?.pemesanan?.ajukanDetail}
-      />
+      {openDialog && (
+        <DetailTransaksi
+          isOpen={openDialog}
+          onClose={() => setOpenDialog(false)}
+          pemesanan={selectedPesanan?.pemesanan}
+          userData={userData}
+          ajukanDetail={selectedPesanan?.pemesanan?.ajukanDetail}
+        />
+      )}
     </div>
   );
 };
