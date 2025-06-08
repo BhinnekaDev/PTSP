@@ -17,10 +17,14 @@ const ListPesanan = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get("openDialog") === "true") {
+    console.log("openDialog param:", params.get("openDialog"));
+    console.log("pemesananData:", pemesananData);
+
+    if (params.get("openDialog") === "true" && pemesananData.length > 0) {
+      setSelectedPesanan({ pemesanan: pemesananData[0] });
       setOpenDialog(true);
     }
-  }, []);
+  }, [pemesananData]);
 
   if (loading) {
     return (
