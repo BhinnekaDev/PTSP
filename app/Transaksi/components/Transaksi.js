@@ -24,16 +24,12 @@ const ListPesanan = () => {
     console.log("pemesananData:", pemesananData);
 
     if (openDialogParam === "true" && pemesananData.length > 0) {
-      // Cari pesanan dengan ID yang sesuai parameter
       const foundPesanan = pemesananData.find((p) => p.id === idParam);
       if (foundPesanan) {
         setSelectedPesanan({ pemesanan: foundPesanan });
         setOpenDialog(true);
       } else {
-        // Kalau id gak ketemu, bisa fallback buka pesanan pertama atau gak buka dialog sama sekali
         console.warn("Pesanan dengan ID tersebut tidak ditemukan");
-        // setSelectedPesanan({ pemesanan: pemesananData[0] });
-        // setOpenDialog(true);
       }
     }
   }, [pemesananData]);
