@@ -17,12 +17,24 @@ const ListPesanan = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    console.log("openDialog param:", params.get("openDialog"));
+    const openDialogParam = params.get("openDialog");
+    const idParam = params.get("id");
+    console.log("openDialog param:", openDialogParam);
+    console.log("id param:", idParam);
     console.log("pemesananData:", pemesananData);
 
-    if (params.get("openDialog") === "true" && pemesananData.length > 0) {
-      setSelectedPesanan({ pemesanan: pemesananData[0] });
-      setOpenDialog(true);
+    if (openDialogParam === "true" && pemesananData.length > 0) {
+      // Cari pesanan dengan ID yang sesuai parameter
+      const foundPesanan = pemesananData.find((p) => p.id === idParam);
+      if (foundPesanan) {
+        setSelectedPesanan({ pemesanan: foundPesanan });
+        setOpenDialog(true);
+      } else {
+        // Kalau id gak ketemu, bisa fallback buka pesanan pertama atau gak buka dialog sama sekali
+        console.warn("Pesanan dengan ID tersebut tidak ditemukan");
+        // setSelectedPesanan({ pemesanan: pemesananData[0] });
+        // setOpenDialog(true);
+      }
     }
   }, [pemesananData]);
 
