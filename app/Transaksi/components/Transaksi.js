@@ -14,6 +14,14 @@ const ListPesanan = () => {
   const { pemesananData, userData, loading, error } = useAmbilPemesanan();
   const [selectedPesanan, setSelectedPesanan] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("openDialog") === "true") {
+      setOpenDialog(true);
+    }
+  }, []);
+
   if (loading) {
     return (
       <div>
@@ -137,13 +145,15 @@ const ListPesanan = () => {
           </div>
         </Card>
       ))}
-      <DetailTransaksi
-        isOpen={openDialog}
-        onClose={() => setOpenDialog(false)}
-        pemesanan={selectedPesanan?.pemesanan}
-        userData={userData}
-        ajukanDetail={selectedPesanan?.pemesanan?.ajukanDetail}
-      />
+      {openDialog && (
+        <DetailTransaksi
+          isOpen={openDialog}
+          onClose={() => setOpenDialog(false)}
+          pemesanan={selectedPesanan?.pemesanan}
+          userData={userData}
+          ajukanDetail={selectedPesanan?.pemesanan?.ajukanDetail}
+        />
+      )}
     </div>
   );
 };
