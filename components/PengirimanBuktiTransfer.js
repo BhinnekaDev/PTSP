@@ -123,7 +123,7 @@ const DialogPengirimanBuktiTransfer = ({
                   variant="paragraph"
                   className="text-red-800 uppercase font-bold"
                 >
-                  Pengiriman Dokumen Transaksi
+                  Pengiriman Kembali Bukti Pembayaran
                 </Typography>
               </div>
               <hr className="border-[1px] text-red-800 mb-2"></hr>

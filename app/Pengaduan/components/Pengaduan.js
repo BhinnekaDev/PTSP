@@ -10,6 +10,7 @@ export default function Saran() {
   const [Nama, setNama] = useState("");
   const [Email, setEmail] = useState("");
   const [Pengaduan, setPengaduan] = useState("");
+  const [File, setFile] = useState(null);
 
   useEffect(() => {
     if (detailPengguna) {
@@ -24,8 +25,15 @@ export default function Saran() {
       Nama: Nama,
       Email: Email,
       Pengaduan: Pengaduan,
+      File: File,
     });
     setPengaduan("");
+  };
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+    }
   };
   return (
     <div className="max-w-7xl mt-36 mb-20 mx-auto p-12 bg-white ring-2 ring-gray rounded-lg shadow-lg shadow-blue-gray-800">
@@ -73,6 +81,12 @@ export default function Saran() {
             maxLength={1000}
             onChange={(e) => setPengaduan(e.target.value)}
           />
+        </div>
+        <div className="mb-6">
+          <label className="block text-base lg:text-lg font-semibold mb-1">
+            Upload Lampiran (Jika ada)
+          </label>
+          <input type="file" className="w-full" onChange={handleFileChange} />
         </div>
         <div className="flex justify-end">
           <Button

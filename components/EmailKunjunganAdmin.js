@@ -48,9 +48,17 @@ const kirimEmailKunjunganAdmin = async (
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 10px;">Tanggal Kunjungan</td>
-              <td style="border: 1px solid #ddd; padding: 10px;">${
-                dataPengajuan.Tanggal_Kunjungan
-              }</td>
+              <td style="border: 1px solid #ddd; padding: 10px;">
+                ${(() => {
+                  const date = dataPengajuan.Tanggal_Kunjungan?.toDate?.();
+                  if (!date) return "-";
+
+                  const tgl = String(date.getDate()).padStart(2, "0");
+                  const bln = String(date.getMonth() + 1).padStart(2, "0");
+                  const thn = date.getFullYear();
+                  return `${tgl}.${bln}.${thn}`;
+                })()}
+              </td>
             </tr>
             <tr>
               <td style="border: 1px solid #ddd; padding: 10px;">Jam Kunjungan</td>

@@ -137,7 +137,7 @@ const DialogPerbaikanDokumen = ({
                 variant="paragraph"
                 className="text-red-800 uppercase font-bold"
               >
-                Perbaikan pada Dokumen
+                Upload Dokumen Hasil Perbaikan
               </Typography>
             </div>
             <hr className="border-[1px] text-red-800 mb-2"></hr>

@@ -8,7 +8,8 @@ const kirimEmailKonfirmasiPembayaran = async (
   dataPesanan,
   Total_Harga,
   Tanggal_Pengiriman_Bukti,
-  ID_Transaksi
+  ID_Transaksi,
+  isPerbaikan
 ) => {
   const daftarProdukHTML = `
     <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-family: Arial, sans-serif;">
@@ -57,6 +58,10 @@ const kirimEmailKonfirmasiPembayaran = async (
     </table>
   `;
 
+  const subject = isPerbaikan
+    ? "Perbaikan Bukti Pembayaran Anda Berhasil Dikirim"
+    : "Pengiriman Bukti Pembayaran Anda Berhasil Dikirim";
+
   const htmlContent = `
   <div style="font-family: Arial, sans-serif; max-width: 780px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
     <div style="text-align: left;">
@@ -64,9 +69,14 @@ const kirimEmailKonfirmasiPembayaran = async (
     </div>
     <div>
       <p>Yth. <strong>${Nama_Lengkap}</strong></p>
-      <p style="font-size: 15px; color: #333; text-align: justify;">
-       Pengiriman bukti pembayaran Anda telah kami terima dengan nomor Ajuan <strong>${ID_Ajukan}</strong> dengan jenis ajuan <strong>${formName}</strong> pada tanggal <strong>${Tanggal_Pengiriman_Bukti}</strong>. Permohonan Anda dan akan segera kami proses. Jika ada informasi tambahan yang diperlukan, kami akan menghubungi Anda kembali. Terima kasih.<br />
+     <p style="font-size: 15px; color: #333; text-align: justify;">
+        ${
+          isPerbaikan
+            ? `Perbaikan bukti pembayaran Anda telah kami terima untuk nomor Ajuan <strong>${ID_Ajukan}</strong> dengan jenis ajuan <strong>${formName}</strong> pada tanggal <strong>${Tanggal_Pengiriman_Bukti}</strong>. Tim kami akan meninjau ulang permohonan Anda. Jika ada informasi tambahan yang diperlukan, kami akan menghubungi Anda kembali. Terima kasih.`
+            : `Pengiriman bukti pembayaran Anda telah kami terima dengan nomor Ajuan <strong>${ID_Ajukan}</strong> dengan jenis ajuan <strong>${formName}</strong> pada tanggal <strong>${Tanggal_Pengiriman_Bukti}</strong>. Permohonan Anda akan segera kami proses. Jika ada informasi tambahan yang diperlukan, kami akan menghubungi Anda kembali. Terima kasih.`
+        }
       </p>
+
       <h3 style="margin-top: 35px;">RINCIAN PESANAN</h3>
       <p><strong>No. Pesanan:</strong> <span style="color: #555;">#${ID_Pemesanan}</span></p>
       <p><strong>Tanggal Pemesanan:</strong> <span style="color: #555;">${Tanggal_Pemesanan}</span> </p>
@@ -101,7 +111,7 @@ const kirimEmailKonfirmasiPembayaran = async (
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         to: toEmail,
-        subject: "Pengiriman Bukti Pembayaran Anda Berhasil Dikirim",
+        subject: subject,
         html: htmlContent,
       }),
     });
