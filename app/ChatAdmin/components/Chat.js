@@ -127,6 +127,20 @@ const ChatHeader = ({ stasiun }) => (
 const ChatMessages = ({ pesanList, selengkapnya2, toggleSelengkapnya2 }) => {
   const batasTeksPesan = 200;
   const containerRef = useRef(null);
+  const getFileIcon = (fileName) => {
+    const ext = fileName.split(".").pop().toLowerCase();
+    const imageExt = ["jpg", "jpeg", "png", "gif", "bmp", "webp"];
+    const videoExt = ["mp4", "webm", "avi", "mov", "mkv"];
+
+    if (imageExt.includes(ext)) {
+      return <FaFileImage className="w-5 h-5 text-blue-500 mr-2" />;
+    } else if (videoExt.includes(ext)) {
+      return <FaFileVideo className="w-5 h-5 text-green-500 mr-2" />;
+    } else {
+      return <FaFileAlt className="w-5 h-5 text-[#808080] mr-2" />;
+    }
+  };
+
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
@@ -137,12 +151,16 @@ const ChatMessages = ({ pesanList, selengkapnya2, toggleSelengkapnya2 }) => {
     <div ref={containerRef} className="space-y-1 overflow-y-auto h-full pr-2">
       {pesanList.map((pesan, index) => {
         const isExpanded = selengkapnya2.includes(index);
-        const showMore = pesan.teks.length > batasTeksPesan;
+        const showMore = pesan.teks && pesan.teks.length > batasTeksPesan;
 
         const isPengirimPersonal =
           pesan.tipePengirim === "perorangan" ||
           pesan.tipePengirim === "perusahaan";
 
+        const adaTeks = pesan.teks && pesan.teks.trim() !== "";
+        const adaFile = pesan.namaFile && pesan.urlFile;
+
+        if (!adaTeks && !adaFile) return null;
         return (
           <div
             key={pesan.id || index}
@@ -155,13 +173,17 @@ const ChatMessages = ({ pesanList, selengkapnya2, toggleSelengkapnya2 }) => {
                 isPengirimPersonal ? "bg-secondary" : "bg-primary"
               }`}
             >
-              <motion.div
-                initial={{ height: 50, opacity: 0.8 }}
-                animate={{ height: isExpanded ? "auto" : 50, opacity: 1 }}
-                className="overflow-hidden"
-              >
-                <Typography className="text-white">{pesan.teks}</Typography>
-              </motion.div>
+              {adaTeks && (
+                <motion.div
+                  initial={{ height: 50, opacity: 0.8 }}
+                  animate={{ height: isExpanded ? "auto" : 50, opacity: 1 }}
+                  className="overflow-hidden"
+                >
+                  <Typography className="text-white whitespace-pre-wrap">
+                    {pesan.teks}
+                  </Typography>
+                </motion.div>
+              )}
 
               {showMore && (
                 <button
@@ -170,6 +192,18 @@ const ChatMessages = ({ pesanList, selengkapnya2, toggleSelengkapnya2 }) => {
                 >
                   {isExpanded ? "Tampilkan Lebih Sedikit" : "Baca Selengkapnya"}
                 </button>
+              )}
+
+              {adaFile && (
+                <a
+                  href={pesan.urlFile}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center bg-white hover:bg-white/30 transition-colors px-3 py-2 rounded-md text-black text-sm w-fit"
+                >
+                  {getFileIcon(pesan.namaFile)}
+                  <span className="underline">{pesan.namaFile}</span>
+                </a>
               )}
 
               <div className="flex justify-end items-center">

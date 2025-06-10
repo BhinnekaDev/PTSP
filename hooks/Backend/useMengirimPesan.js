@@ -75,7 +75,12 @@ export default function useMengirimChat() {
         await uploadBytes(storageRef, selectedFile);
         urlFile = await getDownloadURL(storageRef);
       }
-
+      let pesanTerakhir = "";
+      if (pesan && pesan.trim() !== "") {
+        pesanTerakhir = pesan;
+      } else if (namaFile) {
+        pesanTerakhir = `${namaFile}`;
+      }
       const stasiunAdmin = stasiunTerpilihNama.replace(/^Stasiun\s*/i, "");
 
       const chatsRoomsRef = collection(firestore, "chatRooms");
@@ -105,7 +110,7 @@ export default function useMengirimChat() {
       if (!chatRoomDocId) {
         console.log("Membuat chatRoom baru karena tidak ada yang cocok");
         const docRef = await addDoc(chatsRoomsRef, {
-          pesanTerakhir: pesan,
+          pesanTerakhir: pesanTerakhir,
           peserta,
           Instansi: stasiunAdmin,
           roomChat: stasiunTerpilihNama,
@@ -132,7 +137,7 @@ export default function useMengirimChat() {
       await addDoc(pesanCollectionRef, {
         id: chatRoomDocId,
         idPengirim: UserID,
-        isi: pesan,
+        isi: pesan || "",
         namaFile: namaFile,
         sudahDibaca: false,
         tipePengirim: tipeUser,

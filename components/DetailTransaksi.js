@@ -59,6 +59,9 @@ const DetailTransaksi = ({
     pemesanan.ajukanDetail.Status_Ajuan === "Diterima" &&
     ["Menunggu Pembayaran", "Ditolak"].includes(pemesanan.Status_Pembayaran) &&
     !sudahKedaluwarsa;
+  const validasiRequestVABaru =
+    sudahKedaluwarsa &&
+    ["Menunggu Pembayaran", "Ditolak"].includes(pemesanan.Status_Pembayaran);
 
   if (!pemesanan) return null;
   return (
@@ -179,8 +182,7 @@ const DetailTransaksi = ({
                         className="font-normal text-blue-gray-600"
                       >
                         Tanggal Billing : {""}
-                        {pemesanan.Status_Pembayaran === "Lunas" ||
-                        !sudahKedaluwarsa
+                        {pemesanan.ajukanDetail.Tanggal_Masuk
                           ? new Date(
                               pemesanan.ajukanDetail.Tanggal_Masuk?.seconds
                                 ? pemesanan.ajukanDetail.Tanggal_Masuk.seconds *
@@ -197,8 +199,7 @@ const DetailTransaksi = ({
                         className="font-normal text-blue-gray-600"
                       >
                         Tanggal Kadaluwarsa : {""}
-                        {pemesanan.Status_Pembayaran === "Lunas" ||
-                        !sudahKedaluwarsa
+                        {pemesanan.ajukanDetail.Tanggal_Kadaluwarsa
                           ? new Date(
                               pemesanan.ajukanDetail.Tanggal_Kadaluwarsa
                                 ?.seconds
@@ -267,17 +268,15 @@ const DetailTransaksi = ({
                     </Button>
                   )}
 
-                  {!bolehKirimBukti &&
-                    sudahKedaluwarsa &&
-                    pemesanan.Status_Pembayaran !== "Menunggu Admin" && (
-                      <Button
-                        size="sm"
-                        onClick={() => setBukaKonfirmasiVABaru(true)}
-                        className="bg-yellow-800 border-2 border-white shadow-xl text-white"
-                      >
-                        Request Virtual Account Baru
-                      </Button>
-                    )}
+                  {validasiRequestVABaru && (
+                    <Button
+                      size="sm"
+                      onClick={() => setBukaKonfirmasiVABaru(true)}
+                      className="bg-yellow-800 border-2 border-white shadow-xl text-white"
+                    >
+                      Request Virtual Account Baru
+                    </Button>
+                  )}
                 </TimelineBody>
               </TimelineItem>
               <TimelineItem>
@@ -481,7 +480,12 @@ const DetailTransaksi = ({
                       <div className="col-span-2">
                         <Typography className="font-semibold" variant="h6">
                           Virtual Account Produk :{" "}
-                          {sudahKedaluwarsa ? "-" : produk.Nomor_VA}
+                          {sudahKedaluwarsa &&
+                          ["Menunggu Pembayaran", "Ditolak"].includes(
+                            pemesanan.Status_Pembayaran
+                          )
+                            ? "-"
+                            : produk.Nomor_VA}
                         </Typography>
                       </div>
                     )}
