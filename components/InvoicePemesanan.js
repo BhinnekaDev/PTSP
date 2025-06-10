@@ -50,15 +50,23 @@ const InvoicePesanan = ({
                     ? "bg-yellow-800 text-white"
                     : pemesanan.Status_Pembayaran === "Lunas"
                     ? "bg-secondary text-white"
-                    : "bg-gray-200 text-gray-800"
+                    : pemesanan.Status_Pembayaran === "Ditolak"
+                    ? "bg-red-600 text-white"
+                    : pemesanan.Status_Pembayaran === "Menunggu Admin"
+                    ? "bg-blue-gray-400 text-white"
+                    : "bg-blue-gray-400 text-white"
                 }`}
               >
                 {pemesanan.Status_Pembayaran === "Menunggu Pembayaran"
+                  ? "Menunggu Pembayaran"
+                  : pemesanan.Status_Pembayaran === "Ditolak"
                   ? "Belum Bayar"
                   : pemesanan.Status_Pembayaran === "Sedang Ditinjau"
                   ? "Sedang Ditinjau"
                   : pemesanan.Status_Pembayaran === "Lunas"
                   ? "Lunas"
+                  : pemesanan.Status_Pembayaran === "Menunggu Admin"
+                  ? "Kadaluwarsa"
                   : "Status Tidak Diketahui"}
               </span>
             </div>

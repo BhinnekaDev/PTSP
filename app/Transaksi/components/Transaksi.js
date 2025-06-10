@@ -19,9 +19,6 @@ const ListPesanan = () => {
     const params = new URLSearchParams(window.location.search);
     const openDialogParam = params.get("openDialog");
     const idParam = params.get("id");
-    console.log("openDialog param:", openDialogParam);
-    console.log("id param:", idParam);
-    console.log("pemesananData:", pemesananData);
 
     if (openDialogParam === "true" && pemesananData.length > 0) {
       const foundPesanan = pemesananData.find((p) => p.id === idParam);

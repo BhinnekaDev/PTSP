@@ -44,6 +44,10 @@ const useInvoicePDF = () => {
         statusLabel = "Lunas";
         statusColor = "green";
         break;
+      case "Menunggu Admin":
+        statusLabel = "Kadaluwarsa";
+        statusColor = "gray";
+        break;
       default:
         statusLabel = "Status Tidak Diketahui";
         statusColor = "gray";
@@ -144,15 +148,15 @@ const useInvoicePDF = () => {
         fontSize: 10,
         cellPadding: 6,
         valign: "middle",
-        halign: "center", // Rata tengah semua kolom
+        halign: "center",
       },
       headStyles: {
-        fillColor: [0, 112, 255], // Biru terang
+        fillColor: [0, 112, 255],
         textColor: 255,
         fontStyle: "bold",
       },
       bodyStyles: {
-        fillColor: [245, 248, 255], // Abu muda
+        fillColor: [245, 248, 255],
         textColor: 0,
       },
       didDrawPage: function (data) {

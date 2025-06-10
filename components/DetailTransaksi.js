@@ -15,13 +15,13 @@ import {
   TimelineBody,
   Input,
 } from "@/app/MTailwind";
-import { toast, Toaster } from "react-hot-toast";
 import { FaFileAlt, FaBox, FaPaperPlane, FaDollarSign } from "react-icons/fa";
 import DialogPerbaikanDokumen from "@/components/PerbaikanDokumen";
 import DialogPengisianIkm from "@/components/PengisianIKM";
 import DialogUnduhDokumen from "@/components/UnduhDokumen";
 import DialogPengirimanBuktiTransfer from "@/components/PengirimanBuktiTransfer";
 import DialogInvoicePemesanan from "@/components/InvoicePemesanan";
+import DialogKonfirmasiVABaru from "@/components/KonfirmasiVABaru";
 import constDetailTransaksi from "@/constant/constDetailTransaksi";
 import useInvoicePDF from "@/hooks/Backend/useInvoicePDF";
 
@@ -44,7 +44,22 @@ const DetailTransaksi = ({
     setBukaUnduhDokumen,
     bukaInvoicePemesanan,
     setBukaInvoicePemesanan,
+    bukaKonfirmasiVABaru,
+    setBukaKonfirmasiVABaru,
   } = constDetailTransaksi();
+  const now = new Date();
+  const tanggalKadaluwarsa = new Date(
+    pemesanan.ajukanDetail.Tanggal_Kadaluwarsa
+  );
+
+  const sudahKedaluwarsa = now > tanggalKadaluwarsa;
+
+  const bolehKirimBukti =
+    pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" &&
+    pemesanan.ajukanDetail.Status_Ajuan === "Diterima" &&
+    ["Menunggu Pembayaran", "Ditolak"].includes(pemesanan.Status_Pembayaran) &&
+    !sudahKedaluwarsa;
+
   if (!pemesanan) return null;
   return (
     <Dialog
@@ -164,9 +179,15 @@ const DetailTransaksi = ({
                         className="font-normal text-blue-gray-600"
                       >
                         Tanggal Billing : {""}
-                        {new Date(
-                          pemesanan.ajukanDetail.Tanggal_Masuk
-                        ).toLocaleString()}
+                        {pemesanan.Status_Pembayaran === "Lunas" ||
+                        !sudahKedaluwarsa
+                          ? new Date(
+                              pemesanan.ajukanDetail.Tanggal_Masuk?.seconds
+                                ? pemesanan.ajukanDetail.Tanggal_Masuk.seconds *
+                                  1000
+                                : pemesanan.ajukanDetail.Tanggal_Masuk
+                            ).toLocaleString()
+                          : "-"}
                       </Typography>
                     )}
                   {pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" &&
@@ -176,9 +197,16 @@ const DetailTransaksi = ({
                         className="font-normal text-blue-gray-600"
                       >
                         Tanggal Kadaluwarsa : {""}
-                        {new Date(
-                          pemesanan.ajukanDetail.Tanggal_Kadaluwarsa
-                        ).toLocaleString()}
+                        {pemesanan.Status_Pembayaran === "Lunas" ||
+                        !sudahKedaluwarsa
+                          ? new Date(
+                              pemesanan.ajukanDetail.Tanggal_Kadaluwarsa
+                                ?.seconds
+                                ? pemesanan.ajukanDetail.Tanggal_Kadaluwarsa
+                                    .seconds * 1000
+                                : pemesanan.ajukanDetail.Tanggal_Kadaluwarsa
+                            ).toLocaleString()
+                          : "-"}
                       </Typography>
                     )}
                   <Typography
@@ -229,16 +257,25 @@ const DetailTransaksi = ({
                           : "..."}
                       </Typography>
                     )}
-                  {pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" &&
-                    pemesanan.ajukanDetail.Status_Ajuan === "Diterima" &&
-                    (pemesanan.Status_Pembayaran === "Menunggu Pembayaran" ||
-                      pemesanan.Status_Pembayaran === "Ditolak") && (
+                  {bolehKirimBukti && (
+                    <Button
+                      size="sm"
+                      onClick={() => setBukaPengisianBuktiTransaksi(true)}
+                      className="bg-primary border-2 border-blue-gray-300 shadow-xl text-white"
+                    >
+                      Kirim Bukti Pembayaran
+                    </Button>
+                  )}
+
+                  {!bolehKirimBukti &&
+                    sudahKedaluwarsa &&
+                    pemesanan.Status_Pembayaran !== "Menunggu Admin" && (
                       <Button
                         size="sm"
-                        onClick={() => setBukaPengisianBuktiTransaksi(true)}
-                        className="bg-primary border-2 border-blue-gray-300 shadow-xl text-white"
+                        onClick={() => setBukaKonfirmasiVABaru(true)}
+                        className="bg-yellow-800 border-2 border-white shadow-xl text-white"
                       >
-                        Kirim Bukti Pembayaran
+                        Request Virtual Account Baru
                       </Button>
                     )}
                 </TimelineBody>
@@ -443,7 +480,8 @@ const DetailTransaksi = ({
                     {pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" && (
                       <div className="col-span-2">
                         <Typography className="font-semibold" variant="h6">
-                          Virtual Account Produk : {produk.Nomor_VA}
+                          Virtual Account Produk :{" "}
+                          {sudahKedaluwarsa ? "-" : produk.Nomor_VA}
                         </Typography>
                       </div>
                     )}
@@ -513,6 +551,12 @@ const DetailTransaksi = ({
         open={bukaPengisianBuktiTransaksi}
         onClose={() => setBukaPengisianBuktiTransaksi(false)}
         pemesanan={pemesanan}
+        ID_Pemesanan={pemesanan.id}
+        ID_Transaksi={pemesanan.ID_Transaksi}
+      />
+      <DialogKonfirmasiVABaru
+        open={bukaKonfirmasiVABaru}
+        onClose={() => setBukaKonfirmasiVABaru(false)}
         ID_Pemesanan={pemesanan.id}
         ID_Transaksi={pemesanan.ID_Transaksi}
       />
