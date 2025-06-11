@@ -33,7 +33,8 @@ const DialogPerbaikanDokumen = ({
     switch (namaAjukan) {
       case "Kegiatan Penanggulangan Bencana":
         return {
-          instructions: "*Upload Kembali File Surat Pengantar Permintaan Data",
+          instructions:
+            "*Upload Kembali File Surat Pengantar Permintaan Data Yang Sudah Diperbaiki",
           component: (
             <PenanggulanganBencanaForm
               ID_Ajukan={ajukanID}
@@ -44,7 +45,7 @@ const DialogPerbaikanDokumen = ({
       case "Kegiatan Keagamaan":
         return {
           instructions:
-            "*Upload Kembali File Surat Permintaan Ditandatangani Camat atau Pejabat Setingkat",
+            "*Upload Kembali File Surat Permintaan Ditandatangani Camat atau Pejabat Setingkat Yang Sudah Diperbaiki",
           component: (
             <KeagamaanForm
               ID_Ajukan={ajukanID}
@@ -55,7 +56,7 @@ const DialogPerbaikanDokumen = ({
       case "Kegiatan Pertahanan dan Keamanan":
         return {
           instructions:
-            "*Upload Kembali File Surat Permintaan Ditandatangani Camat atau Pejabat Setingkat",
+            "*Upload Kembali File Surat Permintaan Ditandatangani Camat atau Pejabat Setingkat Yang Sudah Diperbaiki",
           component: (
             <PertahananForm
               ID_Ajukan={ajukanID}
@@ -66,7 +67,7 @@ const DialogPerbaikanDokumen = ({
       case "Kegiatan Sosial":
         return {
           instructions:
-            "*Upload Kembali File Surat Permintaan Ditandatangani Camat atau Pejabat Setingkat",
+            "*Upload Kembali File Surat Permintaan Ditandatangani Camat atau Pejabat Setingkat Yang Sudah Diperbaiki",
           component: (
             <SosialForm ID_Ajukan={ajukanID} onSubmit={handlePerbaikiDokumen} />
           ),
@@ -74,7 +75,7 @@ const DialogPerbaikanDokumen = ({
       case "Kegiatan Pendidikan dan Penelitian Non Komersil":
         return {
           instructions:
-            "*Upload Kembali File Identitas Diri KTP / KTM / SIM / Paspor, Surat Pengantar dari Kepala Sekolah / Rektor / Dekan, Surat Pernyataan Tidak Digunakan Untuk Kepentingan Lain, Proposal Penelitian Berisi Maksud dan Tujuan Penelitian yang Telah Disetujui",
+            "*Upload Kembali File Identitas Diri KTP / KTM / SIM / Paspor, Surat Pengantar dari Kepala Sekolah / Rektor / Dekan, Surat Pernyataan Tidak Digunakan Untuk Kepentingan Lain, Proposal Penelitian Berisi Maksud dan Tujuan Penelitian yang Telah Disetujui Yang Sudah Diperbaiki",
           component: (
             <PendidikanForm
               ID_Ajukan={ajukanID}
@@ -85,7 +86,7 @@ const DialogPerbaikanDokumen = ({
       case "Kegiatan Pemerintahan Pusat atau Daerah":
         return {
           instructions:
-            "*Upload Kembali File Mempunyai Perjanjian Kerjasama dengan BMKG tentang Kebutuhan Informasi MKKuG, Surat Pengantar",
+            "*Upload Kembali File Mempunyai Perjanjian Kerjasama dengan BMKG tentang Kebutuhan Informasi MKKuG, Surat Pengantar Yang Sudah Diperbaiki",
           component: (
             <PemerintahanForm
               ID_Ajukan={ajukanID}
@@ -95,7 +96,8 @@ const DialogPerbaikanDokumen = ({
         };
       case "Kegiatan Tarif PNBP":
         return {
-          instructions: "*Upload Kembali File Identitas KTP, Surat Pengantar",
+          instructions:
+            "*Upload Kembali File Identitas KTP, Surat Pengantar Yang Sudah Diperbaiki",
           component: (
             <PNBPForm ID_Ajukan={ajukanID} onSubmit={handlePerbaikiDokumen} />
           ),
