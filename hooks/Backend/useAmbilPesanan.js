@@ -3,10 +3,10 @@ import { firestore } from "@/lib/firebaseConfig";
 import {
   collection,
   doc,
-  getDoc,
-  getDocs,
+  onSnapshot,
   query,
   where,
+  getDoc,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 
@@ -17,115 +17,114 @@ const useFetchPemesanan = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchPemesanan = async () => {
-      setLoading(true);
-      const penggunaSaatIni = localStorage.getItem("ID");
-      if (!penggunaSaatIni) {
-        setLoading(false);
-        toast.error("Anda harus masuk untuk melihat pemesanan.");
-        return;
-      }
+    const penggunaSaatIni = localStorage.getItem("ID");
+    if (!penggunaSaatIni) {
+      setLoading(false);
+      toast.error("Anda harus masuk untuk melihat pemesanan.");
+      return;
+    }
 
+    const unsubscribe = (() => {
       try {
         const pemesananRef = collection(firestore, "pemesanan");
         const q = query(
           pemesananRef,
           where("ID_Pengguna", "==", penggunaSaatIni)
         );
-        const querySnapshot = await getDocs(q);
 
-        const pemesananList = [];
-        for (const docSnap of querySnapshot.docs) {
-          const pemesanan = { id: docSnap.id, ...docSnap.data() };
-          if (pemesanan.ID_Ajukan) {
-            const ajukanRef = doc(firestore, "ajukan", pemesanan.ID_Ajukan);
-            const ajukanSnapshot = await getDoc(ajukanRef);
+        return onSnapshot(q, async (querySnapshot) => {
+          const promises = querySnapshot.docs.map(async (docSnap) => {
+            const pemesanan = { id: docSnap.id, ...docSnap.data() };
 
-            if (ajukanSnapshot.exists()) {
-              pemesanan.ajukanDetail = {
-                id: ajukanSnapshot.id,
-                ...ajukanSnapshot.data(),
-              };
+            if (pemesanan.ID_Ajukan) {
+              try {
+                const ajukanRef = doc(firestore, "ajukan", pemesanan.ID_Ajukan);
+                const ajukanSnap = await getDoc(ajukanRef);
+                pemesanan.ajukanDetail = ajukanSnap.exists()
+                  ? { id: ajukanSnap.id, ...ajukanSnap.data() }
+                  : null;
+              } catch {
+                pemesanan.ajukanDetail = null;
+              }
             } else {
-              console.warn(
-                "Data ajukan tidak ditemukan untuk ID:",
-                pemesanan.ID_Ajukan
-              );
               pemesanan.ajukanDetail = null;
             }
-          } else {
-            pemesanan.ajukanDetail = null;
-          }
 
-          if (pemesanan.ID_Transaksi) {
-            const transaksiRef = doc(
-              firestore,
-              "transaksi",
-              pemesanan.ID_Transaksi
-            );
-            const transaksiSnapshot = await getDoc(transaksiRef);
-            if (transaksiSnapshot.exists()) {
-              pemesanan.transaksiDetail = {
-                id: transaksiSnapshot.id,
-                ...transaksiSnapshot.data(),
-              };
+            if (pemesanan.ID_Transaksi) {
+              try {
+                const transaksiRef = doc(
+                  firestore,
+                  "transaksi",
+                  pemesanan.ID_Transaksi
+                );
+                const transaksiSnap = await getDoc(transaksiRef);
+                pemesanan.transaksiDetail = transaksiSnap.exists()
+                  ? { id: transaksiSnap.id, ...transaksiSnap.data() }
+                  : null;
+              } catch {
+                pemesanan.transaksiDetail = null;
+              }
             } else {
-              console.warn(
-                "Data transaksi tidak ditemukan untuk ID:",
-                pemesanan.ID_Transaksi
-              );
               pemesanan.transaksiDetail = null;
             }
-          } else {
-            pemesanan.transaksiDetail = null;
-          }
 
-          pemesananList.push(pemesanan);
-        }
+            return pemesanan;
+          });
 
-        setPemesananData(pemesananList);
+          const pemesananList = await Promise.all(promises);
+          setPemesananData(pemesananList);
+          setLoading(false);
+        });
+      } catch (err) {
+        console.error("Gagal mengambil data realtime pemesanan:", err);
+        setError("Gagal mengambil data realtime pemesanan.");
+        toast.error("Gagal mengambil data realtime pemesanan.");
+        setLoading(false);
+      }
+    })();
+
+    const fetchUserData = async () => {
+      try {
         const userDocRefPerorangan = doc(
           firestore,
           "perorangan",
           penggunaSaatIni
         );
-        const userSnapshotPerorangan = await getDoc(userDocRefPerorangan);
-
-        if (userSnapshotPerorangan.exists()) {
+        const userSnapPerorangan = await getDoc(userDocRefPerorangan);
+        if (userSnapPerorangan.exists()) {
           setUserData({
-            id: userSnapshotPerorangan.id,
-            ...userSnapshotPerorangan.data(),
+            id: userSnapPerorangan.id,
+            ...userSnapPerorangan.data(),
+          });
+          return;
+        }
+
+        const userDocRefPerusahaan = doc(
+          firestore,
+          "perusahaan",
+          penggunaSaatIni
+        );
+        const userSnapPerusahaan = await getDoc(userDocRefPerusahaan);
+        if (userSnapPerusahaan.exists()) {
+          setUserData({
+            id: userSnapPerusahaan.id,
+            ...userSnapPerusahaan.data(),
           });
         } else {
-          const userDocRefPerusahaan = doc(
-            firestore,
-            "perusahaan",
-            penggunaSaatIni
+          console.warn(
+            "User data tidak ditemukan di 'perorangan' maupun 'perusahaan'."
           );
-          const userSnapshotPerusahaan = await getDoc(userDocRefPerusahaan);
-
-          if (userSnapshotPerusahaan.exists()) {
-            setUserData({
-              id: userSnapshotPerusahaan.id,
-              ...userSnapshotPerusahaan.data(),
-            });
-          } else {
-            console.warn(
-              "No user data found in either 'perorangan' or 'perusahaan' for ID:",
-              penggunaSaatIni
-            );
-          }
         }
       } catch (err) {
-        console.error("Gagal mengambil data pemesanan:", err);
-        setError("Gagal mengambil data pemesanan.");
-        toast.error("Gagal mengambil data pemesanan.");
-      } finally {
-        setLoading(false);
+        console.error("Gagal mengambil data pengguna:", err);
       }
     };
 
-    fetchPemesanan();
+    fetchUserData();
+
+    return () => {
+      if (typeof unsubscribe === "function") unsubscribe();
+    };
   }, []);
 
   return { pemesananData, userData, loading, error };
