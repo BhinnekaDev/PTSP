@@ -16,11 +16,11 @@ function Registration() {
   return (
     <>
       {!pilihanKategoriDaftar ? (
-        <section className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-primary to-secondary">
-          <h1 className="text-3xl font-extrabold tracking-widest mb-12 text-white">
+        <section className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-primary to-secondary py-10 lg:py-0">
+          <h1 className="text-3xl font-extrabold tracking-widest my-5 lg:mb-12 text-white">
             PENDAFTARAN
           </h1>
-          <div className="flex space-x-8">
+          <div className="flex lg:flex-row flex-col lg:space-x-8 gap-y-8">
             <Card className="w-80">
               <CardBody className="flex flex-col items-center">
                 <Image

@@ -127,10 +127,10 @@ const ChatHeader = ({ stasiun }) => (
 const ChatMessages = ({ pesanList, selengkapnya2, toggleSelengkapnya2 }) => {
   const batasTeksPesan = 200;
   const containerRef = useRef(null);
+  const imageExt = ["jpg", "jpeg", "png", "gif", "bmp", "webp"];
+  const videoExt = ["mp4", "webm", "avi", "mov", "mkv"];
   const getFileIcon = (fileName) => {
     const ext = fileName.split(".").pop().toLowerCase();
-    const imageExt = ["jpg", "jpeg", "png", "gif", "bmp", "webp"];
-    const videoExt = ["mp4", "webm", "avi", "mov", "mkv"];
 
     if (imageExt.includes(ext)) {
       return <FaFileImage className="w-5 h-5 text-blue-500 mr-2" />;
@@ -194,17 +194,27 @@ const ChatMessages = ({ pesanList, selengkapnya2, toggleSelengkapnya2 }) => {
                 </button>
               )}
 
-              {adaFile && (
-                <a
-                  href={pesan.urlFile}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center bg-white hover:bg-white/30 transition-colors px-3 py-2 rounded-md text-black text-sm w-fit"
-                >
-                  {getFileIcon(pesan.namaFile)}
-                  <span className="underline">{pesan.namaFile}</span>
-                </a>
-              )}
+              {adaFile &&
+                (imageExt.includes(
+                  pesan.namaFile.split(".").pop().toLowerCase()
+                ) ? (
+                  <img
+                    src={pesan.urlFile}
+                    alt={pesan.namaFile}
+                    className="rounded-md max-w-full max-h-56 object-contain cursor-pointer hover:opacity-90 transition"
+                    onClick={() => window.open(pesan.urlFile, "_blank")}
+                  />
+                ) : (
+                  <a
+                    href={pesan.urlFile}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center bg-white hover:bg-white/30 transition-colors px-3 py-2 rounded-md text-black text-sm w-fit"
+                  >
+                    {getFileIcon(pesan.namaFile)}
+                    <span className="underline">{pesan.namaFile}</span>
+                  </a>
+                ))}
 
               <div className="flex justify-end items-center">
                 <span className="text-sm text-white">

@@ -90,9 +90,9 @@ const StepFormPerorangan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
             <h2 className="text-center text-lg bg-primary my-4 py-2 text-white uppercase font-bold tracking-wide rounded-md">
               Data Diri
             </h2>
-            <div className="grid grid-cols-2 gap-4 ">
-              <div>
-                <p className="text-sm font-bold"> No Identitas</p>
+            <div className="flex flex-wrap -mx-2">
+              <div className="w-full md:w-1/2 px-2 py-2">
+                <p className="text-sm font-bold">No Identitas</p>
                 <Input
                   name="No_Identitas"
                   className="input-custom"
@@ -100,13 +100,12 @@ const StepFormPerorangan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   value={formDataPerorangan.No_Identitas}
                   onChange={handleInputChange}
                   size="lg"
-                  labelProps={{
-                    className: "hidden",
-                  }}
+                  labelProps={{ className: "hidden" }}
                   required
                 />
               </div>
-              <div>
+
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold">Nama Lengkap</p>
                 <Input
                   name="Nama_Lengkap"
@@ -116,13 +115,12 @@ const StepFormPerorangan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   onChange={handleInputChange}
                   size="lg"
                   maxLength={100}
-                  labelProps={{
-                    className: "hidden",
-                  }}
+                  labelProps={{ className: "hidden" }}
                   required
                 />
               </div>
-              <div>
+
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold">Pekerjaan</p>
                 <Input
                   name="Pekerjaan"
@@ -132,13 +130,11 @@ const StepFormPerorangan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   onChange={handleInputChange}
                   size="lg"
                   maxLength={50}
-                  labelProps={{
-                    className: "hidden",
-                  }}
+                  labelProps={{ className: "hidden" }}
                   required
                 />
               </div>
-              <div>
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold">Pendidikan Terakhir</p>
                 <select
                   name="Pendidikan_Terakhir"
@@ -169,7 +165,7 @@ const StepFormPerorangan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   </option>
                 </select>
               </div>
-              <div>
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <label className="block text-sm font-bold text-gray-700">
                   Jenis Kelamin
                 </label>
@@ -186,7 +182,7 @@ const StepFormPerorangan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                 </select>
               </div>
 
-              <div>
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold">No HP / No Telepon</p>
                 <Input
                   name="No_Hp"
@@ -195,9 +191,7 @@ const StepFormPerorangan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   value={formDataPerorangan.No_Hp}
                   onChange={handleInputChange}
                   size="lg"
-                  labelProps={{
-                    className: "hidden",
-                  }}
+                  labelProps={{ className: "hidden" }}
                   required
                 />
               </div>

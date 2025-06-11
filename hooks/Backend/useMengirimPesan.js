@@ -39,7 +39,6 @@ export default function useMengirimChat() {
     return null;
   };
 
-  // Fungsi pembanding array peserta tanpa sensitif urutan
   const samaPeserta = (a, b) => {
     return (
       Array.isArray(a) &&
@@ -91,8 +90,6 @@ export default function useMengirimChat() {
       );
       const querySnapshot = await getDocs(q);
 
-      console.log("QuerySnapshot size:", querySnapshot.size);
-
       let chatRoomDocId = null;
 
       querySnapshot.forEach((docSnap) => {
@@ -105,10 +102,7 @@ export default function useMengirimChat() {
         }
       });
 
-      console.log("chatRoomDocId ditemukan:", chatRoomDocId);
-
       if (!chatRoomDocId) {
-        console.log("Membuat chatRoom baru karena tidak ada yang cocok");
         const docRef = await addDoc(chatsRoomsRef, {
           pesanTerakhir: pesanTerakhir,
           peserta,
@@ -119,10 +113,16 @@ export default function useMengirimChat() {
         });
         chatRoomDocId = docRef.id;
       } else {
-        console.log("Mengupdate chatRoom yang sudah ada:", chatRoomDocId);
         const chatRoomDocRef = doc(firestore, "chatRooms", chatRoomDocId);
+        let pesanTerakhirUpdate = "";
+        if (pesan && pesan.trim() !== "") {
+          pesanTerakhirUpdate = pesan;
+        } else if (namaFile) {
+          pesanTerakhirUpdate = `${namaFile}`;
+        }
+
         await updateDoc(chatRoomDocRef, {
-          pesanTerakhir: pesan,
+          pesanTerakhir: pesanTerakhirUpdate,
           terakhirDiperbarui: serverTimestamp(),
         });
       }

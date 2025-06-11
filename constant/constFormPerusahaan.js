@@ -141,8 +141,8 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
             <h2 className="text-center text-lg bg-secondary my-4 py-2 text-white uppercase font-bold tracking-wide rounded-md">
               Data Diri
             </h2>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
+            <div className="flex flex-wrap -mx-2">
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold"> No Identitas</p>
                 <Input
                   name="No_Identitas"
@@ -157,7 +157,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   required
                 />
               </div>
-              <div>
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold">Nama Lengkap</p>
                 <Input
                   name="Nama_Lengkap"
@@ -173,7 +173,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   required
                 />
               </div>
-              <div>
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold"> Pekerjaan</p>
                 <Input
                   name="Pekerjaan"
@@ -189,7 +189,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   required
                 />
               </div>
-              <div>
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold">Pendidikan Terakhir</p>
                 <select
                   name="Pendidikan_Terakhir"
@@ -220,7 +220,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   </option>
                 </select>
               </div>
-              <div>
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <label className="block text-sm font-bold text-gray-700">
                   Jenis Kelamin
                 </label>
@@ -237,7 +237,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                 </select>
               </div>
 
-              <div>
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold">No HP / No Telepon</p>
                 <Input
                   name="No_Hp"
@@ -279,8 +279,8 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
             <h2 className="text-center text-lg bg-secondary my-4 py-2 text-white uppercase font-bold tracking-wide rounded-md">
               Data Perusahaan Badan Usaha
             </h2>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
+            <div className="flex flex-wrap -mx-2">
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold"> NPWP</p>
                 <Input
                   name="NPWP_Perusahaan"
@@ -295,7 +295,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   required
                 />
               </div>
-              <div>
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold">Nama Perusahaan</p>
                 <Input
                   name="Nama_Perusahaan"
@@ -312,7 +312,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                 />
               </div>
             </div>
-            <div className="my-3">
+            <div className="w-full md:w-full px-2 py-2">
               <p className="text-sm font-bold">Alamat Perusahaan</p>
               <Input
                 name="Alamat_Perusahaan"
@@ -328,8 +328,8 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                 required
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
+            <div className="flex flex-wrap -mx-2">
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold">Provinsi</p>
                 <Input
                   name="Provinsi_Perusahaan"
@@ -345,7 +345,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   required
                 />
               </div>
-              <div>
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold"> Kabupaten/Kota</p>
                 <Input
                   name="Kabupaten_Kota_Perusahaan"
@@ -361,7 +361,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   required
                 />
               </div>
-              <div>
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold"> Email Perusahaan</p>
                 <Input
                   name="Email_Perusahaan"
@@ -378,7 +378,7 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
                   required
                 />
               </div>
-              <div>
+              <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold">
                   {" "}
                   No HP / No Telepon Perusahaan
