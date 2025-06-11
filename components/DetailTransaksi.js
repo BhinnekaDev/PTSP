@@ -215,12 +215,30 @@ const DetailTransaksi = ({
                     className="font-normal text-gray-600"
                   >
                     Status Pembayaran{" "}
-                    {pemesanan.Status_Pembayaran === "Sedang Ditinjau" ||
-                    pemesanan.Status_Pembayaran === "Menunggu Pembayaran" ||
-                    pemesanan.Status_Pembayaran === "Lunas" ||
-                    pemesanan.Status_Pembayaran === "Sedang Ditinjau"
-                      ? `: ${pemesanan.Status_Pembayaran}`
-                      : `: ${pemesanan.Status_Pembayaran}`}
+                    {(() => {
+                      const status = pemesanan.Status_Pembayaran;
+
+                      if (sudahKedaluwarsa) {
+                        if (status === "Menunggu Admin") {
+                          return "Menunggu Virtual Account Baru";
+                        }
+                        if (
+                          ["Menunggu Pembayaran", "Ditolak"].includes(status)
+                        ) {
+                          return "Kedaluwarsa";
+                        }
+                        if (status === "Lunas") {
+                          return "Lunas";
+                        }
+                      } else {
+                        if (status === "Lunas") {
+                          return "Lunas";
+                        }
+                        return status;
+                      }
+
+                      return status;
+                    })()}
                   </Typography>
                   {pemesanan.ajukanDetail.Jenis_Ajukan !== "Berbayar" && (
                     <Typography
@@ -481,9 +499,11 @@ const DetailTransaksi = ({
                         <Typography className="font-semibold" variant="h6">
                           Virtual Account Produk :{" "}
                           {sudahKedaluwarsa &&
-                          ["Menunggu Pembayaran", "Ditolak"].includes(
-                            pemesanan.Status_Pembayaran
-                          )
+                          [
+                            "Menunggu Pembayaran",
+                            "Ditolak",
+                            "Menunggu Admin",
+                          ].includes(pemesanan.Status_Pembayaran)
                             ? "-"
                             : produk.Nomor_VA}
                         </Typography>

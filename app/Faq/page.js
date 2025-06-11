@@ -6,7 +6,7 @@ import FloatingChat from "@/components/FloatingChat";
 
 function Beranda() {
   return (
-    <div className="position-relative top-0 overflow-x-hidden">
+    <div>
       <Toaster position="top-right" reverseOrder={false} />
       <Navbar />
       <FAQ />
