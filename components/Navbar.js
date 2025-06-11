@@ -38,8 +38,7 @@ function Navigation() {
   const { navbarBg, openPengaturan, setOpenPengaturan } = useNavbarEfek();
   const { apakahSudahLogin } = useVerifikasiLogin();
   const { keluarAkun } = useKeluar();
-  const { jumlahKeranjang, memuatHitungKeranjangSesuaiID } =
-    useHitungKeranjangSesuaiID();
+  const { jumlahKeranjang } = useHitungKeranjangSesuaiID();
   const {
     DialogAlurLayanan,
     DialogStandarLayanan,
