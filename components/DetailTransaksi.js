@@ -214,7 +214,7 @@ const DetailTransaksi = ({
                     color="gray"
                     className="font-normal text-gray-600"
                   >
-                    Status Pembayaran{" "}
+                    Status Pembayaran :{" "}
                     {(() => {
                       const status = pemesanan.Status_Pembayaran;
 
@@ -229,6 +229,9 @@ const DetailTransaksi = ({
                         }
                         if (status === "Lunas") {
                           return "Lunas";
+                        }
+                        if (status === "Sedang Ditinjau") {
+                          return "Sedang Ditinjau";
                         }
                       } else {
                         if (status === "Lunas") {
