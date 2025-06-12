@@ -124,30 +124,30 @@ const ListPesanan = () => {
           <div className="grid grid-cols-1 gap-1">
             <div className="border-b border-gray-200 pb-2 mb-2 break-words">
               <Typography className="mb-1 text-xs !font-medium !text-gray-600 break-words">
-                {userData.Nama_Lengkap && userData.Nama_Perusahaan ? (
+                {userData?.Nama_Lengkap && userData?.Nama_Perusahaan ? (
                   <>
-                    {userData.Nama_Lengkap} - {userData.Nama_Perusahaan}
+                    {userData?.Nama_Lengkap} - {userData?.Nama_Perusahaan}
                   </>
                 ) : (
-                  userData.Nama_Lengkap || userData.Nama_Perusahaan || "N/A"
+                  userData?.Nama_Lengkap || userData?.Nama_Perusahaan || "N/A"
                 )}
               </Typography>
               <Typography className="mb-1 text-xs !font-medium !text-gray-600 break-words">
-                {userData.Email && userData.Email_Perusahaan ? (
+                {userData?.Email && userData?.Email_Perusahaan ? (
                   <>
-                    {userData.Email} - {userData.Email_Perusahaan}
+                    {userData?.Email} - {userData?.Email_Perusahaan}
                   </>
                 ) : (
-                  userData.Email || userData.Email_Perusahaan || "N/A"
+                  userData?.Email || userData?.Email_Perusahaan || "N/A"
                 )}
               </Typography>
               <Typography className="mb-1 text-xs !font-medium !text-gray-600 break-words">
-                {userData.No_Hp && userData.No_Hp_Perusahaan ? (
+                {userData?.No_Hp && userData?.No_Hp_Perusahaan ? (
                   <>
-                    {userData.No_Hp} - {userData.No_Hp_Perusahaan}
+                    {userData?.No_Hp} - {userData?.No_Hp_Perusahaan}
                   </>
                 ) : (
-                  userData.No_Hp || userData.No_Hp_Perusahaan || "N/A"
+                  userData?.No_Hp || userData?.No_Hp_Perusahaan || "N/A"
                 )}
               </Typography>
             </div>

@@ -405,31 +405,31 @@ const DetailTransaksi = ({
               <div className="bg-gradient-to-br from-secondary to-primary text-white p-4 rounded-lg shadow-xl border-2">
                 <h2 className="font-semibold mb-4">Alamat Pengiriman</h2>
                 <Typography>
-                  {userData.Nama_Lengkap && userData.Nama_Perusahaan ? (
+                  {userData?.Nama_Lengkap && userData?.Nama_Perusahaan ? (
                     <>
-                      {userData.Nama_Lengkap} - {userData.Nama_Perusahaan}
+                      {userData?.Nama_Lengkap} - {userData?.Nama_Perusahaan}
                     </>
                   ) : (
-                    userData.Nama_Lengkap || userData.Nama_Perusahaan || "N/A"
+                    userData?.Nama_Lengkap || userData?.Nama_Perusahaan || "N/A"
                   )}
                 </Typography>
                 <Typography>
-                  {userData.No_Hp && userData.No_Hp_Perusahaan ? (
+                  {userData?.No_Hp && userData?.No_Hp_Perusahaan ? (
                     <>
-                      {userData.No_Hp} - {userData.No_Hp_Perusahaan}
+                      {userData?.No_Hp} - {userData?.No_Hp_Perusahaan}
                     </>
                   ) : (
-                    userData.No_Hp || userData.No_Hp_Perusahaan || "N/A"
+                    userData?.No_Hp || userData?.No_Hp_Perusahaan || "N/A"
                   )}
                 </Typography>
                 <Typography>
                   {" "}
-                  {userData.Email && userData.Email_Perusahaan ? (
+                  {userData?.Email && userData?.Email_Perusahaan ? (
                     <>
-                      {userData.Email} - {userData.Email_Perusahaan}
+                      {userData?.Email} - {userData?.Email_Perusahaan}
                     </>
                   ) : (
-                    userData.Email || userData.Email_Perusahaan || "N/A"
+                    userData?.Email || userData?.Email_Perusahaan || "N/A"
                   )}
                 </Typography>
               </div>
