@@ -17,6 +17,17 @@ const KegiatanTarifPNBPForm = ({ onSubmit }) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    const requiredFields = {
+      IdentitasDiri_TarifPNBP: "Identitas KTP",
+      SuratPengantar_TarifPNBP: "Surat Pengantar",
+    };
+
+    for (const [name, label] of Object.entries(requiredFields)) {
+      if (!files[name] || files[name].length === 0) {
+        toast.error(`File ${label} wajib diunggah.`);
+        return;
+      }
+    }
     const allFiles = Object.values(files).flat();
 
     if (allFiles.length === 0) {

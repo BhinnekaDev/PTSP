@@ -18,6 +18,22 @@ const KegiatanPendidikanPenelitianForm = ({ onSubmit, ID_Ajukan }) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    const requiredFields = {
+      IdentitasDiri_Pendidikan: "Identitas Diri KTP / KTM / SIM / Paspor",
+      SuratPengantar_Pendidikan:
+        "Surat Pengantar dari Kepala Sekolah / Rektor / Dekan",
+      SuratPernyataan_Pendidikan:
+        "Surat Pernyataan Tidak Digunakan Untuk Kepentingan Lain",
+      Proposal_Pendidikan:
+        "Proposal Penelitian Berisi Maksud dan Tujuan Penelitian yang Telah Disetujui",
+    };
+
+    for (const [name, label] of Object.entries(requiredFields)) {
+      if (!files[name] || files[name].length === 0) {
+        toast.error(`File ${label} wajib diunggah.`);
+        return;
+      }
+    }
     const allFiles = Object.values(files).flat();
 
     if (allFiles.length === 0) {

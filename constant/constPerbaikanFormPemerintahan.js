@@ -17,6 +17,18 @@ const KegiatanPemerintahanForm = ({ onSubmit, ID_Ajukan }) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    const requiredFields = {
+      SuratKerjasama_Pemerintahan:
+        "Surat Perjanjian Kerjasama dengan BMKG tentang Kebutuhan Informasi MKKuG",
+      SuratPengantar_Pemerintahan: "Surat Pengantar",
+    };
+
+    for (const [name, label] of Object.entries(requiredFields)) {
+      if (!files[name] || files[name].length === 0) {
+        toast.error(`File ${label} wajib diunggah.`);
+        return;
+      }
+    }
     const allFiles = Object.values(files).flat();
 
     if (allFiles.length === 0) {
