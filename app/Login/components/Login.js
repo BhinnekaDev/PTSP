@@ -40,8 +40,8 @@ function AuthPage() {
             </div>
 
             <div className="flex flex-1 flex-col justify-center items-center bg-primary text-white px-6 lg:mt-0">
-              <div className="text-center lg:text-right">
-                <h3 className="text-xl lg:text-2xl font-semibold mt-4">
+              <div className="text-center lg:text-right whitespace-nowrap">
+                <h3 className="text-xl lg:text-2xl font-semibold mt-4 ">
                   Penasaran Bagaimana Kami
                 </h3>
                 <p className="mb-4 text-base lg:text-base">

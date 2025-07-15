@@ -54,10 +54,10 @@ function Navigation() {
     useMasukkanPencarian();
 
   const navList = (
-    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6 uppercase">
+    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-4 uppercase">
       <Typography
         as="li"
-        className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer ${
+        className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer ${
           navbarAktif === "/Beranda" ? "text-secondary" : "text-white"
         }`}
       >
@@ -72,7 +72,7 @@ function Navigation() {
         <MenuHandler>
           <Typography
             as="li"
-            className="flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer"
+            className="flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer"
           >
             <a className="flex items-center">Layanan</a>
           </Typography>
@@ -112,7 +112,7 @@ function Navigation() {
       </Menu>
       <Typography
         as="li"
-        className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer ${
+        className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer ${
           navbarAktif === "/Produk" ? "text-secondary" : "text-white"
         }`}
       >
@@ -127,7 +127,7 @@ function Navigation() {
         <MenuHandler>
           <Typography
             as="li"
-            className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer ${
+            className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg whitespace-nowrap cursor-pointer ${
               navbarAktif === "/Saran" || navbarAktif === "/Pengaduan"
                 ? "text-secondary"
                 : "text-white"
@@ -167,10 +167,10 @@ function Navigation() {
       </Menu>
       <Typography
         as="li"
-        className="flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer"
+        className="flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer"
       >
         <a
-          className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer ${
+          className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer ${
             navbarAktif === "/PengajuanKunjungan"
               ? "text-secondary"
               : "text-white"
@@ -182,10 +182,10 @@ function Navigation() {
       </Typography>
       <Typography
         as="li"
-        className="flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer"
+        className="flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer"
       >
         <a
-          className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-xl cursor-pointer ${
+          className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer ${
             navbarAktif === "/Faq" ? "text-secondary" : "text-white"
           }`}
           onClick={() => handlenavbarAktif("/Faq")}
@@ -197,7 +197,7 @@ function Navigation() {
         <div className="relative lg:px-0 px-8">
           <Typography
             as="li"
-            className="flex items-center bg-white rounded-full gap-x-2 font-bold lg:text-xl cursor-pointer lg:w-72 w-full "
+            className="flex items-center bg-white rounded-full gap-x-2 font-bold lg:text-lg cursor-pointer lg:w-72 w-full "
           >
             <Input
               type="text"
