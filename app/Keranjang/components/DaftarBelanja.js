@@ -29,8 +29,13 @@ const PemesananProduk = () => {
     handlenavbarAktif(path);
   };
 
-  const { keranjang, memuat, ambilKeranjang, hapusItemKeranjang } =
-    useAmbilKeranjang();
+  const {
+    keranjang,
+    memuat,
+    ambilKeranjang,
+    updateKuantitasItem,
+    hapusItemKeranjang,
+  } = useAmbilKeranjang();
 
   const cartContent = keranjang
     ? [...(keranjang.Informasi || []), ...(keranjang.Jasa || [])]
@@ -102,7 +107,31 @@ const PemesananProduk = () => {
                           <td className="p-4">{Nama}</td>
                           <td className="p-4">{Pemilik}</td>
                           <td className="p-4">{formatRupiah(Harga)}</td>
-                          <td className="p-4">{Kuantitas}</td>
+                          <td className="p-4">
+                            <div className="flex items-center justify-center gap-2">
+                              <Button
+                                type="button"
+                                className="px-2 py-1 text-xs bg-red-500 text-white"
+                                onClick={() => {
+                                  const baru = Kuantitas - 1;
+                                  if (baru >= 1)
+                                    updateKuantitasItem(index, baru);
+                                }}
+                              >
+                                −
+                              </Button>
+                              <span className="mx-2">{Kuantitas}</span>
+                              <Button
+                                type="button"
+                                className="px-2 py-1 text-xs bg-green-500 text-white"
+                                onClick={() =>
+                                  updateKuantitasItem(index, Kuantitas + 1)
+                                }
+                              >
+                                +
+                              </Button>
+                            </div>
+                          </td>
                           <td className="p-4">{formatRupiah(Total_Harga)}</td>
                           <td className="p-4">
                             <Button

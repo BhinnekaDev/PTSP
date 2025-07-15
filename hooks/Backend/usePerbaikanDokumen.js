@@ -106,7 +106,7 @@ const usePerbaikiDokumen = () => {
 
       await updateDoc(ajukanRef, {
         File_Ajukan: newFileUrls,
-        Status_Ajuan: "Sedang Ditinjau",
+        Status_Ajukan: "Sedang Ditinjau",
         Tanggal_Pembuatan_Ajukan: new Date(),
         Keterangan: deleteField(),
       });

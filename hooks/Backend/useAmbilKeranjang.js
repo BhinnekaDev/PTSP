@@ -31,6 +31,54 @@ const useAmbilKeranjang = () => {
       setMemuat(false);
     }
   };
+  const updateKuantitasItem = async (index, kuantitasBaru) => {
+    try {
+      const penggunaSaatIni = localStorage.getItem("ID");
+      if (!penggunaSaatIni) {
+        toast.error("Anda harus masuk untuk memperbarui item.");
+        return;
+      }
+
+      if (!keranjang) {
+        toast.error("Keranjang tidak ditemukan.");
+        return;
+      }
+
+      const updatedInformasi = Array.isArray(keranjang.Informasi)
+        ? [...keranjang.Informasi]
+        : [];
+      const updatedJasa = Array.isArray(keranjang.Jasa)
+        ? [...keranjang.Jasa]
+        : [];
+
+      if (index < updatedInformasi.length) {
+        const item = updatedInformasi[index];
+        item.Kuantitas = kuantitasBaru;
+        item.Total_Harga = item.Harga * kuantitasBaru;
+      } else {
+        // Update pada Jasa
+        const jasaIndex = index - updatedInformasi.length;
+        const item = updatedJasa[jasaIndex];
+        item.Kuantitas = kuantitasBaru;
+        item.Total_Harga = item.Harga * kuantitasBaru;
+      }
+
+      const keranjangRef = doc(firestore, "keranjang", penggunaSaatIni);
+      await updateDoc(keranjangRef, {
+        Informasi: updatedInformasi,
+        Jasa: updatedJasa,
+      });
+
+      setKeranjang({
+        Informasi: updatedInformasi,
+        Jasa: updatedJasa,
+      });
+      toast.success("Kuantitas berhasil diperbarui.");
+    } catch (error) {
+      console.error("Gagal memperbarui kuantitas:", error);
+      toast.error("Gagal memperbarui kuantitas item.");
+    }
+  };
 
   const hapusItemKeranjang = async (index) => {
     try {
@@ -95,7 +143,13 @@ const useAmbilKeranjang = () => {
     ambilKeranjang();
   }, []);
 
-  return { keranjang, memuat, ambilKeranjang, hapusItemKeranjang };
+  return {
+    keranjang,
+    memuat,
+    ambilKeranjang,
+    hapusItemKeranjang,
+    updateKuantitasItem,
+  };
 };
 
 export default useAmbilKeranjang;

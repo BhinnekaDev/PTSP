@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useServiceItemsPagination from "@/hooks/Frontend/useStepperFormIKM";
 import useMasukanIKM from "@/hooks/Backend/useMasukanIKM";
 import { Button } from "@material-tailwind/react";
+import { IoIosWarning } from "react-icons/io";
 
 const ProgressBar = ({ progressWidth }) => (
   <div className="flex-start flex h-2.5 w-full overflow-hidden rounded-full bg-primary font-sans text-xs font-medium">
@@ -20,9 +21,19 @@ const ServiceItemCard = ({
 }) => (
   <div
     key={index}
-    className="bg-white p-4 rounded-lg shadow-md border-2 border-gray"
+    className={`bg-white p-4 rounded-lg shadow-md border-2 ${
+      item.id === 9 ? "border-red-500" : "border-gray"
+    }`}
   >
     <h3 className="font-medium text-lg mb-2">{item.name}</h3>
+    {item.id === 9 && (
+      <div className="flex items-center gap-2 mb-2">
+        <IoIosWarning className="text-red-500 text-lg" />
+        <p className="text-sm text-red-500 font-semibold">
+          Harap isi bagian ini dengan sebaik-baiknya.
+        </p>
+      </div>
+    )}
     <div>
       <p className="font-semibold mb-1">Kualitas Pelayanan</p>
       {renderRadioGroup(item.id)}

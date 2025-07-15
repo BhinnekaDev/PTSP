@@ -56,7 +56,7 @@ const DetailTransaksi = ({
 
   const bolehKirimBukti =
     pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" &&
-    pemesanan.ajukanDetail.Status_Ajuan === "Diterima" &&
+    pemesanan.ajukanDetail.Status_Ajukan === "Diterima" &&
     ["Menunggu Pembayaran", "Ditolak"].includes(pemesanan.Status_Pembayaran) &&
     !sudahKedaluwarsa;
   const validasiRequestVABaru =
@@ -90,9 +90,9 @@ const DetailTransaksi = ({
                 <TimelineHeader>
                   <TimelineIcon
                     className={`p-2 ${
-                      pemesanan.ajukanDetail.Status_Ajuan === "Ditolak"
+                      pemesanan.ajukanDetail.Status_Ajukan === "Ditolak"
                         ? "bg-red-500"
-                        : pemesanan.ajukanDetail.Status_Ajuan ===
+                        : pemesanan.ajukanDetail.Status_Ajukan ===
                           "Sedang Ditinjau"
                         ? "bg-yellow-800"
                         : "bg-secondary"
@@ -115,9 +115,15 @@ const DetailTransaksi = ({
                     color="gray"
                     className="font-normal text-gray-600"
                   >
-                    Status Pengajuan : {pemesanan.ajukanDetail.Status_Ajuan}
+                    Jenis Pengajuan : {pemesanan.ajukanDetail.Jenis_Ajukan}
                   </Typography>
-                  {pemesanan.ajukanDetail.Status_Ajuan === "Ditolak" && (
+                  <Typography
+                    color="gray"
+                    className="font-normal text-gray-600"
+                  >
+                    Status Pengajuan : {pemesanan.ajukanDetail.Status_Ajukan}
+                  </Typography>
+                  {pemesanan.ajukanDetail.Status_Ajukan === "Ditolak" && (
                     <Typography
                       color="gray"
                       className="font-normal text-gray-600"
@@ -135,7 +141,7 @@ const DetailTransaksi = ({
                         1000
                     ).toLocaleString()}
                   </Typography>
-                  {pemesanan.ajukanDetail.Status_Ajuan === "Ditolak" && (
+                  {pemesanan.ajukanDetail.Status_Ajukan === "Ditolak" && (
                     <Button
                       size="sm"
                       onClick={() => setBukaPerbaikanDokumen(true)}
@@ -152,7 +158,7 @@ const DetailTransaksi = ({
                   <TimelineIcon
                     className={`p-2 ${
                       pemesanan.ajukanDetail.Jenis_Ajukan === "Gratis"
-                        ? pemesanan.ajukanDetail.Status_Ajuan === "Diterima"
+                        ? pemesanan.ajukanDetail.Status_Ajukan === "Diterima"
                           ? "bg-secondary"
                           : "bg-primary"
                         : pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar"
@@ -176,7 +182,7 @@ const DetailTransaksi = ({
                 </TimelineHeader>
                 <TimelineBody className="pb-4 px-1 break-words">
                   {pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" &&
-                    pemesanan.ajukanDetail.Status_Ajuan === "Diterima" && (
+                    pemesanan.ajukanDetail.Status_Ajukan === "Diterima" && (
                       <Typography
                         color="gray"
                         className="font-normal text-blue-gray-600"
@@ -193,7 +199,7 @@ const DetailTransaksi = ({
                       </Typography>
                     )}
                   {pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" &&
-                    pemesanan.ajukanDetail.Status_Ajuan === "Diterima" && (
+                    pemesanan.ajukanDetail.Status_Ajukan === "Diterima" && (
                       <Typography
                         color="gray"
                         className="font-normal text-blue-gray-600"
@@ -243,16 +249,6 @@ const DetailTransaksi = ({
                       return status;
                     })()}
                   </Typography>
-                  {pemesanan.ajukanDetail.Jenis_Ajukan !== "Berbayar" && (
-                    <Typography
-                      color="gray"
-                      className="font-normal text-gray-600"
-                    >
-                      {pemesanan.ajukanDetail.Status_Ajuan === "Diterima"
-                        ? `Tanggal Pembayaran : Gratis`
-                        : "Tanggal Pembayaran : ..."}
-                    </Typography>
-                  )}
                   {pemesanan.Status_Pembayaran === "Ditolak" && (
                     <Typography
                       color="gray"
@@ -262,7 +258,7 @@ const DetailTransaksi = ({
                     </Typography>
                   )}
                   {pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" &&
-                    pemesanan.ajukanDetail.Status_Ajuan === "Diterima" &&
+                    pemesanan.ajukanDetail.Status_Ajukan === "Diterima" &&
                     (pemesanan.Status_Pembayaran === "Lunas" ||
                       pemesanan.Status_Pembayaran === "Sedang Ditinjau") && (
                       <Typography
@@ -307,7 +303,7 @@ const DetailTransaksi = ({
                     className={`p-2 ${
                       pemesanan.Status_Pembayaran === "Lunas" &&
                       pemesanan.Status_Pembuatan === "Menunggu Pembuatan" &&
-                      pemesanan.ajukanDetail.Status_Ajuan === "Diterima"
+                      pemesanan.ajukanDetail.Status_Ajukan === "Diterima"
                         ? "bg-yellow-800"
                         : pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" ||
                           pemesanan.ajukanDetail.Jenis_Ajukan === "Gratis"
@@ -379,20 +375,32 @@ const DetailTransaksi = ({
                   >
                     Pengisian IKM
                   </Button>
-                  <Button
-                    className="border-2 border-white bg-secondary text-white"
-                    size="sm"
-                    onClick={() => setBukaUnduhDokumen(true)}
-                    hidden={pemesanan.Status_Pesanan === "Belum Selesai"}
-                  >
-                    Unduh Dokumen
-                  </Button>
+                  {pemesanan.Data_Keranjang.length > 0 &&
+                    pemesanan.Data_Keranjang[0].File &&
+                    pemesanan.Status_Pesanan !== "Belum Selesai" && (
+                      <Button
+                        className="  bg-secondary border-2 border-white text-white"
+                        onClick={() =>
+                          window.open(
+                            pemesanan.Data_Keranjang[0].File,
+                            "_blank"
+                          )
+                        }
+                      >
+                        Unduh Dokumen Produk
+                      </Button>
+                    )}
                 </TimelineBody>
               </TimelineItem>
             </Timeline>
           </div>
           <div className="w-full">
-            <h1 className="text-2xl font-semibold mb-2">Detail Pesanan</h1>
+            <h1 className="text-2xl font-semibold mb-2">
+              Detail Pesanan{" "}
+              <span className="font-bold">
+                {pemesanan.ajukanDetail.Jenis_Ajukan}
+              </span>
+            </h1>
             <Typography className="text-gray-500 mb-6">
               Dipesan pada tanggal{" "}
               <span className="font-bold">
@@ -567,11 +575,6 @@ const DetailTransaksi = ({
       <DialogPengisianIkm
         open={bukaPengisianIkm}
         onClose={() => setBukaPengisianIkm(false)}
-        pemesanan={pemesanan}
-      />
-      <DialogUnduhDokumen
-        open={bukaUnduhDokumen}
-        onClose={() => setBukaUnduhDokumen(false)}
         pemesanan={pemesanan}
       />
       <DialogPengirimanBuktiTransfer

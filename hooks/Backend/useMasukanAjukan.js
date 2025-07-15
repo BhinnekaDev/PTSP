@@ -124,7 +124,7 @@ const useAjukanFormSubmit = (keranjang) => {
       const ajukanData = {
         Nama_Ajukan: formName,
         File_Ajukan: fileUrls,
-        Status_Ajuan: "Sedang Ditinjau",
+        Status_Ajukan: "Sedang Ditinjau",
         Jenis_Ajukan:
           formName === "Kegiatan Tarif PNBP" ? "Berbayar" : "Gratis",
         Tanggal_Pembuatan_Ajukan: serverTimestamp(),
