@@ -37,7 +37,10 @@ const KegiatanTarifPNBPForm = ({ onSubmit }) => {
     setLoading(true);
 
     try {
-      await onSubmit(allFiles, "Kegiatan Tarif PNBP");
+      await onSubmit(
+        allFiles,
+        "Kegiatan Pelayanan Informasi dengan Tarif PNBP"
+      );
     } catch (error) {
       toast.error("Terjadi kesalahan saat mengunggah file.");
     } finally {
