@@ -3,7 +3,6 @@ import { serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { Input, Checkbox, Button, Spinner } from "@/app/MTailwind";
 import { addToPeroranganCollection } from "@/hooks/Backend/useFormPerorangan";
-import { formatNoIdentitas } from "@/utils/utilsNoIdentitas";
 import { formatHuruf } from "@/utils/utilsHuruf";
 import { formatNoTelepon } from "@/utils/utilsNoTelepon";
 import { toast } from "react-hot-toast";
@@ -12,7 +11,6 @@ const StepFormPerorangan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
   const pengarah = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [formDataPerorangan, setFormDataPerorangan] = useState({
-    No_Identitas: "",
     Pekerjaan: "",
     Nama_Lengkap: "",
     Pendidikan_Terakhir: "",
@@ -23,14 +21,6 @@ const StepFormPerorangan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === "No_Identitas") {
-      const formattedInputNoIdentitas = formatNoIdentitas(value);
-      setFormDataPerorangan((prev) => ({
-        ...prev,
-        [name]: formattedInputNoIdentitas,
-      }));
-      return;
-    }
     if (["Pekerjaan", "Nama_Lengkap"].includes(name)) {
       const formattedInput = formatHuruf(value);
       setFormDataPerorangan((prev) => ({
@@ -91,20 +81,6 @@ const StepFormPerorangan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
               Data Diri
             </h2>
             <div className="flex flex-wrap -mx-2">
-              <div className="w-full md:w-1/2 px-2 py-2">
-                <p className="text-sm font-bold">No Identitas</p>
-                <Input
-                  name="No_Identitas"
-                  className="input-custom"
-                  placeholder="No Identitas (KTP/SIM/KITAS/PASSPORT)"
-                  value={formDataPerorangan.No_Identitas}
-                  onChange={handleInputChange}
-                  size="lg"
-                  labelProps={{ className: "hidden" }}
-                  required
-                />
-              </div>
-
               <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold">Nama Lengkap</p>
                 <Input

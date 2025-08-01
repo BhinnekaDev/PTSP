@@ -4,12 +4,10 @@ import { firestore } from "@/lib/firebaseConfig";
 import { doc, updateDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 
-// Konversi nama field agar ramah dibaca pengguna
 const labelField = {
   Jenis_Kelamin: "Jenis Kelamin",
   Nama_Lengkap: "Nama Lengkap",
   No_Hp: "No HP",
-  No_Identitas: "No Identitas",
   Pekerjaan: "Pekerjaan",
   Pendidikan_Terakhir: "Pendidikan Terakhir",
   Alamat_Perusahaan: "Alamat Perusahaan",
@@ -52,7 +50,6 @@ function useEditProfile(inisialisasiDataProfil = {}) {
       "Jenis_Kelamin",
       "Nama_Lengkap",
       "No_Hp",
-      "No_Identitas",
       "Pekerjaan",
       "Pendidikan_Terakhir",
     ];
@@ -67,7 +64,6 @@ function useEditProfile(inisialisasiDataProfil = {}) {
       "Nama_Lengkap",
       "No_Hp",
       "No_Hp_Perusahaan",
-      "No_Identitas",
       "Pekerjaan",
       "Pendidikan_Terakhir",
       "Provinsi_Perusahaan",

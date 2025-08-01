@@ -18,7 +18,6 @@ const KegiatanTarifPNBPForm = ({ onSubmit }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const requiredFields = {
-      IdentitasDiri_TarifPNBP: "Identitas KTP",
       SuratPengantar_TarifPNBP: "Surat Pengantar",
     };
 
@@ -58,16 +57,7 @@ const KegiatanTarifPNBPForm = ({ onSubmit }) => {
         <h3 className="text-lg lg:text-xl font-semibold mb-4">
           Data Keperluan
         </h3>
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <div>
-            <p className="text-sm font-bold">Identitas KTP</p>
-            <input
-              name="IdentitasDiri_TarifPNBP"
-              className="file:appearance-none file:bg-green-500 file:text-white file:px-4 file:py-2 file:border-none file:rounded file:cursor-pointer file:hover:bg-green-600"
-              type="file"
-              onChange={handleFileChange}
-            />
-          </div>
+        <div className="grid grid-cols-1 gap-4 mb-4">
           <div>
             <p className="text-sm font-bold">Surat Pengantar</p>
             <input

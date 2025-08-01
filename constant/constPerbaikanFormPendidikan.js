@@ -19,7 +19,6 @@ const KegiatanPendidikanPenelitianForm = ({ onSubmit, ID_Ajukan }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const requiredFields = {
-      IdentitasDiri_Pendidikan: "Identitas Diri KTP / KTM / SIM / Paspor",
       SuratPengantar_Pendidikan:
         "Surat Pengantar dari Kepala Sekolah / Rektor / Dekan",
       SuratPernyataan_Pendidikan:
@@ -55,17 +54,6 @@ const KegiatanPendidikanPenelitianForm = ({ onSubmit, ID_Ajukan }) => {
     >
       <div className="mb-6">
         <div className="grid grid-cols-1 gap-4 mb-4">
-          <div>
-            <p className="text-sm font-bold">
-              Identitas Diri KTP / KTM / SIM / Paspor
-            </p>
-            <input
-              name="IdentitasDiri_Pendidikan"
-              className="file:appearance-none file:bg-green-500 file:text-white file:px-4 file:py-2 file:border-none file:rounded file:cursor-pointer file:hover:bg-green-600"
-              type="file"
-              onChange={handleFileChange}
-            />
-          </div>
           <div>
             <p className="text-sm font-bold">
               Surat Pengantar dari Kepala Sekolah / Rektor / Dekan

@@ -4,7 +4,6 @@ import { serverTimestamp } from "firebase/firestore";
 import { Input, Checkbox, Button, Spinner } from "@material-tailwind/react";
 import { addToPerusahaanCollection } from "@/hooks/Backend/useFormPerusahaan";
 import { formatNPWP } from "@/utils/utilsNPWP";
-import { formatNoIdentitas } from "@/utils/utilsNoIdentitas";
 import { formatHuruf } from "@/utils/utilsHuruf";
 import { formatNoTelepon } from "@/utils/utilsNoTelepon";
 import { formatNoTeleponPerusahaan } from "@/utils/utilsNoTeleponPerusahaan";
@@ -16,7 +15,6 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
   const pengarah = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [formDataPerusahaan, setFormDataPerusahaan] = useState({
-    No_Identitas: "",
     Nama_Lengkap: "",
     Pekerjaan: "",
     Pendidikan_Terakhir: "",
@@ -39,14 +37,6 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
       setFormDataPerusahaan((prev) => ({
         ...prev,
         [name]: formattedInputNPWP,
-      }));
-      return;
-    }
-    if (name === "No_Identitas") {
-      const formattedInputNoIdentitas = formatNoIdentitas(value);
-      setFormDataPerusahaan((prev) => ({
-        ...prev,
-        [name]: formattedInputNoIdentitas,
       }));
       return;
     }
@@ -142,21 +132,6 @@ const StepFormPerusahaan = ({ stepAktif, checkboxAktif, setCheckboxAktif }) => {
               Data Diri
             </h2>
             <div className="flex flex-wrap -mx-2">
-              <div className="w-full md:w-1/2 px-2 py-2">
-                <p className="text-sm font-bold"> No Identitas</p>
-                <Input
-                  name="No_Identitas"
-                  className="input-custom"
-                  placeholder="No Identitas (KTP/SIM/KITAS/PASSPORT)"
-                  value={formDataPerusahaan.No_Identitas}
-                  onChange={handleInputChange}
-                  size="lg"
-                  labelProps={{
-                    className: "hidden",
-                  }}
-                  required
-                />
-              </div>
               <div className="w-full md:w-1/2 px-2 py-2">
                 <p className="text-sm font-bold">Nama Lengkap</p>
                 <Input

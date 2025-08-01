@@ -75,7 +75,7 @@ const DialogPerbaikanDokumen = ({
       case "Kegiatan Pendidikan dan Penelitian Non Komersil":
         return {
           instructions:
-            "*Upload Kembali File Identitas Diri KTP / KTM / SIM / Paspor, Surat Pengantar dari Kepala Sekolah / Rektor / Dekan, Surat Pernyataan Tidak Digunakan Untuk Kepentingan Lain, Proposal Penelitian Berisi Maksud dan Tujuan Penelitian yang Telah Disetujui Yang Sudah Diperbaiki",
+            "*Upload Kembali File Surat Pengantar dari Kepala Sekolah / Rektor / Dekan, Surat Pernyataan Tidak Digunakan Untuk Kepentingan Lain, Proposal Penelitian Berisi Maksud dan Tujuan Penelitian yang Telah Disetujui Yang Sudah Diperbaiki",
           component: (
             <PendidikanForm
               ID_Ajukan={ajukanID}
@@ -97,7 +97,7 @@ const DialogPerbaikanDokumen = ({
       case "Kegiatan Tarif PNBP":
         return {
           instructions:
-            "*Upload Kembali File Identitas KTP, Surat Pengantar Yang Sudah Diperbaiki",
+            "*Upload Kembali File Surat Pengantar Yang Sudah Diperbaiki",
           component: (
             <PNBPForm ID_Ajukan={ajukanID} onSubmit={handlePerbaikiDokumen} />
           ),

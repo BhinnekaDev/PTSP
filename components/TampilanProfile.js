@@ -23,7 +23,7 @@ function TampilanProfile() {
           <div className="mb-6 overflow-x-hidden">
             <Typography variant="h4">Tampilan Profile Perusahaan</Typography>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 text-center gap-y-3">
+          <div className="grid grid-cols-1 lg:grid-cols-2 text-center gap-y-3 mb-10">
             <div>
               <Typography variant="h6" className="mb-2">
                 Nama Lengkap
@@ -38,14 +38,6 @@ function TampilanProfile() {
               </Typography>
               <Typography className="mb-2">
                 {detailPengguna?.Pekerjaan}
-              </Typography>
-            </div>
-            <div>
-              <Typography variant="h6" className="mb-2">
-                Pendidikan Terakhir
-              </Typography>
-              <Typography className="mb-2">
-                {detailPengguna?.Pendidikan_Terakhir}
               </Typography>
             </div>
             <div className="grid grid-cols-1">
@@ -64,20 +56,32 @@ function TampilanProfile() {
               </Typography>
               <Typography className="mb-2">{detailPengguna?.No_Hp}</Typography>
             </div>
+            <div className="grid grid-cols-1">
+              <div>
+                <Typography variant="h6" className="mb-2">
+                  Email
+                </Typography>
+                <Typography className="mb-2">
+                  {detailPengguna?.Email}
+                </Typography>
+              </div>
+            </div>
+            <div>
+              <Typography variant="h6" className="mb-2">
+                Pendidikan Terakhir
+              </Typography>
+              <Typography className="mb-2">
+                {detailPengguna?.Pendidikan_Terakhir}
+              </Typography>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 text-center gap-y-3">
             <div>
               <Typography variant="h6" className="mb-2">
                 NPWP Perusahaan
               </Typography>
               <Typography className="mb-2">
                 {detailPengguna?.NPWP_Perusahaan}
-              </Typography>
-            </div>
-            <div>
-              <Typography variant="h6" className="mb-2">
-                Alamat Perusahaan
-              </Typography>
-              <Typography className="mb-2">
-                {detailPengguna?.Alamat_Perusahaan}
               </Typography>
             </div>
             <div>
@@ -90,10 +94,10 @@ function TampilanProfile() {
             </div>
             <div>
               <Typography variant="h6" className="mb-2">
-                Provinsi Perusahaan
+                Alamat Perusahaan
               </Typography>
               <Typography className="mb-2">
-                {detailPengguna?.Provinsi_Perusahaan}
+                {detailPengguna?.Alamat_Perusahaan}
               </Typography>
             </div>
             <div>
@@ -106,21 +110,19 @@ function TampilanProfile() {
             </div>
             <div>
               <Typography variant="h6" className="mb-2">
+                Provinsi Perusahaan
+              </Typography>
+              <Typography className="mb-2">
+                {detailPengguna?.Provinsi_Perusahaan}
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="h6" className="mb-2">
                 Nomor HP / No Telepon Perusahaan
               </Typography>
               <Typography className="mb-2">
                 {detailPengguna?.No_Hp_Perusahaan}
               </Typography>
-            </div>
-            <div className="grid grid-cols-1">
-              <div>
-                <Typography variant="h6" className="mb-2">
-                  Email
-                </Typography>
-                <Typography className="mb-2">
-                  {detailPengguna?.Email}
-                </Typography>
-              </div>
             </div>
             <div className="grid grid-cols-1">
               <div>
@@ -158,14 +160,6 @@ function TampilanProfile() {
             </div>
             <div>
               <Typography variant="h6" className="mb-2">
-                Pendidikan Terakhir
-              </Typography>
-              <Typography className="mb-2">
-                {detailPengguna?.Pendidikan_Terakhir}
-              </Typography>
-            </div>
-            <div>
-              <Typography variant="h6" className="mb-2">
                 Email
               </Typography>
               <Typography className="mb-2">{detailPengguna?.Email}</Typography>
@@ -183,6 +177,14 @@ function TampilanProfile() {
                 Nomor Handphone
               </Typography>
               <Typography className="mb-2">{detailPengguna?.No_Hp}</Typography>
+            </div>
+            <div>
+              <Typography variant="h6" className="mb-2">
+                Pendidikan Terakhir
+              </Typography>
+              <Typography className="mb-2">
+                {detailPengguna?.Pendidikan_Terakhir}
+              </Typography>
             </div>
           </div>
         </>
