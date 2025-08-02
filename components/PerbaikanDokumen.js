@@ -94,7 +94,7 @@ const DialogPerbaikanDokumen = ({
             />
           ),
         };
-      case "Kegiatan Tarif PNBP":
+      case "Kegiatan Pelayanan Informasi dengan Tarif PNBP":
         return {
           instructions:
             "*Upload Kembali File Surat Pengantar Yang Sudah Diperbaiki",
