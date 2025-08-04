@@ -133,18 +133,16 @@ const useAjukanFormSubmit = (keranjang) => {
 
       const dataKeranjang = keranjangSnapshot.data();
       const dataPesanan = [
-        ...dataKeranjang.Informasi.map(({ ID_Informasi, ...rest }) => ({
+        ...(dataKeranjang.Informasi || []).map(({ ID_Informasi, ...rest }) => ({
           ...rest,
           Jenis_Produk: "Informasi",
           ...(formName === "Kegiatan Tarif PNBP" && { Nomor_VA: "" }),
         })),
-        ...(dataKeranjang.Jasa
-          ? dataKeranjang.Jasa.map(({ ID_Jasa, ...rest }) => ({
-              ...rest,
-              Jenis_Produk: "Jasa",
-              ...(formName === "Kegiatan Tarif PNBP" && { Nomor_VA: "" }),
-            }))
-          : []),
+        ...(dataKeranjang.Jasa || []).map(({ ID_Jasa, ...rest }) => ({
+          ...rest,
+          Jenis_Produk: "Jasa",
+          ...(formName === "Kegiatan Tarif PNBP" && { Nomor_VA: "" }),
+        })),
       ];
 
       const totalHargaPesanan = dataPesanan.reduce(
