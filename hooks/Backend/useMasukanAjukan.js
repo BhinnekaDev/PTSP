@@ -126,7 +126,9 @@ const useAjukanFormSubmit = (keranjang) => {
         File_Ajukan: fileUrls,
         Status_Ajukan: "Sedang Ditinjau",
         Jenis_Ajukan:
-          formName === "Kegiatan Tarif PNBP" ? "Berbayar" : "Gratis",
+          formName === "Kegiatan Pelayanan Informasi dengan Tarif PNBP"
+            ? "Berbayar"
+            : "Gratis",
         Tanggal_Pembuatan_Ajukan: serverTimestamp(),
       };
       await setDoc(ajukanRef, ajukanData);
@@ -136,12 +138,16 @@ const useAjukanFormSubmit = (keranjang) => {
         ...(dataKeranjang.Informasi || []).map(({ ID_Informasi, ...rest }) => ({
           ...rest,
           Jenis_Produk: "Informasi",
-          ...(formName === "Kegiatan Tarif PNBP" && { Nomor_VA: "" }),
+          ...(formName === "Kegiatan Pelayanan Informasi dengan Tarif PNBP" && {
+            Nomor_VA: "",
+          }),
         })),
         ...(dataKeranjang.Jasa || []).map(({ ID_Jasa, ...rest }) => ({
           ...rest,
           Jenis_Produk: "Jasa",
-          ...(formName === "Kegiatan Tarif PNBP" && { Nomor_VA: "" }),
+          ...(formName === "Kegiatan Pelayanan Informasi dengan Tarif PNBP" && {
+            Nomor_VA: "",
+          }),
         })),
       ];
 
@@ -162,13 +168,13 @@ const useAjukanFormSubmit = (keranjang) => {
         Status_Pesanan: "Belum Selesai",
         Status_Pembuatan: "Menunggu Pembuatan",
         Tanggal_Pemesanan: serverTimestamp(),
-        ...(formName === "Kegiatan Tarif PNBP" && {
+        ...(formName === "Kegiatan Pelayanan Informasi dengan Tarif PNBP" && {
           ID_Transaksi: ID_Transaksi,
         }),
       };
       await setDoc(pemesananRef, pemesananData);
 
-      if (formName === "Kegiatan Tarif PNBP") {
+      if (formName === "Kegiatan Pelayanan Informasi dengan Tarif PNBP") {
         const transaksiRef = doc(firestore, "transaksi", ID_Transaksi);
         const transaksiData = {};
         await setDoc(transaksiRef, transaksiData);
