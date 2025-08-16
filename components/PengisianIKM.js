@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Dialog, DialogHeader, DialogBody } from "@/app/MTailwind";
-import useStep from "@/hooks/Frontend/useStepperForm";
+import useStep from "@/hooks/Frontend/useStepperFormIKM";
 import IKMPertama from "@/constant/constIKMPertama";
 import IKMKedua from "@/constant/constIKMKedua";
 import { toast, Toaster } from "react-hot-toast";
 
-const DialogPerbaikanDokumen = ({ open, onClose, pemesanan }) => {
-  const { stepAktif, handleSelanjutnya } = useStep();
+const DialogPengisianIKM = ({ open, onClose, pemesanan }) => {
+  const { stepAktif, handleSelanjutnya, resetStep } = useStep(
+    pemesanan ? `Stepper_IKM_${pemesanan.id}` : null
+  );
   return (
     <Dialog
       open={open}
@@ -28,7 +30,7 @@ const DialogPerbaikanDokumen = ({ open, onClose, pemesanan }) => {
 
             {stepAktif === 1 && (
               <div className="stepKedua">
-                <IKMKedua pemesanan={pemesanan} />
+                <IKMKedua pemesanan={pemesanan} resetStepper={resetStep} />
               </div>
             )}
           </div>
@@ -38,4 +40,4 @@ const DialogPerbaikanDokumen = ({ open, onClose, pemesanan }) => {
   );
 };
 
-export default DialogPerbaikanDokumen;
+export default DialogPengisianIKM;

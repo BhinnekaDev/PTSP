@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useServiceItemsPagination from "@/hooks/Frontend/useStepperFormIKM";
+import useServiceItemsPagination from "@/hooks/Frontend/useStepperFormIKMKedua";
 import useMasukanIKM from "@/hooks/Backend/useMasukanIKM";
 import { Button } from "@material-tailwind/react";
 import { IoIosWarning } from "react-icons/io";
@@ -22,11 +22,11 @@ const ServiceItemCard = ({
   <div
     key={index}
     className={`bg-white p-4 rounded-lg shadow-md border-2 ${
-      item.id === 9 ? "border-red-500" : "border-gray"
+      item.ID === 9 ? "border-red-500" : "border-gray"
     }`}
   >
-    <h3 className="font-medium text-lg mb-2">{item.name}</h3>
-    {item.id === 9 && (
+    <h3 className="font-medium text-lg mb-2">{item.Name}</h3>
+    {item.ID === 9 && (
       <div className="flex items-center gap-2 mb-2">
         <IoIosWarning className="text-red-500 text-lg" />
         <p className="text-sm text-red-500 font-semibold">
@@ -36,11 +36,11 @@ const ServiceItemCard = ({
     )}
     <div>
       <p className="font-semibold mb-1">Kualitas Pelayanan</p>
-      {renderRadioGroup(item.id)}
+      {renderRadioGroup(item.ID)}
     </div>
     <div className="mt-3">
       <p className="font-semibold mb-1">Harapan Konsumen</p>
-      {renderImportanceGroup(item.id)}
+      {renderImportanceGroup(item.ID)}
     </div>
   </div>
 );
@@ -73,7 +73,7 @@ const PaginationControls = ({
   </div>
 );
 
-const FormIKMKedua = ({ pemesanan }) => {
+const FormIKMKedua = ({ pemesanan, resetStepper }) => {
   const {
     serviceItems,
     currentItems,
@@ -89,7 +89,7 @@ const FormIKMKedua = ({ pemesanan }) => {
     renderKualitasLayananGroup,
     renderHarapanKonsumenGroup,
     handleIKMSubmit,
-  } = useMasukanIKM();
+  } = useMasukanIKM(resetStepper);
 
   const totalPages = Math.ceil(serviceItems.length / itemsPerPage);
   const progressWidth = ((currentStep + 1) / totalPages) * 100;
@@ -114,7 +114,7 @@ const FormIKMKedua = ({ pemesanan }) => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
         {currentItems.map((item, index) => (
           <ServiceItemCard
-            key={item.id}
+            key={item.ID}
             item={item}
             index={index}
             startIndex={startIndex}
