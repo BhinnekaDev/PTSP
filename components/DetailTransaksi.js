@@ -18,7 +18,6 @@ import {
 import { FaFileAlt, FaBox, FaPaperPlane, FaDollarSign } from "react-icons/fa";
 import DialogPerbaikanDokumen from "@/components/PerbaikanDokumen";
 import DialogPengisianIkm from "@/components/PengisianIKM";
-import DialogUnduhDokumen from "@/components/UnduhDokumen";
 import DialogPengirimanBuktiTransfer from "@/components/PengirimanBuktiTransfer";
 import DialogInvoicePemesanan from "@/components/InvoicePemesanan";
 import DialogKonfirmasiVABaru from "@/components/KonfirmasiVABaru";
@@ -40,8 +39,6 @@ const DetailTransaksi = ({
     setBukaPengisianIkm,
     bukaPengisianBuktiTransaksi,
     setBukaPengisianBuktiTransaksi,
-    bukaUnduhDokumen,
-    setBukaUnduhDokumen,
     bukaInvoicePemesanan,
     setBukaInvoicePemesanan,
     bukaKonfirmasiVABaru,
@@ -445,12 +442,16 @@ const DetailTransaksi = ({
                 <h2 className="font-semibold mb-4">Ringkasan Pesanan</h2>
                 <Typography>
                   Total Pesanan :{" "}
-                  {new Intl.NumberFormat("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0,
-                  }).format(pemesanan.Total_Harga_Pesanan)}
+                  {ajukanDetail.Jenis_Ajukan === "Gratis"
+                    ? "GRATIS"
+                    : ajukanDetail.Jenis_Ajukan === "Berbayar"
+                    ? new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                      }).format(pemesanan.Total_Harga_Pesanan)
+                    : "-"}
                 </Typography>
               </div>
             </div>
@@ -539,12 +540,16 @@ const DetailTransaksi = ({
                           variant="body1"
                           className="font-bold text-end"
                         >
-                          {new Intl.NumberFormat("id-ID", {
-                            style: "currency",
-                            currency: "IDR",
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
-                          }).format(produk.Total_Harga)}
+                          {ajukanDetail.Jenis_Ajukan === "Gratis"
+                            ? "GRATIS"
+                            : ajukanDetail.Jenis_Ajukan === "Berbayar"
+                            ? new Intl.NumberFormat("id-ID", {
+                                style: "currency",
+                                currency: "IDR",
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                              }).format(produk.Total_Harga)
+                            : "-"}
                         </Typography>
                       </div>
                     </div>

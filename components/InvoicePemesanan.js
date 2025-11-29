@@ -200,12 +200,16 @@ const InvoicePesanan = ({
                         }).format(produk.Harga)}
                       </td>
                       <td className="py-3 px-5 text-center">
-                        {new Intl.NumberFormat("id-ID", {
-                          style: "currency",
-                          currency: "IDR",
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 0,
-                        }).format(produk.Harga * produk.Kuantitas)}
+                        {ajukanDetail.Jenis_Ajukan === "Gratis"
+                          ? "GRATIS"
+                          : ajukanDetail.Jenis_Ajukan === "Berbayar"
+                          ? new Intl.NumberFormat("id-ID", {
+                              style: "currency",
+                              currency: "IDR",
+                              minimumFractionDigits: 0,
+                              maximumFractionDigits: 0,
+                            }).format(produk.Harga * produk.Kuantitas)
+                          : "-"}
                       </td>
                     </tr>
                   ))}
@@ -219,16 +223,17 @@ const InvoicePesanan = ({
                 <div className="flex justify-between font-bold">
                   <span>Total</span>
                   <span>
-                    {" "}
-                    <>
-                      Total Pesanan :{" "}
-                      {new Intl.NumberFormat("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0,
-                      }).format(pemesanan.Total_Harga_Pesanan)}
-                    </>
+                    Total Pesanan :{" "}
+                    {ajukanDetail.Jenis_Ajukan === "Gratis"
+                      ? "GRATIS"
+                      : ajukanDetail.Jenis_Ajukan === "Berbayar"
+                      ? new Intl.NumberFormat("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 0,
+                        }).format(pemesanan.Total_Harga_Pesanan)
+                      : "-"}
                   </span>
                 </div>
               </div>

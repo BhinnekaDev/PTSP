@@ -128,19 +128,25 @@ const useInvoicePDF = () => {
       head: [
         ["Nama Produk", "Instansi", "Jumlah", "Harga Produk", "Total Harga"],
       ],
-      body: pemesanan.Data_Keranjang.map((produk) => [
-        produk.Nama,
-        produk.Pemilik,
-        produk.Kuantitas,
-        new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-        }).format(produk.Harga),
-        new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-        }).format(produk.Harga * produk.Kuantitas),
-      ]),
+      body: pemesanan.Data_Keranjang.map((produk) => {
+        const isGratis = pemesanan.ajukanDetail.Jenis_Ajukan === "Gratis";
+        const harga = isGratis ? 0 : produk.Harga;
+        const total = isGratis ? 0 : produk.Harga * produk.Kuantitas;
+
+        return [
+          produk.Nama,
+          produk.Pemilik,
+          produk.Kuantitas,
+          new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+          }).format(harga),
+          new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+          }).format(total),
+        ];
+      }),
       startY: billingY + 4,
       margin: { left: 14, right: 14 },
       styles: {
@@ -169,11 +175,16 @@ const useInvoicePDF = () => {
         doc.setFillColor(245, 248, 255);
         doc.rect(150, totalY - 6, 45, 8, "F");
 
+        const totalPesanan =
+          pemesanan.ajukanDetail.Jenis_Ajukan === "Gratis"
+            ? 0
+            : pemesanan.Total_Harga_Pesanan;
+
         doc.text(
           new Intl.NumberFormat("id-ID", {
             style: "currency",
             currency: "IDR",
-          }).format(pemesanan.Total_Harga_Pesanan),
+          }).format(totalPesanan),
           160,
           totalY
         );
