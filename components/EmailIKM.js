@@ -9,7 +9,7 @@ const kirimEmailIKM = async (
   dataPesanan,
   Total_Harga,
   Tanggal_Pengiriman_Bukti,
-  ID_Transaksi
+  ID_Transaksi,
 ) => {
   const daftarProdukHTML = `
     <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-family: Arial, sans-serif;">
@@ -36,7 +36,7 @@ const kirimEmailIKM = async (
             return `
               <tr>
                 <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">${String(
-                  index + 1
+                  index + 1,
                 ).padStart(2, "0")}</td>
                 <td style="border: 1px solid #ddd; padding: 10px;">${NamaProduk}</td>
                 <td style="border: 1px solid #ddd; padding: 10px;">${Stasiun}</td>
@@ -85,14 +85,17 @@ const kirimEmailIKM = async (
       <p style="margin-top: 10px;">Butuh bantuan? Hubungi kami melalui email, telepon, atau datang langsung ke kantor kami. Atau bisa melalu fitur live chat yang terdapat pada website.</p>
      </div>
     <hr style="margin: 30px 0;" />
-    <div style="font-size: 13px; color: #555;">
-      <p><strong>Stasiun Meteorologi</strong> - Jl. Depati Payung Negara, Pekan Sabtu, Kec. Selebar, Kota Bengkulu, Bengkulu 38213<br />
-      0736-51064</p>
-      <p><strong>Stasiun Klimatologi</strong> - Jl. R. Suprapto, Selebar, Bengkulu 38172<br />
-      0736-51157 / 0736-346196 / 0736-33002<br />
-      <a href="mailto:staklim.pusatkajiklim@bmkg.go.id">staklim.pusatkajiklim@bmkg.go.id</a></p>
-      <p><strong>Stasiun Geofisika</strong> - Jl. Pembangunan No. 156 Pasar Ujung, Kepahiang, Bengkulu<br />
-      0732-211000<br />
+     <div style="font-size: 13px; color: #555;">
+      <p><strong>Stasiun Meteorologi</strong> - Jl. Depati Payung Negara, Komplek Bandar Udara Fatmawati Soekarno Bengkulu.Kel. Pekan Sabtu, Kec. Selebar, Kota Bengkulu, Bengkulu – 38213<br />
+      08117328773</p>
+      <a href="mailto:stamet.fatmawati@bmkg.go.id">stamet.fatmawati@bmkg.go.id</a></p>
+      <p><strong>Stasiun Klimatologi</strong> - Jl. R.E. Martadinata, Kelurahan Kandang, Kecamatan Kampung Melayu, Kota Bengkulu, Bengkulu - 38216<br />
+      08117321291<br />
+      <a href="mailto:staklim.bengkulu@bmkg.go.id">staklim.bengkulu@bmkg.go.id</a></p>
+      <p><strong>Stasiun Geofisika (Kantor Bengkulu)</strong> - Jl. Jati No. 37, Sawah Lebar Kec. Ratu Samban, Kota Bengkulu, Bengkulu 38221 (depan McD)<br />
+       08111360636<br />
+      <p><strong>Stasiun Geofisika (Kantor Kepahiang)</strong> - Jl. Pembangunan No. 156, Pasar Ujung, Kepahiang, Kec. Kepahiang, Bengkulu<br />
+       08111360636<br />
       <a href="mailto:stageof.kepahiang@bmkg.go.id">stageof.kepahiang@bmkg.go.id</a></p>
     </div>
     <p style="text-align: center; font-size: 12px; color: #aaa; margin-top: 30px;">
