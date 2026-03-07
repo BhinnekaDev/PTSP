@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
+import { useState, useEffect } from "react";
 import {
   Typography,
-  Badge,
   Button,
   Dialog,
   DialogHeader,
@@ -22,6 +22,7 @@ import DialogPengirimanBuktiTransfer from "@/components/PengirimanBuktiTransfer"
 import DialogInvoicePemesanan from "@/components/InvoicePemesanan";
 import DialogKonfirmasiVABaru from "@/components/KonfirmasiVABaru";
 import constDetailTransaksi from "@/constant/constDetailTransaksi";
+import kirimEmailKadaluwarsa from "@/components/EmailKadaluwarsa";
 import useInvoicePDF from "@/hooks/Backend/useInvoicePDF";
 
 const DetailTransaksi = ({
@@ -43,13 +44,57 @@ const DetailTransaksi = ({
     setBukaInvoicePemesanan,
     bukaKonfirmasiVABaru,
     setBukaKonfirmasiVABaru,
+    sudahKedaluwarsa,
+    setSudahKedaluwarsa,
   } = constDetailTransaksi();
-  const now = new Date();
-  const tanggalKadaluwarsa = new Date(
-    pemesanan.ajukanDetail.Tanggal_Kadaluwarsa
-  );
+  const [emailKadaluwarsaTerkirim, setEmailKadaluwarsaTerkirim] =
+    useState(false);
+  useEffect(() => {
+    const cekKedaluwarsa = async () => {
+      if (pemesanan?.ajukanDetail?.Tanggal_Kadaluwarsa) {
+        const now = new Date();
+        const tanggalKadaluwarsa = new Date(
+          pemesanan.ajukanDetail.Tanggal_Kadaluwarsa,
+        );
+        const isKadaluwarsa = now > tanggalKadaluwarsa;
 
-  const sudahKedaluwarsa = now > tanggalKadaluwarsa;
+        setSudahKedaluwarsa(isKadaluwarsa);
+        if (
+          isKadaluwarsa &&
+          !emailKadaluwarsaTerkirim &&
+          ["Menunggu Pembayaran", "Ditolak"].includes(
+            pemesanan.Status_Pembayaran,
+          ) &&
+          pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" &&
+          userData
+        ) {
+          try {
+            await kirimEmailKadaluwarsa(
+              userData.Email || userData.Email_Perusahaan,
+              userData.Nama_Lengkap || userData.Nama_Perusahaan,
+              pemesanan.id,
+            );
+            setEmailKadaluwarsaTerkirim(true);
+          } catch (error) {
+            console.error("Gagal mengirim email kadaluwarsa:", error);
+          }
+        }
+        if (!isKadaluwarsa && emailKadaluwarsaTerkirim) {
+          setEmailKadaluwarsaTerkirim(false);
+        }
+      }
+    };
+
+    cekKedaluwarsa();
+    const interval = setInterval(cekKedaluwarsa, 10000);
+
+    return () => clearInterval(interval);
+  }, [
+    pemesanan?.ajukanDetail?.Tanggal_Kadaluwarsa,
+    isOpen,
+    userData,
+    emailKadaluwarsaTerkirim,
+  ]);
 
   const bolehKirimBukti =
     pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" &&
@@ -90,9 +135,9 @@ const DetailTransaksi = ({
                       pemesanan.ajukanDetail.Status_Ajukan === "Ditolak"
                         ? "bg-red-500"
                         : pemesanan.ajukanDetail.Status_Ajukan ===
-                          "Sedang Ditinjau"
-                        ? "bg-yellow-800"
-                        : "bg-secondary"
+                            "Sedang Ditinjau"
+                          ? "bg-yellow-800"
+                          : "bg-secondary"
                     }`}
                   >
                     <FaFileAlt className="h-4 w-4" />
@@ -135,7 +180,7 @@ const DetailTransaksi = ({
                     Tanggal Ajuan :{" "}
                     {new Date(
                       pemesanan.ajukanDetail.Tanggal_Pembuatan_Ajukan.seconds *
-                        1000
+                        1000,
                     ).toLocaleString()}
                   </Typography>
                   {pemesanan.ajukanDetail.Status_Ajukan === "Ditolak" && (
@@ -159,16 +204,17 @@ const DetailTransaksi = ({
                           ? "bg-secondary"
                           : "bg-primary"
                         : pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar"
-                        ? pemesanan.Status_Pembayaran === "Menunggu Pembayaran"
-                          ? "bg-primary"
-                          : pemesanan.Status_Pembayaran === "Sedang Ditinjau"
-                          ? "bg-yellow-800"
-                          : pemesanan.Status_Pembayaran === "Lunas"
-                          ? "bg-secondary"
-                          : pemesanan.Status_Pembayaran === "Ditolak"
-                          ? "bg-red-500"
+                          ? pemesanan.Status_Pembayaran ===
+                            "Menunggu Pembayaran"
+                            ? "bg-primary"
+                            : pemesanan.Status_Pembayaran === "Sedang Ditinjau"
+                              ? "bg-yellow-800"
+                              : pemesanan.Status_Pembayaran === "Lunas"
+                                ? "bg-secondary"
+                                : pemesanan.Status_Pembayaran === "Ditolak"
+                                  ? "bg-red-500"
+                                  : "bg-primary"
                           : "bg-primary"
-                        : "bg-primary"
                     }`}
                   >
                     <FaDollarSign className="h-4 w-4" />
@@ -189,8 +235,8 @@ const DetailTransaksi = ({
                           ? new Date(
                               pemesanan.ajukanDetail.Tanggal_Masuk?.seconds
                                 ? pemesanan.ajukanDetail.Tanggal_Masuk.seconds *
-                                  1000
-                                : pemesanan.ajukanDetail.Tanggal_Masuk
+                                    1000
+                                : pemesanan.ajukanDetail.Tanggal_Masuk,
                             ).toLocaleString()
                           : "-"}
                       </Typography>
@@ -208,7 +254,7 @@ const DetailTransaksi = ({
                                 ?.seconds
                                 ? pemesanan.ajukanDetail.Tanggal_Kadaluwarsa
                                     .seconds * 1000
-                                : pemesanan.ajukanDetail.Tanggal_Kadaluwarsa
+                                : pemesanan.ajukanDetail.Tanggal_Kadaluwarsa,
                             ).toLocaleString()
                           : "-"}
                       </Typography>
@@ -267,7 +313,7 @@ const DetailTransaksi = ({
                           ?.seconds
                           ? new Date(
                               pemesanan.transaksiDetail.Tanggal_Pengiriman_Bukti
-                                .seconds * 1000
+                                .seconds * 1000,
                             ).toLocaleString()
                           : "..."}
                       </Typography>
@@ -303,11 +349,11 @@ const DetailTransaksi = ({
                       pemesanan.ajukanDetail.Status_Ajukan === "Diterima"
                         ? "bg-yellow-800"
                         : pemesanan.ajukanDetail.Jenis_Ajukan === "Berbayar" ||
-                          pemesanan.ajukanDetail.Jenis_Ajukan === "Gratis"
-                        ? pemesanan.Status_Pembuatan === "Selesai Pembuatan"
-                          ? "bg-secondary"
+                            pemesanan.ajukanDetail.Jenis_Ajukan === "Gratis"
+                          ? pemesanan.Status_Pembuatan === "Selesai Pembuatan"
+                            ? "bg-secondary"
+                            : "bg-primary"
                           : "bg-primary"
-                        : "bg-primary"
                     }`}
                   >
                     <FaBox className="h-4 w-4" />
@@ -380,7 +426,7 @@ const DetailTransaksi = ({
                         onClick={() =>
                           window.open(
                             pemesanan.Data_Keranjang[0].File,
-                            "_blank"
+                            "_blank",
                           )
                         }
                       >
@@ -402,7 +448,8 @@ const DetailTransaksi = ({
               Dipesan pada tanggal{" "}
               <span className="font-bold">
                 {new Date(
-                  pemesanan.ajukanDetail.Tanggal_Pembuatan_Ajukan.seconds * 1000
+                  pemesanan.ajukanDetail.Tanggal_Pembuatan_Ajukan.seconds *
+                    1000,
                 ).toLocaleString()}
               </span>
             </Typography>
@@ -445,13 +492,13 @@ const DetailTransaksi = ({
                   {ajukanDetail.Jenis_Ajukan === "Gratis"
                     ? "GRATIS"
                     : ajukanDetail.Jenis_Ajukan === "Berbayar"
-                    ? new Intl.NumberFormat("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0,
-                      }).format(pemesanan.Total_Harga_Pesanan)
-                    : "-"}
+                      ? new Intl.NumberFormat("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 0,
+                        }).format(pemesanan.Total_Harga_Pesanan)
+                      : "-"}
                 </Typography>
               </div>
             </div>
@@ -466,7 +513,7 @@ const DetailTransaksi = ({
                       Tanggal Pesanan :{" "}
                       {new Date(
                         pemesanan.ajukanDetail.Tanggal_Pembuatan_Ajukan
-                          .seconds * 1000
+                          .seconds * 1000,
                       ).toLocaleString()}
                     </Typography>
                   </div>
@@ -543,13 +590,13 @@ const DetailTransaksi = ({
                           {ajukanDetail.Jenis_Ajukan === "Gratis"
                             ? "GRATIS"
                             : ajukanDetail.Jenis_Ajukan === "Berbayar"
-                            ? new Intl.NumberFormat("id-ID", {
-                                style: "currency",
-                                currency: "IDR",
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0,
-                              }).format(produk.Total_Harga)
-                            : "-"}
+                              ? new Intl.NumberFormat("id-ID", {
+                                  style: "currency",
+                                  currency: "IDR",
+                                  minimumFractionDigits: 0,
+                                  maximumFractionDigits: 0,
+                                }).format(produk.Total_Harga)
+                              : "-"}
                         </Typography>
                       </div>
                     </div>

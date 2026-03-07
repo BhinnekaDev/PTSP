@@ -8,6 +8,7 @@ function useFormStates() {
   const [bukaUnduhDokumen, setBukaUnduhDokumen] = useState(false);
   const [bukaInvoicePemesanan, setBukaInvoicePemesanan] = useState(false);
   const [bukaKonfirmasiVABaru, setBukaKonfirmasiVABaru] = useState(false);
+  const [sudahKedaluwarsa, setSudahKedaluwarsa] = useState(false);
 
   return {
     bukaPerbaikanDokumen,
@@ -22,6 +23,8 @@ function useFormStates() {
     setBukaInvoicePemesanan,
     bukaKonfirmasiVABaru,
     setBukaKonfirmasiVABaru,
+    sudahKedaluwarsa,
+    setSudahKedaluwarsa,
   };
 }
 

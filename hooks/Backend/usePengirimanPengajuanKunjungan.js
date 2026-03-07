@@ -4,7 +4,6 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, setDoc, addDoc, Timestamp } from "firebase/firestore";
 import useVerifikasiLogin from "@/hooks/Backend/useVerifikasiLogin";
 import kirimEmailKunjunganPengguna from "@/components/EmailKunjunganPengguna";
-import kirimEmailKunjunganAdmin from "@/components/EmailKunjunganAdmin";
 import { formatTanggal } from "@/utils/utilsTanggal";
 import toast from "react-hot-toast";
 
@@ -89,7 +88,7 @@ function usePengirimanPengajuanKunjungan() {
     if (dataUser?.type === "perorangan") {
       if (Instansi === "Umum" && NamaInstansi?.trim()) {
         toast.error(
-          "Jika Instansi adalah Umum, Nama Instansi harus dikosongkan."
+          "Jika Instansi adalah Umum, Nama Instansi harus dikosongkan.",
         );
         setLoading(false);
         return false;
@@ -126,14 +125,14 @@ function usePengirimanPengajuanKunjungan() {
           }
           return acc;
         },
-        {}
+        {},
       );
       const pengajuanRef = collection(firestore, "pengajuan_kunjungan");
       const docRef = await addDoc(pengajuanRef, {});
 
       const storageRef = ref(
         storage,
-        `Pengajuan_Kunjungan/${docRef.id}/${File.name}`
+        `Pengajuan_Kunjungan/${docRef.id}/${File.name}`,
       );
       await uploadBytes(storageRef, File);
       const FileURL = await getDownloadURL(storageRef);
@@ -169,7 +168,7 @@ function usePengirimanPengajuanKunjungan() {
       const Tanggal_Pengajuan_Kunjungan = formatTanggal(
         dataPengajuanKunjungan.Tanggal_Pengajuan_Kunjungan?.toDate
           ? dataPengajuanKunjungan.Tanggal_Pengajuan_Kunjungan.toDate()
-          : new Date()
+          : new Date(),
       );
       await kirimEmailKunjunganPengguna(
         dataUser.Email,
@@ -183,23 +182,8 @@ function usePengirimanPengajuanKunjungan() {
         dataUser.Provinsi_Perusahaan,
         dataUser.No_Hp,
         dataUser.No_Hp_Perusahaan,
-        dataPengajuanKunjungan
+        dataPengajuanKunjungan,
       );
-      await kirimEmailKunjunganAdmin(
-        dataUser.Email,
-        dataUser.Nama_Lengkap,
-        docRef.id,
-        Tanggal_Pengajuan_Kunjungan,
-        dataUser.Nama_Perusahaan,
-        dataUser.Email_Perusahaan,
-        dataUser.Alamat_Perusahaan,
-        dataUser.Kabupaten_Kota_Perusahaan,
-        dataUser.Provinsi_Perusahaan,
-        dataUser.No_Hp,
-        dataUser.No_Hp_Perusahaan,
-        dataPengajuanKunjungan
-      );
-
       setTimeout(() => {
         window.location.reload();
       }, 3000);
