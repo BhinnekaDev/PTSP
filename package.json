@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",   
+    "dev": "next dev",
     "dev:turbo": "next dev --turbo",
     "build": "next build",
     "start": "next start",
@@ -17,7 +17,7 @@
     "jspdf": "^3.0.1",
     "jspdf-autotable": "^5.0.2",
     "lodash.debounce": "^4.0.8",
-    "next": "^15.1.6",
+    "next": "15.1.11",
     "nodemailer": "^6.10.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
