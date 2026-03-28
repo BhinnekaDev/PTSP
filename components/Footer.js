@@ -77,7 +77,7 @@ function Footer() {
           </Typography>
           <hr className="border-t-2 border-primary w-full mx-auto md:mx-0 mb-4" />
           <a
-            href="https://drive.google.com/drive/folders/1l3JFfEyPqYtCpyFR5iSyGf9aSYAbN4Yk"
+            href="https://drive.google.com/uc?export=download&id=1FlfK9y0QPd6nk9gs8umlSQyn9RsRyhLu"
             target="_blank"
             rel="noopener noreferrer"
           >
