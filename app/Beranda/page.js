@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Carousel from "@/app/Beranda/components/Carousel";
 import Profil from "@/app/Beranda/components/Profile";
 import Footer from "@/components/Footer";
-import FloatingChat from "@/components/FloatingChat";
+import FloatingTools from "@/components/FloatingTools";
 import { Toaster } from "react-hot-toast";
 
 function Beranda() {
@@ -13,7 +13,7 @@ function Beranda() {
       <Carousel />
       <Profil />
       <Footer />
-      <FloatingChat />
+      <FloatingTools />
     </div>
   );
 }
