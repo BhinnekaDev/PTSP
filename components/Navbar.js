@@ -36,7 +36,7 @@ function Navigation() {
     useNavbarAktif();
   const router = useRouter();
   const { navbarBg, openPengaturan, setOpenPengaturan } = useNavbarEfek();
-  const { apakahSudahLogin } = useVerifikasiLogin();
+  const { apakahSudahLogin, detailPengguna } = useVerifikasiLogin();
   const { keluarAkun } = useKeluar();
   const { jumlahKeranjang } = useHitungKeranjangSesuaiID();
   const {
@@ -57,9 +57,7 @@ function Navigation() {
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-4 uppercase">
       <Typography
         as="li"
-        className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer ${
-          navbarAktif === "/Beranda" ? "text-secondary" : "text-white"
-        }`}
+        className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer ${navbarAktif === "/Beranda" ? "text-secondary" : "text-white"}`}
       >
         <a
           className="flex items-center"
@@ -112,9 +110,7 @@ function Navigation() {
       </Menu>
       <Typography
         as="li"
-        className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer ${
-          navbarAktif === "/Produk" ? "text-secondary" : "text-white"
-        }`}
+        className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer ${navbarAktif === "/Produk" ? "text-secondary" : "text-white"}`}
       >
         <a
           className="flex items-center"
@@ -127,32 +123,20 @@ function Navigation() {
         <MenuHandler>
           <Typography
             as="li"
-            className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg whitespace-nowrap cursor-pointer ${
-              navbarAktif === "/Saran" || navbarAktif === "/Pengaduan"
-                ? "text-secondary"
-                : "text-white"
-            }`}
+            className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg whitespace-nowrap cursor-pointer ${navbarAktif === "/Saran" || navbarAktif === "/Pengaduan" ? "text-secondary" : "text-white"}`}
           >
             <a className="flex items-center">Saran & Pengaduan</a>
           </Typography>
         </MenuHandler>
         <MenuList className="bg-primary text-white uppercase text-sm lg:text-base lg:w-52 w-full">
           <MenuItem
-            className={`hover:!bg-secondary hover:!text-white p-2 font-semibold cursor-pointer ${
-              navbarAktif === "/Saran"
-                ? "text-white bg-secondary"
-                : "text-white"
-            }`}
+            className={`hover:!bg-secondary hover:!text-white p-2 font-semibold cursor-pointer ${navbarAktif === "/Saran" ? "text-white bg-secondary" : "text-white"}`}
             onClick={() => handlenavbarAktif("/Saran")}
           >
             Saran
           </MenuItem>
           <MenuItem
-            className={`hover:!bg-secondary hover:!text-white p-2 font-semibold cursor-pointer ${
-              navbarAktif === "/Pengaduan"
-                ? "text-white bg-secondary"
-                : "text-white"
-            }`}
+            className={`hover:!bg-secondary hover:!text-white p-2 font-semibold cursor-pointer ${navbarAktif === "/Pengaduan" ? "text-white bg-secondary" : "text-white"}`}
             onClick={() => handlenavbarAktif("/Pengaduan")}
           >
             Pengaduan
@@ -170,11 +154,7 @@ function Navigation() {
         className="flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer"
       >
         <a
-          className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer ${
-            navbarAktif === "/PengajuanKunjungan"
-              ? "text-secondary"
-              : "text-white"
-          }`}
+          className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer ${navbarAktif === "/PengajuanKunjungan" ? "text-secondary" : "text-white"}`}
           onClick={() => handlenavbarAktif("/PengajuanKunjungan")}
         >
           Kunjungan
@@ -185,9 +165,7 @@ function Navigation() {
         className="flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer"
       >
         <a
-          className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer ${
-            navbarAktif === "/Faq" ? "text-secondary" : "text-white"
-          }`}
+          className={`flex items-center gap-x-2 p-1 font-bold hover:translate-y-1 lg:text-lg cursor-pointer ${navbarAktif === "/Faq" ? "text-secondary" : "text-white"}`}
           onClick={() => handlenavbarAktif("/Faq")}
         >
           FAQ
@@ -223,7 +201,7 @@ function Navigation() {
                   className="p-2 hover:bg-gray-100 text-sm cursor-pointer text-black hover:text-primary"
                   onClick={() =>
                     router.push(
-                      `/Pencarian?query=${encodeURIComponent(item.Nama)}`
+                      `/Pencarian?query=${encodeURIComponent(item.Nama)}`,
                     )
                   }
                 >
@@ -265,11 +243,7 @@ function Navigation() {
         <div>
           <div className="hidden sm:flex items-center gap-x-5">
             <a
-              className={`relative font-bold hover:text-secondary cursor-pointer ${
-                navbarAktif === "/Keranjang" || navbarAktif === "/Pemesanan"
-                  ? "text-secondary"
-                  : "text-white"
-              }`}
+              className={`relative font-bold hover:text-secondary cursor-pointer ${navbarAktif === "/Keranjang" || navbarAktif === "/Pemesanan" ? "text-secondary" : "text-white"}`}
               onClick={() => handlenavbarAktif("/Keranjang")}
             >
               {apakahSudahLogin ? (
@@ -282,6 +256,7 @@ function Navigation() {
               ) : null}
             </a>
 
+            {/* Menu Profile dengan Foto */}
             <Menu
               animate={{
                 mount: { y: 5 },
@@ -289,35 +264,29 @@ function Navigation() {
               }}
             >
               <MenuHandler>
-                <a
-                  className={`font-bold hover:text-secondary cursor-pointer ${
-                    navbarAktif === "/PengaturanProfil" ||
-                    navbarAktif === "/Transaksi"
-                      ? "text-secondary"
-                      : "text-white"
-                  }`}
-                  onClick={() => handlenavbarAktif("/PengaturanProfil")}
-                >
-                  {apakahSudahLogin ? <FaGear className="w-5 h-5" /> : null}
-                </a>
+                <button className="focus:outline-none">
+                  {apakahSudahLogin ? (
+                    detailPengguna?.Foto_URL ? (
+                      <img
+                        src={detailPengguna.Foto_URL}
+                        alt="Profile"
+                        className="w-10 h-10 rounded-full object-cover border-2 border-white hover:border-secondary transition-all cursor-pointer"
+                      />
+                    ) : (
+                      <FaGear className="w-5 h-5 cursor-pointer hover:text-secondary transition-colors" />
+                    )
+                  ) : null}
+                </button>
               </MenuHandler>
-              <MenuList className="text-white text-base bg-primary border-2 border-white uppercase ">
+              <MenuList className="text-white text-base bg-primary border-2 border-white uppercase">
                 <MenuItem
-                  className={`hover:!bg-secondary hover:!text-white ${
-                    navbarAktif === "/PengaturanProfil"
-                      ? "bg-secondary text-white"
-                      : ""
-                  }`}
+                  className={`hover:!bg-secondary hover:!text-white ${navbarAktif === "/PengaturanProfil" ? "bg-secondary text-white" : ""}`}
                   onClick={() => handlenavbarAktif("/PengaturanProfil")}
                 >
                   Profile Saya
                 </MenuItem>
                 <MenuItem
-                  className={`hover:!bg-secondary hover:!text-white ${
-                    navbarAktif === "/Transaksi"
-                      ? "bg-secondary text-white"
-                      : ""
-                  }`}
+                  className={`hover:!bg-secondary hover:!text-white ${navbarAktif === "/Transaksi" ? "bg-secondary text-white" : ""}`}
                   onClick={() => handlenavbarAktif("/Transaksi")}
                 >
                   Pesanan Saya
@@ -394,14 +363,17 @@ function Navigation() {
               </Button>
             ) : (
               <div className="flex flex-col items-center gap-2">
+                {/* Foto Profile di Mobile */}
+                {detailPengguna?.Foto_URL && (
+                  <img
+                    src={detailPengguna.Foto_URL}
+                    alt="Profile"
+                    className="w-16 h-16 rounded-full object-cover border-2 border-secondary mb-2"
+                  />
+                )}
                 <div className="flex items-center gap-8">
                   <a
-                    className={`relative font-bold hover:text-secondary cursor-pointer ${
-                      navbarAktif === "/Keranjang" ||
-                      navbarAktif === "/Pemesanan"
-                        ? "text-secondary"
-                        : "text-white"
-                    }`}
+                    className={`relative font-bold hover:text-secondary cursor-pointer ${navbarAktif === "/Keranjang" || navbarAktif === "/Pemesanan" ? "text-secondary" : "text-white"}`}
                     onClick={() => handlenavbarAktif("/Keranjang")}
                   >
                     {apakahSudahLogin && (
@@ -414,25 +386,15 @@ function Navigation() {
                     )}
                   </a>
 
-                  {/* Icon Profil */}
                   <a
-                    className={`relative font-bold hover:text-secondary cursor-pointer ${
-                      navbarAktif === "/PengaturanProfil"
-                        ? "text-secondary"
-                        : "text-white"
-                    }`}
+                    className={`relative font-bold hover:text-secondary cursor-pointer ${navbarAktif === "/PengaturanProfil" ? "text-secondary" : "text-white"}`}
                     onClick={() => handlenavbarAktif("/PengaturanProfil")}
                   >
                     <FaAddressCard className="w-6 h-6" />
                   </a>
 
-                  {/* Icon Transaksi */}
                   <a
-                    className={`relative font-bold hover:text-secondary cursor-pointer ${
-                      navbarAktif === "/Transaksi"
-                        ? "text-secondary"
-                        : "text-white"
-                    }`}
+                    className={`relative font-bold hover:text-secondary cursor-pointer ${navbarAktif === "/Transaksi" ? "text-secondary" : "text-white"}`}
                     onClick={() => handlenavbarAktif("/Transaksi")}
                   >
                     <FaCreditCard className="w-6 h-6" />

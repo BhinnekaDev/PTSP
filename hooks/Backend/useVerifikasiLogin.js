@@ -19,6 +19,7 @@ function useVerifikasiLogin() {
     kabupatenKotaPerusahaan: "",
     nomorHpPerusahaan: "",
     emailPerusahaan: "",
+    Foto_URL: "", // Tambahkan field Foto_URL
   });
 
   useEffect(() => {

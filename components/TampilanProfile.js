@@ -20,7 +20,28 @@ function TampilanProfile() {
         </div>
       ) : detailPengguna?.type === "perusahaan" ? (
         <>
-          <div className="mb-6 overflow-x-hidden">
+          {/* Foto Profile Perusahaan */}
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-primary shadow-lg bg-gray-100">
+                {detailPengguna?.Foto_URL ? (
+                  <img
+                    src={detailPengguna.Foto_URL}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary to-secondary text-white text-4xl font-bold">
+                    {detailPengguna?.Nama_Perusahaan?.charAt(0) ||
+                      detailPengguna?.Nama_Lengkap?.charAt(0) ||
+                      "?"}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-6 overflow-x-hidden text-center">
             <Typography variant="h4">Tampilan Profile Perusahaan</Typography>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 text-center gap-y-3 mb-10">
@@ -138,7 +159,26 @@ function TampilanProfile() {
         </>
       ) : detailPengguna?.type === "perorangan" ? (
         <>
-          <div className="mb-6 overflow-x-hidden">
+          {/* Foto Profile Perorangan */}
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-primary shadow-lg bg-gray-100">
+                {detailPengguna?.Foto_URL ? (
+                  <img
+                    src={detailPengguna.Foto_URL}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary to-secondary text-white text-4xl font-bold">
+                    {detailPengguna?.Nama_Lengkap?.charAt(0) || "?"}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-6 overflow-x-hidden text-center">
             <Typography variant="h4">Tampilan Profile Perorangan</Typography>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 text-center gap-y-6">

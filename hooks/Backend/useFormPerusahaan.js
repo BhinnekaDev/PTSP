@@ -1,26 +1,23 @@
 import { firestore, auth } from "@/lib/firebaseConfig";
 import { collection, setDoc, doc } from "firebase/firestore";
 
-/**
- * @param {Object} formDataPerusahaan
- * @returns {Promise}
- */
-
 export const addToPerusahaanCollection = async (formDataPerusahaan) => {
   try {
     const idPerusahaan = auth.currentUser?.uid;
     const emailPengguna = auth.currentUser?.email;
+    const fotoURL = auth.currentUser?.photoURL || "";
 
     if (!idPerusahaan) throw new Error("User Tidak Terautentikasi");
 
     const dataPerusahaan = {
       ...formDataPerusahaan,
       Email: emailPengguna,
+      Foto_URL: fotoURL, // Tambahkan foto URL
     };
 
     const perusahaanRef = doc(
       collection(firestore, "perusahaan"),
-      idPerusahaan
+      idPerusahaan,
     );
 
     await setDoc(perusahaanRef, dataPerusahaan);
