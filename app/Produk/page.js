@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import HeaderTemplate from "@/components/HeaderTemplate";
 import TampilanProduk from "@/app/Produk/components/KategoriKatalog";
 import Footer from "@/components/Footer";
-import FloatingChat from "@/components/FloatingChat";
+import FloatingTools from "@/components/FloatingTools";
 
 function Produk() {
   return (
@@ -14,7 +14,7 @@ function Produk() {
       <HeaderTemplate />
       <TampilanProduk />
       <Footer />
-      <FloatingChat />
+      <FloatingTools />
     </div>
   );
 }

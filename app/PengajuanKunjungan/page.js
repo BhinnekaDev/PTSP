@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import HeaderTemplate from "@/components/HeaderTemplate";
 import PengajuanKunjungan from "@/app/PengajuanKunjungan/components/Pengajuan";
 import Footer from "@/components/Footer";
+import FloatingTools from "@/components/FloatingTools";
 import toast, { Toaster } from "react-hot-toast";
 
 function PengajuanKunjunganPage() {
@@ -12,6 +13,7 @@ function PengajuanKunjunganPage() {
       <HeaderTemplate />
       <PengajuanKunjungan />
       <Footer />
+      <FloatingTools />
     </div>
   );
 }

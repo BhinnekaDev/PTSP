@@ -8,7 +8,7 @@ import { FaInstagram, FaTelegramPlane, FaGlobe } from "react-icons/fa";
 function Footer() {
   return (
     <footer className="bg-darkgray text-white lg:py-20 py-10 z-10 relative">
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-5 gap-8">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="text-center lg:text-left">
           <Typography className="font-semibold mb-3 lg:text-lg text-base">
             PTSP BMKG BENGKULU
@@ -71,32 +71,11 @@ function Footer() {
             stageof.kepahiang@bmkg.go.id
           </Typography>
         </div>
-        <div className="text-center lg:text-right">
-          <Typography className="font-semibold mb-3 lg:text-lg text-base uppercase">
-            Unduh PTSP Mobile
-          </Typography>
-          <hr className="border-t-2 border-primary w-full mx-auto md:mx-0 mb-4" />
-          <a
-            href="https://drive.google.com/uc?export=download&id=1FlfK9y0QPd6nk9gs8umlSQyn9RsRyhLu"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              src={UnduhAPK}
-              alt="unduh apk"
-              className="lg:w-full lg:h-1/5 rounded-xl"
-              width={130}
-              height={150}
-              quality={100}
-              priority
-            />
-          </a>
-        </div>
       </div>
       <div className="border-t border-primary mt-10 pt-4">
         <div className="container mx-auto flex flex-col lg:flex-row lg:justify-between justify-center text-center items-center">
           <Typography className="lg:text-base text-sm">
-            Copyrights © 2024 -{" "}
+            Copyrights © 2025 -{" "}
             <span className="font-semibold text-secondary">
               PTSP BMKG Provinsi Bengkulu
             </span>
