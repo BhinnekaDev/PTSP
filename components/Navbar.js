@@ -217,7 +217,7 @@ function Navigation() {
 
   return (
     <Navbar
-      className={`sticky top-0 max-w-full z-20 w-full px-4 py-2 ${navbarBg} rounded-none border-none shadow-none transition-all duration-300`}
+      className={`sticky top-0 max-w-full z-[999] w-full px-4 py-2 ${navbarBg} rounded-none border-none shadow-none transition-all duration-300`}
     >
       {DialogAlurLayanan}
       {DialogStandarLayanan}

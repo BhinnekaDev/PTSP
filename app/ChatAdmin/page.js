@@ -9,7 +9,7 @@ function Ajukan() {
     <div className="bg-white w-auto">
       <Toaster position="top-right" reverseOrder={false} />
       <Navbar />
-      <div className="pt-40">
+      <div className="pt-16 sm:pt-40">
         <TampilanChat />
         <Footer />
       </div>
