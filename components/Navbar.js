@@ -267,10 +267,12 @@ function Navigation() {
                 <button className="focus:outline-none">
                   {apakahSudahLogin ? (
                     detailPengguna?.Foto_URL ? (
-                      <img
+                      <Image
                         src={detailPengguna.Foto_URL}
                         alt="Profile"
                         className="w-10 h-10 rounded-full object-cover border-2 border-white hover:border-secondary transition-all cursor-pointer"
+                        width={40}
+                        height={40}
                       />
                     ) : (
                       <FaGear className="w-5 h-5 cursor-pointer hover:text-secondary transition-colors" />
@@ -365,9 +367,11 @@ function Navigation() {
               <div className="flex flex-col items-center gap-2">
                 {/* Foto Profile di Mobile */}
                 {detailPengguna?.Foto_URL && (
-                  <img
+                  <Image
                     src={detailPengguna.Foto_URL}
                     alt="Profile"
+                    width={64}
+                    height={64}
                     className="w-16 h-16 rounded-full object-cover border-2 border-secondary mb-2"
                   />
                 )}

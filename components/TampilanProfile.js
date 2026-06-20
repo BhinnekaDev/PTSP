@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { Typography } from "@/app/MTailwind";
 import useVerifikasiLogin from "@/hooks/Backend/useVerifikasiLogin";
 import Skeleton from "react-loading-skeleton";
@@ -25,9 +26,11 @@ function TampilanProfile() {
             <div className="relative">
               <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-primary shadow-lg bg-gray-100">
                 {detailPengguna?.Foto_URL ? (
-                  <img
+                  <Image
                     src={detailPengguna.Foto_URL}
                     alt="Profile"
+                    width={128}
+                    height={128}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -164,9 +167,11 @@ function TampilanProfile() {
             <div className="relative">
               <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-primary shadow-lg bg-gray-100">
                 {detailPengguna?.Foto_URL ? (
-                  <img
+                  <Image
                     src={detailPengguna.Foto_URL}
                     alt="Profile"
+                    width={128}
+                    height={128}
                     className="w-full h-full object-cover"
                   />
                 ) : (
