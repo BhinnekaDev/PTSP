@@ -367,7 +367,7 @@ MIT © 2024 [Bhinneka Dev](https://github.com/BhinnekaDev)
 ---
 
 <p align="center">
-  <img alt="Cuplikan Website" src="https://github.com/user-attachments/assets/4dc30f5c-50f5-4ab0-a562-26bc90916f5f" width="80%" />
+  <img alt="Cuplikan Website" src="https://github.com/BhinnekaDev/PTSP/blob/master/public/assets/img/Documentation.png" width="80%" />
 </p>
 
 <p align="center"><sub>PTSP (Pelayanan Terpadu Satu Pintu) – BMKG Provinsi Bengkulu</sub></p>
