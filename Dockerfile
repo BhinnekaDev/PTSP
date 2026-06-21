@@ -1,5 +1,5 @@
 # ============================================
-# Stage 1 - Dependencies
+# Stage 1 - Dependencies (Install ALL dependencies)
 # ============================================
 FROM node:22-alpine AS deps
 WORKDIR /app
@@ -7,8 +7,7 @@ WORKDIR /app
 # Copy package files
 COPY package.json package-lock.json ./
 
-# Install dependencies (only production)
-RUN npm ci --only=production
+RUN npm ci
 
 # ============================================
 # Stage 2 - Builder
@@ -16,11 +15,11 @@ RUN npm ci --only=production
 FROM node:22-alpine AS builder
 WORKDIR /app
 
-# Copy dependencies from deps stage
+# Copy semua dependencies dari stage deps
 COPY --from=deps /app/node_modules ./node_modules
 COPY package.json package-lock.json ./
 
-# Build arguments for Firebase
+# Build arguments untuk Firebase
 ARG NEXT_PUBLIC_FIREBASE_API_KEY
 ARG NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
 ARG NEXT_PUBLIC_FIREBASE_PROJECT_ID
@@ -45,7 +44,7 @@ COPY . .
 RUN npm run build
 
 # ============================================
-# Stage 3 - Production
+# Stage 3 - Production (Hanya production dependencies)
 # ============================================
 FROM node:22-alpine AS runner
 WORKDIR /app
@@ -58,7 +57,9 @@ ENV PORT=3007
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
-COPY --from=deps /app/node_modules ./node_modules
+
+COPY package.json package-lock.json ./
+RUN npm ci --only=production
 
 # Expose port
 EXPOSE 3007
