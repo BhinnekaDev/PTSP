@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { Typography } from "@material-tailwind/react";
 import { BiSolidChat, BiSolidSend, BiWind, BiArrowBack } from "react-icons/bi";
 import { FaFileImage, FaFileVideo } from "react-icons/fa6";
@@ -180,7 +181,7 @@ const ChatMessages = ({ pesanList, selengkapnya2, toggleSelengkapnya2 }) => {
                 (imageExt.includes(
                   pesan.namaFile.split(".").pop().toLowerCase(),
                 ) ? (
-                  <img
+                  <Image
                     src={pesan.urlFile}
                     alt={pesan.namaFile}
                     className="rounded-md max-w-full max-h-56 object-contain cursor-pointer hover:opacity-90 transition"
