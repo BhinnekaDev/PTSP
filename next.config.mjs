@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    turbo: {
-      enabled: false,
-    },
-  },
+  // experimental: {
+  //   turbo: {
+  //     enabled: false,
+  //   },
+  // },
   async redirects() {
     return [
       {
