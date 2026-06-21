@@ -1,38 +1,89 @@
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# ============================================
+# Dependencies
+# ============================================
+node_modules
+.pnp
+.pnp.js
 
-# testing
-/coverage
+# ============================================
+# Next.js build output
+# ============================================
+.next
+out
+build
+dist
 
-# next.js
-/.next/
-/out/
+# ============================================
+# Testing
+# ============================================
+coverage
+.nyc_output
 
-# production
-/build
+# ============================================
+# Git
+# ============================================
+.git
+.gitignore
+.gitattributes
+.github
 
-# misc
+# ============================================
+# Environment files
+# ============================================
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.test
+
+# ============================================
+# IDE and Editor
+# ============================================
+.vscode
+.idea
+*.swp
+*.swo
+*~
 .DS_Store
-*.pem
 
-# debug
+# ============================================
+# Logs
+# ============================================
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# ============================================
+# OS files
+# ============================================
+.DS_Store
+Thumbs.db
+desktop.ini
 
-# vercel
+# ============================================
+# Docker files
+# ============================================
+Dockerfile
+.dockerignore
+docker-compose.yml
+docker-compose.*.yml
+
+# ============================================
+# Documentation
+# ============================================
+README.md
+CHANGELOG.md
+*.md
+docs/
+
+# ============================================
+# Miscellaneous
+# ============================================
+*.pem
+*.cert
+*.key
 .vercel
-
-# typescript
 *.tsbuildinfo
 next-env.d.ts
-
-.env.local
