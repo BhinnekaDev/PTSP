@@ -9,99 +9,109 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # -----------------------------
+      # ============================================
       # Checkout repository
-      # -----------------------------
+      # ============================================
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      # -----------------------------
+      # ============================================
       # Setup Node.js
-      # -----------------------------
+      # ============================================
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: "npm"
 
-      # -----------------------------
+      # ============================================
       # Install dependencies
-      # -----------------------------
+      # ============================================
       - name: Install dependencies
         run: npm ci
 
-      # -----------------------------
-      # Optional: Run linting
-      # -----------------------------
+      # ============================================
+      # Run linting (optional)
+      # ============================================
       - name: Run linting
         run: npm run lint || true
 
-      # -----------------------------
-      # Login ke Docker Hub
-      # -----------------------------
+      # ============================================
+      # Login to Docker Hub
+      # ============================================
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # -----------------------------
-      # Build Docker image dengan build-args
-      # -----------------------------
-      - name: Build Docker image
-        run: |
-          docker build \
-            --build-arg NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }} \
-            --build-arg NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }} \
-            --build-arg NEXT_PUBLIC_FIREBASE_PROJECT_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }} \
-            --build-arg NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }} \
-            --build-arg NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }} \
-            --build-arg NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }} \
-            --build-arg NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }} \
-            -t ${{ secrets.DOCKER_USERNAME }}/ptsp-user-fe:dev .
+      # ============================================
+      # Setup Docker Buildx for caching
+      # ============================================
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      # -----------------------------
-      # Push Docker image
-      # -----------------------------
-      - name: Push Docker image
-        run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/ptsp-user-fe:dev
+      # ============================================
+      # Build and push Docker image with cache
+      # ============================================
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/ptsp-user-fe:dev
+          build-args: |
+            NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+            NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+            NEXT_PUBLIC_FIREBASE_PROJECT_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+            NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
+            NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
+            NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+            NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
 
-      # -----------------------------
-      # Setup SSH ke server
-      # -----------------------------
+      # ============================================
+      # Setup SSH to server
+      # ============================================
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_ed25519
-
           ssh-keyscan -p ${{ secrets.SERVER_PORT }} -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts || true
 
-      # -----------------------------
-      # Deploy ke server
-      # -----------------------------
+      # ============================================
+      # Deploy to server
+      # ============================================
       - name: Deploy to Server
         run: |
           ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=60 -p ${{ secrets.SERVER_PORT }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
             cd ${{ secrets.PROJECT_PATH }}
-
+            
+            echo "========================================="
+            echo "Starting deployment..."
+            echo "========================================="
+            
             echo "Stopping ptsp-user container..."
             docker compose stop ptsp-user-fe || true
             docker compose rm -f ptsp-user-fe || true
-
+            
             echo "Removing old image..."
             docker rmi -f ${{ secrets.DOCKER_USERNAME }}/ptsp-user-fe:dev || true
-
+            
             echo "Pulling latest image..."
             docker pull ${{ secrets.DOCKER_USERNAME }}/ptsp-user-fe:dev
-
+            
             echo "Starting ptsp-user container..."
             docker compose up -d ptsp-user-fe
-
-            echo "Deploy finished! Containers are running:"
+            
+            echo "Deployment finished!"
+            echo "========================================="
+            echo "Running containers:"
             docker ps
+            echo "========================================="
           EOF
