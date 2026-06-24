@@ -235,7 +235,6 @@ function Navigation() {
             width={130}
             height={130}
             quality={100}
-            priority
           />
         </div>
         <div className="hidden lg:block">{navList}</div>
@@ -366,7 +365,7 @@ function Navigation() {
               <div className="flex flex-col items-center gap-2">
                 {/* Foto Profile di Mobile */}
                 {detailPengguna?.Foto_URL && (
-                  <Image
+                  <img
                     src={detailPengguna.Foto_URL}
                     alt="Profile"
                     width={64}
