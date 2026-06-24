@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Image from "next/image";
 import DOMPurify from "dompurify";
 import { Typography, Input, Button } from "@/app/MTailwind";
 import useVerifikasiLogin from "@/hooks/Backend/useVerifikasiLogin";
@@ -123,7 +122,7 @@ function EditProfile() {
           {/* Foto Profile */}
           <div className="mb-6 flex flex-col items-center">
             <div className="relative">
-              <Image
+              <img
                 src={editedDetailPengguna.Foto_URL || "/default-avatar.png"}
                 alt="Profile"
                 width={128}
