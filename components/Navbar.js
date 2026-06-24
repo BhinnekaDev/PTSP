@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   Navbar,
   Collapse,
@@ -228,7 +229,7 @@ function Navigation() {
           className="lg:ml-6 cursor-pointer py-1.5 text-white flex items-center gap-x-2 uppercase font-bold"
           onClick={() => handlenavbarAktif("/Beranda")}
         >
-          <img
+          <Image
             src={LogoBMKG}
             alt="Logo BMKG"
             className="lg:w-full lg:h-full"
