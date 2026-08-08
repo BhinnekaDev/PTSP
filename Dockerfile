@@ -51,7 +51,7 @@ WORKDIR /app
 
 # Set production environment
 ENV NODE_ENV=production
-ENV PORT=3007
+ENV PORT=3004
 
 # Copy necessary files from builder
 COPY --from=builder /app/.next ./.next
@@ -62,7 +62,7 @@ COPY package.json package-lock.json ./
 RUN npm ci --only=production
 
 # Expose port
-EXPOSE 3007
+EXPOSE 3004
 
 # Start Next.js application
-CMD ["npx", "next", "start", "-p", "3007"]
+CMD ["npx", "next", "start", "-p", "3004"]
